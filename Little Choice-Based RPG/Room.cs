@@ -8,6 +8,7 @@ using System.Runtime;
 using System.Runtime.Serialization.Formatters;
 using System.Runtime.Serialization;
 using System.ComponentModel;
+using Little_Choice_Based_RPG.Objects;
 
 namespace Little_Choice_Based_RPG
 {
