@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Little_Choice_Based_RPG.Choice
+namespace Little_Choice_Based_RPG.OldCode
 {/*
     public class Possibility()
     {

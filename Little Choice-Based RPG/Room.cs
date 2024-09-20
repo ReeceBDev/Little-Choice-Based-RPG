@@ -8,7 +8,8 @@ using System.Runtime;
 using System.Runtime.Serialization.Formatters;
 using System.Runtime.Serialization;
 using System.ComponentModel;
-using Little_Choice_Based_RPG.Objects;
+using System.Xml;
+using Little_Choice_Based_RPG.Objects.Base;
 
 namespace Little_Choice_Based_RPG
 {
@@ -21,7 +22,7 @@ namespace Little_Choice_Based_RPG
     }
 
     // handles rooms, each room has a scenic description, a description of what it looks like from other rooms, a list of objects that are sitting inside it, currently accessible directions to other rooms, visibility (i.e. fogginess) 0-4 clear (can view infinitely far), light fog (can view 3 far), medium fog (can view 2 far), heavy fog (can view 1 far), dark (cant view)
-    internal class Room
+    public class Room
     {
         static uint currentID = 0;
         uint uniqueID = 0;
@@ -29,8 +30,6 @@ namespace Little_Choice_Based_RPG
         uint directionEast;
         uint directionSouth;
         uint directionWest;
-
-        int physicalVisibility;
 
         string name;
         RoomDescriptor descriptors;
@@ -41,16 +40,12 @@ namespace Little_Choice_Based_RPG
         bool isSouthTraversable = false;
         bool isWestTraversable = false;
 
-        List<GenericObject> contents;
-        public Room(string name, string newGenericDescriptor, string newInitialDescriptor, string newDistantDescriptor,
+        List<DescriptiveObject> contents;
+        public Room(string name, string newGenericDescriptor, string newInitialDescriptor = "", string newDistantDescriptor = "",
             uint directionNorth = 0, uint directionEast = 0, uint directionSouth = 0, uint directionWest = 0, int visibility = 3)
         {
             this.uniqueID = ++currentID;
             this.name = name;
-
-            this.descriptors.generic = newGenericDescriptor;
-            this.descriptors.initial = newInitialDescriptor;
-            this.descriptors.distant = newDistantDescriptor;
 
             this.directionNorth = directionNorth;
             this.directionEast = directionEast;
@@ -62,6 +57,20 @@ namespace Little_Choice_Based_RPG
             if (directionEast > 0) this.isEastTraversable = true;
             if (directionSouth > 0) this.isSouthTraversable = true;
             if (directionWest > 0) this.isWestTraversable = true;
+
+            this.descriptors.generic = newGenericDescriptor;
+
+            if (newInitialDescriptor == "")
+                this.descriptors.initial = newGenericDescriptor; //if Initial is empty, copy Generic
+            else
+                this.descriptors.initial = newInitialDescriptor;
+
+            if (newDistantDescriptor == "")
+                this.descriptors.distant = newGenericDescriptor; //if Distant is empty, copy Generic
+            else
+                this.descriptors.distant = newDistantDescriptor;
         }
+
+        public uint ID => this.uniqueID;
     }
 }

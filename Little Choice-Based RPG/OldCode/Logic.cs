@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Little_Choice_Based_RPG.Choice;
+using Little_Choice_Based_RPG.Objects.Entities.Players;
 
-namespace Little_Choice_Based_RPG.Choice
+namespace Little_Choice_Based_RPG.OldCode
 {
     public static class Logic
     {

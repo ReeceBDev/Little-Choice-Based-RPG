@@ -5,22 +5,22 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Little_Choice_Based_RPG.Objects.Gear
+namespace Little_Choice_Based_RPG.Objects.Base
 {
-    internal struct GearDescription()
+    internal struct EquippableDescription()
     {
         public string equip = "You equip this and feel much better prepared for the Potsun Burran and its challenges.";
         public string unequip = "Unequipping it with due care, you free yourself up for something else in its place.";
     }
-    internal class Gear : GenericObject
+    internal class EquippableObject : InteractableObject
     {
-        private protected GearDescription gearDescriptor;
+        private protected EquippableDescription equippableDescriptor;
         private protected const bool isEquippable = true;
         private protected bool isWornByPlayer = false;
 
         public bool IsEquippable { get; }
         public bool IsWornByPlayer { get; set; }
-        public string EquipDescriptor => gearDescriptor.equip;
-        public string UnequipDescriptor => gearDescriptor.unequip;
+        public string EquipDescriptor => equippableDescriptor.equip;
+        public string UnequipDescriptor => equippableDescriptor.unequip;
     }
 }
