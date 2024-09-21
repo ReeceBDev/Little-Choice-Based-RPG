@@ -8,22 +8,22 @@ namespace Little_Choice_Based_RPG.Choices
 {
     internal static class ChoiceHandler
     {
-        private static List<Choice> choices = new List<Choice>(); //These will be listed as options
+        private static List<Choice> listedChoices = new List<Choice>(); //These will be listed as options
         private static List<Choice> primedChoices = new List<Choice>(); //These will be run next
         public static void Add(Choice newChoice) //Adds choices which will be listed as options
         {
-            choices.Add(newChoice);
+            listedChoices.Add(newChoice);
         }
-        public static void AddAsPrimed(Choice newChoice) //Adds choices which will be run ASAP
+        public static void AddPrimed(Choice newChoice) //Adds choices which will be run ASAP
         {
             primedChoices.Add(newChoice);
         }
         public static void Prime(int choiceIndex) //Readies a listed choice by adding it to the primedChoices
         {
-            if (choiceIndex > choices.Count | choiceIndex < 0)
+            if (choiceIndex > listedChoices.Count | choiceIndex < 0)
                 throw new ArgumentException("The choice index chosen can't be found within choices.");
 
-            primedChoices.Add(choices[choiceIndex]);
+            primedChoices.Add(listedChoices[choiceIndex]);
         }
         public static void InvokePrimed() //Runs all selected choices at once
         {
@@ -32,17 +32,20 @@ namespace Little_Choice_Based_RPG.Choices
                 choice.OnExecute?.Invoke();
             }
 
-            ClearAll();
+            ClearPrimed();
         }
-        // Todo: (challenges from knortic :<)
-        /* Execute several choices at once
-         * Add remove function
-        */
+        public static void RemoveListed(int index) => listedChoices.RemoveAt(index);
+        public static void RemoveListed(Choice removedChoice) => listedChoices.Remove(removedChoice);
+        public static void RemovePrimed(int index) => primedChoices.RemoveAt(index);
+        public static void RemovePrimed(Choice removedChoice) => primedChoices.Remove(removedChoice);
+        public static void ClearListed() => listedChoices.Clear();
+        public static void ClearPrimed() => primedChoices.Clear();
         public static void ClearAll()
         {
-            choices.Clear();
+            ClearListed();
+            ClearPrimed();
         }
 
-        public static List<Choice> Choices => choices;
+        public static List<Choice> Choices => listedChoices;
     }
 }

@@ -11,10 +11,10 @@ using System.ComponentModel;
 using System.Xml;
 using Little_Choice_Based_RPG.Objects.Base;
 
-namespace Little_Choice_Based_RPG
+namespace Little_Choice_Based_RPG.World.Rooms
 {
     internal struct RoomDescriptor
-        {
+    {
         public string generic;
         public string initial;
         public string distant;
@@ -33,7 +33,7 @@ namespace Little_Choice_Based_RPG
 
         string name;
         RoomDescriptor descriptors;
-        
+
         bool hasPlayerVisited;
         bool isNorthTraversable = false;
         bool isEastTraversable = false;
@@ -44,7 +44,7 @@ namespace Little_Choice_Based_RPG
         public Room(string name, string newGenericDescriptor, string newInitialDescriptor = "", string newDistantDescriptor = "",
             uint directionNorth = 0, uint directionEast = 0, uint directionSouth = 0, uint directionWest = 0, int visibility = 3)
         {
-            this.uniqueID = ++currentID;
+            uniqueID = ++currentID;
             this.name = name;
 
             this.directionNorth = directionNorth;
@@ -53,24 +53,24 @@ namespace Little_Choice_Based_RPG
             this.directionWest = directionWest;
             this.physicalVisibility = visibility;
 
-            if (directionNorth > 0) this.isNorthTraversable = true;
-            if (directionEast > 0) this.isEastTraversable = true;
-            if (directionSouth > 0) this.isSouthTraversable = true;
-            if (directionWest > 0) this.isWestTraversable = true;
+            if (directionNorth > 0) isNorthTraversable = true;
+            if (directionEast > 0) isEastTraversable = true;
+            if (directionSouth > 0) isSouthTraversable = true;
+            if (directionWest > 0) isWestTraversable = true;
 
-            this.descriptors.generic = newGenericDescriptor;
+            descriptors.generic = newGenericDescriptor;
 
             if (newInitialDescriptor == "")
-                this.descriptors.initial = newGenericDescriptor; //if Initial is empty, copy Generic
+                descriptors.initial = newGenericDescriptor; //if Initial is empty, copy Generic
             else
-                this.descriptors.initial = newInitialDescriptor;
+                descriptors.initial = newInitialDescriptor;
 
             if (newDistantDescriptor == "")
-                this.descriptors.distant = newGenericDescriptor; //if Distant is empty, copy Generic
+                descriptors.distant = newGenericDescriptor; //if Distant is empty, copy Generic
             else
-                this.descriptors.distant = newDistantDescriptor;
+                descriptors.distant = newDistantDescriptor;
         }
 
-        public uint ID => this.uniqueID;
+        public uint ID => uniqueID;
     }
 }

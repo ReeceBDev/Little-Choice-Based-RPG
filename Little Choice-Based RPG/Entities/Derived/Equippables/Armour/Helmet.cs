@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Little_Choice_Based_RPG.Objects.Base;
 
-namespace Little_Choice_Based_RPG.Objects.Gear.Armour
+namespace Little_Choice_Based_RPG.Entities.Derived.Equippables.Armour
 {
     internal class Helmet : EquippableObject
     {

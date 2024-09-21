@@ -6,16 +6,16 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Input;
 
-namespace Little_Choice_Based_RPG
+namespace Little_Choice_Based_RPG.Frontend
 {
-    public static class PlayerInterface
+    public static class UserInterface
     {
         public static void Pause()
         {
             Console.WriteLine("\n\tPress any key to continue...");
             Console.ReadKey();
         }
-        public static string WriteDialogue(String inputText, int textDelayInMs = 40)
+        public static string WriteDialogue(string inputText, int textDelayInMs = 40)
         {
             for (int i = 0; i < inputText.Length; i++)
             {
@@ -26,10 +26,10 @@ namespace Little_Choice_Based_RPG
             return inputText;
 
         }
-        public static void RemoveDialogue(String message, int sleepTime = 20)
+        public static void RemoveDialogue(string message, int sleepTime = 20)
         {
             int messageHeight = message.Split('\n').Length;
-            
+
             for (int i = messageHeight; i >= 0; i--)
             {
                 for (int j = message.Length - 1; j >= 0; j--)

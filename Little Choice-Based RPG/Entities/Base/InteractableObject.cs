@@ -10,7 +10,7 @@ namespace Little_Choice_Based_RPG.Objects.Base
     internal abstract class InteractableObject : DescriptiveObject
     {
 
-        InteractableObject(string setName, string newGenericDescriptor, string newNativeDescriptor, string newInspectDescriptor) : base(setName, newGenericDescriptor, newNativeDescriptor, newInspectDescriptor)
+        public InteractableObject(string setName, string newGenericDescriptor, string newNativeDescriptor, string newInspectDescriptor) : base(setName, newGenericDescriptor, newNativeDescriptor, newInspectDescriptor)
         {
         }
 

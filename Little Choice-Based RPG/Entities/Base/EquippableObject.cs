@@ -12,12 +12,16 @@ namespace Little_Choice_Based_RPG.Objects.Base
         public string equip = "You equip this and feel much better prepared for the Potsun Burran and its challenges.";
         public string unequip = "Unequipping it with due care, you free yourself up for something else in its place.";
     }
-    internal class EquippableObject : InteractableObject
+    internal class EquippableObject : CarriableObject
     {
         private protected EquippableDescription equippableDescriptor;
         private protected const bool isEquippable = true;
         private protected bool isWornByPlayer = false;
 
+        public EquippableObject(string setName, string newGenericDescriptor, string newNativeDescriptor, string newInspectDescriptor) : base(setName, newGenericDescriptor, newNativeDescriptor, newInspectDescriptor)
+        {
+
+        }
         public bool IsEquippable { get; }
         public bool IsWornByPlayer { get; set; }
         public string EquipDescriptor => equippableDescriptor.equip;

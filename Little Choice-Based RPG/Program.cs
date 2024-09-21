@@ -8,9 +8,9 @@ using System.Runtime.InteropServices;
 using System.Security.Cryptography;
 using System.Text.RegularExpressions;
 using System.Xml;
-using Little_Choice_Based_RPG;
 using Little_Choice_Based_RPG.Choices;
-using Little_Choice_Based_RPG.Objects.Entities.Players;
+using Little_Choice_Based_RPG.Entities.Derived.Living.Players;
+using Little_Choice_Based_RPG.Frontend;
 using Little_Choice_Based_RPG.Objects.Gear.Armour.Helmets;
 using Little_Choice_Based_RPG.Rooms;
 using Little_Choice_Based_RPG.Types;
@@ -22,13 +22,13 @@ internal class Program
         GenerateRooms();
         GeneratePlayers();
         Player currentPlayer = new Player(room1);
-        UserInterface currentInterface = new UserInterface();
+        PlayerInterface currentInterface = new PlayerInterface();
         GenerateObjects();
 
         while (true)
         {
             currentInterface.GenerateUserInterface(currentPlayer);
-            SanitizedString currentInput = UserInterface.GetInput();
+            SanitizedString currentInput = PlayerInterface.GetInput();
             ChoiceHandler.Prime(currentInput);
             ChoiceHandler.InvokePrimed();
         }

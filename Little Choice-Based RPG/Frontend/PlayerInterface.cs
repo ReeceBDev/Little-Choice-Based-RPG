@@ -9,18 +9,18 @@ using System.Security.Cryptography;
 using System.Text.RegularExpressions;
 using System.Xml;
 using Little_Choice_Based_RPG.Choices;
-using Little_Choice_Based_RPG.Objects.Entities.Players;
+using Little_Choice_Based_RPG.Entities.Derived.Living.Players;
 
-namespace Little_Choice_Based_RPG
+namespace Little_Choice_Based_RPG.Frontend
 {
-    internal class UserInterface
+    internal class PlayerInterface
     {
-        public void GenerateUserInterface(Player player)
+        public void GeneratePlayerInterface(Player player)
         {
             uint currentRoom = player.CurrentRoomID;
             string baseDescription = Description.Write(player);
             string contextualDescription = Description.LastAction(player);
-            string listChoices = ListChoices(); 
+            string listChoices = ListChoices();
 
             Console.WriteLine($"\t\t{currentRoom}  -=- Potsun Burran" +
                               $"====-====-===-=--=-=--_-----_--= =- -_ ._" +
@@ -39,7 +39,7 @@ namespace Little_Choice_Based_RPG
 
             foreach (var choice in ChoiceHandler.Choices) // Add (player)... later!
             {
-                output += ($" {currentChoiceIndex}. /t {choice.Name}");
+                output += $" {currentChoiceIndex}. /t {choice.Name}";
                 currentChoiceIndex++;
             }
 

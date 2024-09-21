@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Little_Choice_Based_RPG.Objects.Entities.Players;
+using Little_Choice_Based_RPG.Entities.Derived.Players;
+using Little_Choice_Based_RPG.Frontend;
 
 namespace Little_Choice_Based_RPG.OldCode
 {
@@ -16,7 +17,7 @@ namespace Little_Choice_Based_RPG.OldCode
             bool result = ExecuteChoice(ReadChoice());
 
             if (!result) { return false; }
-            PlayerInterface.Pause();
+            UserInterface.Pause();
             return true;
         }
 
@@ -24,13 +25,13 @@ namespace Little_Choice_Based_RPG.OldCode
         {
             if (Player.IsHelmetDamaged)
             {
-                PlayerInterface.WriteDialogue("A. Smack the side of your helmet."); // lets you hear
+                UserInterface.WriteDialogue("A. Smack the side of your helmet."); // lets you hear
             }
             if (Player.IsPlayerKnockedDown)
             {
                 if (Player.IsHelmetDamaged)
                 { Console.WriteLine(""); }
-                PlayerInterface.WriteDialogue("B. Pick yourself up off of the floor."); // lets you see, lets you move
+                UserInterface.WriteDialogue("B. Pick yourself up off of the floor."); // lets you see, lets you move
             }
         }
         static string ReadChoice()

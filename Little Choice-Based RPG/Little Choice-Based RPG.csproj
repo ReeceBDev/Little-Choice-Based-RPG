@@ -8,4 +8,14 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Compile Remove="ArchivedCode\**" />
+    <EmbeddedResource Remove="ArchivedCode\**" />
+    <None Remove="ArchivedCode\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Entities\Derived\Vehicles\" />
+  </ItemGroup>
+
 </Project>
