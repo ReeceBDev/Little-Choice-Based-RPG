@@ -31,7 +31,7 @@ namespace Little_Choice_Based_RPG.Entities.Derived.Living.Players
         public Player(Room spawnInsideRoom)
         {
             currentRoomID = spawnInsideRoom.ID;
-            carriedGear.equippedHelmet = new DavodianMkI();
+            carriedGear.equippedHelmet = new Equippables.Armour.Helmets.DavodianMkIHelmet();
         }
 
         public void Equip()

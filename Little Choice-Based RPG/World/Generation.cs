@@ -13,7 +13,7 @@ namespace Little_Choice_Based_RPG.Generation
     {
         public Player GenerateCharacter(uint spawnRoom = Introduction.NorthOfAtriiKaal.ID)
         {
-            Player player1 = new Player(spawnRoom); 
+            Player player1 = new Player(0, 0); 
             return player1;
         }
         
