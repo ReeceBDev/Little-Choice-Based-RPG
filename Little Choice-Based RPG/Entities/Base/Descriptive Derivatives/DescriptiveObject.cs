@@ -20,6 +20,7 @@ namespace Little_Choice_Based_RPG.Objects.Base
     {
         private protected ObjectDescription descriptor;
 
+        public DescriptiveObject(Vector2 setPosition) : base(setPosition) { }
         public DescriptiveObject(string setName, string newGenericDescriptor, Vector2 setPosition, string newInspectDescriptor = "", 
             string newNativeDescriptor = "", decimal setWeightInKG = 0m)
             : base(setName, setWeightInKG, setPosition)

@@ -1,5 +1,6 @@
-﻿using Little_Choice_Based_RPG.Frontend;
+﻿/*using Little_Choice_Based_RPG.Frontend;
 using Little_Choice_Based_RPG.Objects.Gear;
+using Little_Choice_Based_RPG.World.Rooms;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -11,14 +12,10 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using static System.Net.Mime.MediaTypeNames;
 
-namespace Little_Choice_Based_RPG.World.Rooms
+namespace Little_Choice_Based_RPG
 {
     public class Introduction
     {
-        private protected static string setNorthOfAtriiKaalGenericDescriptor = "Cool Desert Vibes, you see some rocks here.";
-        private protected static string setNorthOfAtriiKaalInitialDescriptor = "You wake up with a start - you breath in sharply and sputter as heavy dust dries your mouth. \r\nIn front of you is the cracked and charred sandstone ground of the Potsun Burran. It glitters with the debris of a thousand shredded spaceships.\r\nThe high-pitched drone you hear subsides in to a roar as you realise you are laying on the ground, face-first.";
-        private protected Room northOfAtriiKaal = new Room("NorthOfAtriiKaal", setNorthOfAtriiKaalGenericDescriptor, setNorthOfAtriiKaalInitialDescriptor);
-
         public static string currentDialogue = string.Empty;
         public static void Begin()
         {
@@ -48,3 +45,4 @@ The high-pitched drone you hear subsides in to a roar as you realise you are lay
         public Room NorthOfAtriiKaal => northOfAtriiKaal;
     }
 }
+*/

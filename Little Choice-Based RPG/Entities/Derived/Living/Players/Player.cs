@@ -15,10 +15,9 @@ namespace Little_Choice_Based_RPG.Entities.Derived.Living.Players
     {
         internal Helmet equippedHelmet;
     }
-    internal class Player
+    internal class Player : LivingCreature
     {
         private protected PlayerGear carriedGear;
-        private protected uint currentRoomID;
         private protected string playerDescriptor;
 
         private protected bool wearingHelmet = true;
@@ -30,7 +29,6 @@ namespace Little_Choice_Based_RPG.Entities.Derived.Living.Players
 
         public Player(Room spawnInsideRoom)
         {
-            currentRoomID = spawnInsideRoom.ID;
             carriedGear.equippedHelmet = new Equippables.Armour.Helmets.DavodianMkIHelmet();
         }
 
@@ -64,6 +62,5 @@ namespace Little_Choice_Based_RPG.Entities.Derived.Living.Players
 
         public string PlayerDescriptor => playerDescriptor;
         public bool CanHear => playerCanHear;
-        public uint CurrentRoomID => currentRoomID;
     }
 }

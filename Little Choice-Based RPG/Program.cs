@@ -11,17 +11,15 @@ using System.Xml;
 using Little_Choice_Based_RPG.Choices;
 using Little_Choice_Based_RPG.Entities.Derived.Living.Players;
 using Little_Choice_Based_RPG.Frontend;
-using Little_Choice_Based_RPG.Objects.Gear.Armour.Helmets;
-using Little_Choice_Based_RPG.Rooms;
 using Little_Choice_Based_RPG.Types;
+using Little_Choice_Based_RPG.World.Managers;
 
 internal class Program
 {
     private static void Main(string[] args)
     {
-        GenerateRooms();
-        GeneratePlayers();
-        Player currentPlayer = new Player(room1);
+        RoomManager mainWorld = new RoomManager();
+        Player currentPlayer = new Player();
         PlayerInterface currentInterface = new PlayerInterface();
         GenerateObjects();
 

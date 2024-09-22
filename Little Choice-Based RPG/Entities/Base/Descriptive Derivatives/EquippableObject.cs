@@ -22,6 +22,7 @@ namespace Little_Choice_Based_RPG.Objects.Base
         private protected EquippableDescription equippableDescriptor;
         private protected bool currentlyInUse = false;
 
+        public EquippableObject(Vector2 setPosition) : base(setPosition) { }
         public EquippableObject(string setName, string newGenericDescriptor, Vector2 setPosition, string newInspectDescriptor = "",
             string newNativeDescriptor = "", decimal setWeightInKG = 0m, string setEquipDescriptor = "", string setUnequipDescriptor = "")
             : base(setName, newGenericDescriptor, setPosition, newInspectDescriptor, newNativeDescriptor, setWeightInKG)
@@ -39,27 +40,30 @@ namespace Little_Choice_Based_RPG.Objects.Base
 
         public override void Interact()
         {
-            HandleEquipChoices();
         }
+
+        /*
         public virtual void HandleEquipChoices()
         {
             if (this.currentlyInUse)
-                ChoiceHandler.Add(new Choice($"Put down the {this.Name}.", Equip));
+                ChoiceHandler.Add(new Choice($"Equip the {this.Name}.", Equip));
             else
-                ChoiceHandler.Add(new Choice($"Take the {this.Name}.", Unequip));
+                ChoiceHandler.Add(new Choice($"Unequip the {this.Name}.", Unequip));
         }
+
         public virtual void Equip()// Pass through Gear slot object?? player maybe??)
         {
             this.currentlyInUse = true;
             Console.WriteLine(equippableDescriptor.equip);
             //player.maxHealth + 1;         <-- How to get this working
+
         }
 
         public virtual void Unequip() // Ditto
         {
             this.currentlyInUse = false;
             Console.WriteLine(equippableDescriptor.unequip);
-        }
+        } */
         public string EquipDescriptor => equippableDescriptor.equip.Value;
         public string UnequipDescriptor => equippableDescriptor.unequip.Value;
     }

@@ -1,4 +1,5 @@
-﻿using Little_Choice_Based_RPG.Types;
+﻿using Little_Choice_Based_RPG.Entities.Derived;
+using Little_Choice_Based_RPG.Types;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,19 +14,22 @@ namespace Little_Choice_Based_RPG.Objects.Base
     internal class GameObject
     {
         private protected static uint globalCounter;
-        private protected List<GameObject> attachedObjects = [];
-        private protected decimal weightInKG;
 
+        private protected GameObject(Vector2 setPosition)
+        {
+            this.ID = ++globalCounter;
+            this.Position = setPosition;
+        }
         private protected GameObject(string setName, decimal setWeightInKG = 0m)
         {
-            ID = ++globalCounter;
-            Name.Value = setName;
-            weightInKG = setWeightInKG;
-            Position = new Vector2(0f, 0f);
+            this.ID = ++globalCounter;
+            this.Name.Value = setName;
+            this.WeightInKG = setWeightInKG;
+            this.Position = new Vector2(0f, 0f);
         }
         private protected GameObject(string setName, decimal setWeightInKG, Vector2 setPosition) : this(setName, setWeightInKG)
         {
-            Position = setPosition;
+            this.Position = setPosition;
         }
 
         private protected void SetName(string newName)
@@ -37,18 +41,19 @@ namespace Little_Choice_Based_RPG.Objects.Base
 
         private protected void Attach(GameObject attachee) // Cojoin together with another object
         {
-            attachedObjects.Add(attachee);
+            AttachedObjects.Add(attachee);
             attachee.Attach(this); 
         }
         private protected void Unattach(GameObject attachee) // Unattach self from another object and unattach the other object from self
         {
-            attachedObjects.Remove(attachee);
+            AttachedObjects.Remove(attachee);
             attachee.Unattach(this);
         }
 
         public uint ID { get; init; } = 0U; // 0 is an null, Invalid ID
         public SanitizedString Name { get; set; } = new SanitizedString(string.Empty);
         public Vector2 Position { get; set; } = new Vector2(0f, 0f);
-        public List<GameObject> GameObjects => attachedObjects;
+        public HashSet<GameObject> AttachedObjects { get; private protected set; } = [];
+        public decimal WeightInKG { get; private protected set; }
     }
 }

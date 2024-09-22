@@ -40,7 +40,9 @@ namespace Little_Choice_Based_RPG.World.Rooms
         bool isSouthTraversable = false;
         bool isWestTraversable = false;
 
-        List<DescriptiveObject> contents;
+        List<DescriptiveObject> contents = [];
+
+
         public Room(string name, string newGenericDescriptor, string newInitialDescriptor = "", string newDistantDescriptor = "",
             uint directionNorth = 0, uint directionEast = 0, uint directionSouth = 0, uint directionWest = 0, int visibility = 3)
         {
@@ -72,5 +74,6 @@ namespace Little_Choice_Based_RPG.World.Rooms
         }
 
         public uint ID => uniqueID;
+        public int physicalVisibility { get; private protected init; }
     }
 }
