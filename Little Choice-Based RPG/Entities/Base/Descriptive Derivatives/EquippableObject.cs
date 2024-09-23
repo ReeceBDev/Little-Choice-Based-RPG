@@ -17,7 +17,7 @@ namespace Little_Choice_Based_RPG.Objects.Base
         public SanitizedString equip;
         public SanitizedString unequip;
     }
-    internal class EquippableObject : InteractableObject
+    internal abstract class EquippableObject : InteractableObject
     {
         private protected EquippableDescription equippableDescriptor;
         private protected bool currentlyInUse = false;
@@ -36,10 +36,6 @@ namespace Little_Choice_Based_RPG.Objects.Base
                 equippableDescriptor.unequip.Value = "Unequipping it with due care, you free yourself up for something else in its place.";
             else
                 equippableDescriptor.unequip.Value = setUnequipDescriptor;
-        }
-
-        public override void Interact()
-        {
         }
 
         /*

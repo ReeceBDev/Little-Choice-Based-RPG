@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Little_Choice_Based_RPG.Choices;
+using Little_Choice_Based_RPG.Types;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -18,6 +20,6 @@ namespace Little_Choice_Based_RPG.Objects.Base
         {
         }
 
-        public abstract void Interact();
+        public abstract List<Choice> GenerateChoices();
     }
 }

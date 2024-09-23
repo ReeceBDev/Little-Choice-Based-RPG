@@ -52,7 +52,7 @@ namespace Little_Choice_Based_RPG.Objects.Base
 
         public uint ID { get; init; } = 0U; // 0 is an null, Invalid ID
         public SanitizedString Name { get; set; } = new SanitizedString(string.Empty);
-        public Vector2 Position { get; set; } = new Vector2(0f, 0f);
+        public Vector2 Position { get; private internal set; } = new Vector2(0f, 0f);
         public HashSet<GameObject> AttachedObjects { get; private protected set; } = [];
         public decimal WeightInKG { get; private protected set; }
     }

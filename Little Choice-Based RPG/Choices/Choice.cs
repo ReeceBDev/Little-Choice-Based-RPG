@@ -1,4 +1,5 @@
-﻿using Little_Choice_Based_RPG.Types;
+﻿using Little_Choice_Based_RPG.Objects.Base;
+using Little_Choice_Based_RPG.Types;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.Metrics;
@@ -12,9 +13,9 @@ namespace Little_Choice_Based_RPG.Choices
     internal class Choice
     {
         private protected static uint globalCounter;
-        public Action OnExecute;
+        public Func<string> OnExecute;
 
-        public Choice(string setName, Action onExecuteCallback)
+        public Choice(string setName, Func<string> onExecuteCallback)
         {
             ID = ++globalCounter;
             Name.Value = setName;

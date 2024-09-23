@@ -1,4 +1,6 @@
-﻿using Little_Choice_Based_RPG.Entities.Derived.Equippables.Armour;
+﻿using Little_Choice_Based_RPG.Choices;
+using Little_Choice_Based_RPG.Entities.Derived.Equippables.Armour;
+using Little_Choice_Based_RPG.Frontend;
 using Little_Choice_Based_RPG.Objects.Base;
 using Little_Choice_Based_RPG.Objects.Gear.Armour.Helmets;
 using Little_Choice_Based_RPG.World.Rooms;
@@ -62,5 +64,6 @@ namespace Little_Choice_Based_RPG.Entities.Derived.Living.Players
 
         public string PlayerDescriptor => playerDescriptor;
         public bool CanHear => playerCanHear;
+        public UserInterface CurrentInterface { get; init; } = new UserInterface();
     }
 }

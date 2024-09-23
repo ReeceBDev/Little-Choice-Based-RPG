@@ -24,21 +24,25 @@ namespace Little_Choice_Based_RPG.Entities.Derived.Equippables.Armour.Helmets
             base.equippableDescriptor.unequip.Value = "Engaging the clasp at the rear, the locks reluctantly scrape their disengaging clicks and the full weight of the visor bears down on your head.\r\nSandpaper lining scratches the sides of your face when you tilt your head forwards and force the faceplate off.";
         }
 
-        public override void Interact()
+        public override List<Choice> GenerateChoices()
         {
-            HandleFixChoices();
+            List<Choice> choices = new List<Choice>();
+            choices.AddRange(HandleFixChoices());
+            return choices;
         }
-        public void HandleFixChoices()
+        public List<Choice> HandleFixChoices()
         {
+            List<Choice> choices = new List<Choice>();
             if (isAudioBroken == true)
             {
-                ChoiceHandler.Add(new Choice("Fix my helmet.", FixHelmet));
+                choices.Add(new Choice("Fix my helmet.", FixHelmet));
             }
+            return choices;
         }
-        public void FixHelmet()
+        public string FixHelmet()
         {
             isAudioBroken = false;
-            Console.WriteLine("you fixed the helmet! yay!");
+            return ("you fixed the helmet! yay!");
         }
         public void BreakHelmet()
         {

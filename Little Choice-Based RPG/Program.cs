@@ -20,15 +20,12 @@ internal class Program
     {
         RoomManager mainWorld = new RoomManager();
         Player currentPlayer = new Player();
-        PlayerInterface currentInterface = new PlayerInterface();
-        GenerateObjects();
+        mainWorld.GenerateAllRooms();
 
         while (true)
         {
-            currentInterface.GenerateUserInterface(currentPlayer);
-            SanitizedString currentInput = PlayerInterface.GetInput();
-            ChoiceHandler.Prime(currentInput);
-            ChoiceHandler.InvokePrimed();
+            currentPlayer.CurrentInterface.GenerateUserInterface(currentPlayer);
+            //SanitizedString currentInput = PlayerInterface.GetInput();
         }
     }
     /*
