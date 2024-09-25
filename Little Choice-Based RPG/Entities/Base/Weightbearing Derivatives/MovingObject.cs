@@ -8,8 +8,12 @@ using System.Threading.Tasks;
 
 namespace Little_Choice_Based_RPG.Entities.Derived
 {
-    internal class MovingObject : WeightbearingObject
+    public class MovingObject : WeightbearingObject
     {
+        private protected MovingObject(Vector2 setPosition) : base(setPosition)
+        {
+            this.Position = setPosition;
+        }
         private protected MovingObject(string setName, decimal setWeightInKG, Vector2 setPosition, decimal setStrengthInKG)
             : base(setName, setWeightInKG, setPosition, setStrengthInKG)
         {
