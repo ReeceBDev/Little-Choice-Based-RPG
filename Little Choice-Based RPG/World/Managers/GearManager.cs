@@ -12,7 +12,7 @@ namespace Little_Choice_Based_RPG.World.PhysicalObjects
     {
         public GearManager()
         {
-            DavodianMkIHelmet helmet1 = new DavodianMkIHelmet();
+            // DavodianMkIHelmet helmet1 = new DavodianMkIHelmet(); -- Not needed right now
         }
     }
 }
