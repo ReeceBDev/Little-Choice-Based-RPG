@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Little_Choice_Based_RPG.Choices
 {
-    internal class ChoiceHandler
+    public class ChoiceHandler
     {
         public List<Choice> Choices = new List<Choice>(); //These will be listed as options
     }
