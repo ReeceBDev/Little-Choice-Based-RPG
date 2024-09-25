@@ -6,13 +6,13 @@ using System.Threading.Tasks;
 
 namespace Little_Choice_Based_RPG.Types
 {
-    internal class SanitizedString
+    public class SanitizedString
     {
         string output;
         public SanitizedString(string input)
         {
-            if (string.IsNullOrWhiteSpace(input))
-                throw new ArgumentException("Invalid input!");
+           // if (string.IsNullOrWhiteSpace(input))
+             //   throw new ArgumentException("Invalid input!");
 
             Value = Sanitize(input); 
         }
