@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Little_Choice_Based_RPG.Choices;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
@@ -13,12 +14,11 @@ namespace Little_Choice_Based_RPG.Entities.Derived.Equippables.Armour.Helmets
         {
             base.Name.Value = "Rusting Helmet";
             base.descriptor.generic.Value = "Folorn, a mudcaked helmet rots here in its own scrap, long since abandoned.";
-            descriptor.inspect.Value = ""
+            descriptor.inspect.Value = "";
         }
-
-        public override void Interact()
+        public override List<Choice> GenerateChoices()
         {
-            
+            throw new NotImplementedException();
         }
     }
 }
