@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 
 namespace Little_Choice_Based_RPG.Generation
 {
+    /*
     internal class Generation
     {
         public Player GenerateCharacter(uint spawnRoom = Introduction.NorthOfAtriiKaal.ID)
@@ -22,4 +23,5 @@ namespace Little_Choice_Based_RPG.Generation
             DavodianMkIHelmet helmet1 = new DavodianMkI();
         }
     }
+    */
 }
