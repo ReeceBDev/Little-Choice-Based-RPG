@@ -12,22 +12,28 @@ using System.Xml;
 using Little_Choice_Based_RPG.Choices;
 using Little_Choice_Based_RPG.Entities.Derived.Living.Players;
 using Little_Choice_Based_RPG.World.Managers;
+using Little_Choice_Based_RPG.World.Rooms;
 
 namespace Little_Choice_Based_RPG.Frontend
 {
-    internal class UserInterface
+    public class UserInterface
     {
-        public void GenerateUserInterface(Player player)
+        public void GenerateUserInterface(Player player, GameEnvironment currentEnvironment)
         {
+            Description currentPlayersDescription = new Description();
             Vector2 currentCoordinates = player.Position;
-            uint currentRoom = RoomManager.GetName(player.Position);
-            string baseDescription = Description.Write(player);
-            string contextualDescription = Description.LastAction(player);
+            uint currentRoomID = player.CurrentRoomID;
+            string baseDescription = currentPlayersDescription.GetRoomDescriptor(currentEnvironment, currentRoomID);
+            //string contextualDescription = Description.LastAction(player);
             string listChoices = ListChoices();
+            
+            Room? currentRoomTemporary = currentEnvironment.FindRoomByID(currentRoomID);
+            if (currentRoomTemporary == null)
+                throw new NullReferenceException("Invalid Room.");
 
-            Console.WriteLine($"\t\t{currentRoom}  -=- Potsun Burran, {currentCoordinates}" +
+            Console.WriteLine($"\t\t{currentRoomTemporary.Name}  -=- Potsun Burran, {currentCoordinates}" +
                               $"====-====-===-=--=-=--_-----_--= =- -_ ._" +
-                              $"\n\t{contextualDescription}" +
+                             // $"\n\t{contextualDescription}" +
                               $"\n\t{baseDescription}" +
                               $"===========-==========----========-========-=--..-- ." +
                               $"\n {listChoices}" +
