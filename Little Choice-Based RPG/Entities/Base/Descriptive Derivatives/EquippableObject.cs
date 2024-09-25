@@ -14,12 +14,12 @@ namespace Little_Choice_Based_RPG.Objects.Base
 {
     internal struct EquippableDescription()
     {
-        public SanitizedString equip;
-        public SanitizedString unequip;
+        public SanitizedString equip = new SanitizedString("");
+        public SanitizedString unequip = new SanitizedString("");
     }
     internal abstract class EquippableObject : InteractableObject
     {
-        private protected EquippableDescription equippableDescriptor;
+        private protected EquippableDescription equippableDescriptor = new EquippableDescription();
         private protected bool currentlyInUse = false;
 
         public EquippableObject(Vector2 setPosition) : base(setPosition) { }
