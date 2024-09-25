@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.ComponentModel.DataAnnotations;
 using System.Diagnostics.CodeAnalysis;
+using System.Numerics;
 using System.Reflection.Metadata.Ecma335;
 using System.Runtime;
 using System.Runtime.CompilerServices;
@@ -18,13 +19,16 @@ internal class Program
 {
     private static void Main(string[] args)
     {
-        RoomManager mainWorld = new RoomManager();
-        Player currentPlayer = new Player();
+        var mainWorld = new GameEnvironment();
+        var playerSpawnPosition = new Vector2(0, 0);
+        var currentPlayer = new Player(playerSpawnPosition);
         mainWorld.GenerateAllRooms();
+
+        currentPlayer.CurrentRoomID = mainWorld.Rooms.ElementAt(0).ID;
 
         while (true)
         {
-            currentPlayer.CurrentInterface.GenerateUserInterface(currentPlayer);
+            currentPlayer.CurrentInterface.GenerateUserInterface(currentPlayer, mainWorld);
             //SanitizedString currentInput = PlayerInterface.GetInput();
         }
     }
