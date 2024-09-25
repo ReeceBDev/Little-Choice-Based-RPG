@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Little_Choice_Based_RPG.Objects.Base
 {
-    internal class GameObject
+    public class GameObject
     {
         private protected static uint globalCounter;
 
@@ -51,8 +51,8 @@ namespace Little_Choice_Based_RPG.Objects.Base
         }
 
         public uint ID { get; init; } = 0U; // 0 is an null, Invalid ID
-        public SanitizedString Name { get; set; } = new SanitizedString(string.Empty);
-        public Vector2 Position { get; private internal set; } = new Vector2(0f, 0f);
+        public SanitizedString Name { get; set; } = new SanitizedString("i'm an error");
+        public Vector2 Position { get; private protected set; } = new Vector2(0f, 0f);
         public HashSet<GameObject> AttachedObjects { get; private protected set; } = [];
         public decimal WeightInKG { get; private protected set; }
     }
