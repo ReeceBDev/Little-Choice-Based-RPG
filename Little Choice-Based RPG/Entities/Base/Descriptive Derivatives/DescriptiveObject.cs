@@ -9,16 +9,16 @@ using System.Threading.Tasks;
 
 namespace Little_Choice_Based_RPG.Objects.Base
 {
-    internal struct ObjectDescription
+    internal struct ObjectDescription()
     {
-        public SanitizedString generic;
-        public SanitizedString native;
-        public SanitizedString inspect;
-        public SanitizedString distant;
+        public SanitizedString generic = new SanitizedString("");
+        public SanitizedString native = new SanitizedString("");
+        public SanitizedString inspect = new SanitizedString("");
+        public SanitizedString distant = new SanitizedString("");
     }
     internal class DescriptiveObject : GameObject
     {
-        private protected ObjectDescription descriptor;
+        private protected ObjectDescription descriptor = new ObjectDescription();
 
         public DescriptiveObject(Vector2 setPosition) : base(setPosition) { }
         public DescriptiveObject(string setName, string newGenericDescriptor, Vector2 setPosition, string newInspectDescriptor = "", 
