@@ -8,10 +8,14 @@ using System.Threading.Tasks;
 
 namespace Little_Choice_Based_RPG.Entities.Derived
 {
-    internal class WeightbearingObject : GameObject
+    public class WeightbearingObject : GameObject
     {
         private protected decimal strength; // maximum weightbearing capacity
         private protected decimal totalWeightHeldInKG = 0;
+        private protected WeightbearingObject(Vector2 setPosition) : base(setPosition)
+        {
+            this.Position = setPosition;
+        }
         private protected WeightbearingObject(string setName, decimal setWeightInKG, Vector2 setPosition, decimal setStrengthInKG)
             : base(setName, setWeightInKG, setPosition)
         {
