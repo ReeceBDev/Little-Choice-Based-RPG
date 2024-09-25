@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Little_Choice_Based_RPG.Choices
 {
-    internal class Choice
+    public class Choice
     {
         private protected static uint globalCounter;
         public Func<string> OnExecute;
