@@ -11,7 +11,16 @@ namespace Little_Choice_Based_RPG.World.Managers
 {
     public class GameEnvironment
     {
+        private protected static uint currentID = 0;
+        public uint UniqueID { get; init; }
+
         public List<Room> Rooms = new List<Room>();
+
+        public GameEnvironment()
+        {
+            this.UniqueID = ++currentID;
+        }
+
         public void GenerateAllRooms()
         {
             string setNorthOfAtriiKaalGenericDescriptor = "Cool Desert Vibes, you see some rocks here.";
