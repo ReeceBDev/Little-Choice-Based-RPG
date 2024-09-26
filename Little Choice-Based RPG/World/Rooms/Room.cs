@@ -10,6 +10,8 @@ using System.Runtime.Serialization;
 using System.ComponentModel;
 using System.Xml;
 using Little_Choice_Based_RPG.Objects.Base;
+using Little_Choice_Based_RPG.Choices;
+using Little_Choice_Based_RPG.World.Managers;
 
 namespace Little_Choice_Based_RPG.World.Rooms
 {
@@ -22,9 +24,9 @@ namespace Little_Choice_Based_RPG.World.Rooms
     }
     public struct RoomDirection
     {
-        Direction ChosenDirection;
-        uint DestinationRoomID;
-        uint ObjectID;
+        public Direction ChosenDirection { get; private set; }
+        public uint DestinationRoomID { get; private set; }
+        public uint ObjectID { get; private set; }
         public RoomDirection (Direction setDirection, uint setDestinationRoomID, uint setObjectID = 0)
         {
             ChosenDirection = setDirection;
@@ -95,6 +97,7 @@ namespace Little_Choice_Based_RPG.World.Rooms
         public uint ID => uniqueID;
         public RoomDescriptor Descriptors => descriptors;
         public string Name { get; private protected set; }
+        public List<RoomDirection> Directions { get; private set; } = directions;
         public int PhysicalVisibility { get; private protected init; }
 
     }
