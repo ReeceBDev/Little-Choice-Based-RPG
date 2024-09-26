@@ -12,6 +12,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Numerics;
+using Little_Choice_Based_RPG.World.Managers;
 
 namespace Little_Choice_Based_RPG.Entities.Derived.Living.Players
 {
@@ -34,7 +35,6 @@ namespace Little_Choice_Based_RPG.Entities.Derived.Living.Players
         private protected int xPosition;
         private protected int yPosition;
 
-        public uint CurrentRoomID { get; set; } = 0U;
         public Player(Vector2 setPosition) : base(setPosition)
         {
             carriedGear.equippedHelmet = new Little_Choice_Based_RPG.Entities.Derived.Equippables.Armour.Helmets.DavodianMkIHelmet(this.Position);
@@ -64,6 +64,41 @@ namespace Little_Choice_Based_RPG.Entities.Derived.Living.Players
                 wearingHelmet = false;
             }
 
+        }
+
+        public virtual List<Choice> GenerateChoices()
+        {
+            List<Choice> choices = new List<Choice>();
+
+            choices.AddRange(HandleDirectionChoices());
+
+            return choices;
+        }
+
+        public List<Choice> HandleDirectionChoices()
+        {
+            List<Choice> choices = new List<Choice>();
+
+            Room currentRoom = currentGameEnvironment.FindRoomByID(CurrentRoomID);
+            foreach (RoomDirection availableDirection in currentRoom.directions)
+            {
+                Direction orientationName = availableDirection.ChosenDirection;
+                Room destinationRoom = CurrentGameEnvironmentID.FindRoomByID(availableDirection.DestinationRoomID);
+                string destinationName = destinationRoom.Name;
+
+                string flavourText = $"Move {orientationName} towards {destinationName}";
+
+                choices.Add(new Choice(flavourText, MoveToRoomFromChoice(availableDirection)));
+            }
+
+            return choices;
+        }
+
+        public string MoveToRoomFromChoice(RoomDirection direction)
+        {
+            string movementDescriptor = "You walked towards your destination.";
+            MoveToRoom(direction);
+            return movementDescriptor;
         }
 
         public SanitizedString GetEquippedHelmet() => carriedGear.equippedHelmet.Name;
