@@ -79,6 +79,7 @@ namespace Little_Choice_Based_RPG.Entities.Derived.Living.Players
         {
             List<Choice> choices = new List<Choice>();
 
+            GameEnvironment currentGameEnvironment = GameDomain.FindEnvironmentByID(CurrentGameEnvironmentID);
             Room currentRoom = currentGameEnvironment.FindRoomByID(CurrentRoomID);
             foreach (RoomDirection availableDirection in currentRoom.directions)
             {
