@@ -1,5 +1,6 @@
 ﻿using Little_Choice_Based_RPG.Objects.Base;
 using Little_Choice_Based_RPG.Types;
+using Little_Choice_Based_RPG.World.Rooms;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.Metrics;
