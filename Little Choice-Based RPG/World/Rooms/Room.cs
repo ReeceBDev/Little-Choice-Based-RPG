@@ -62,7 +62,6 @@ namespace Little_Choice_Based_RPG.World.Rooms
         private protected bool hasPlayerVisited;
 
         private protected List<List<GameObject>> internalEntityGrid = new List<List<GameObject>>();
-        private protected List<RoomDirection> directions = new List<RoomDirection>();
 
         public Room(string setName, RoomType setRoomType)
         {
@@ -91,13 +90,13 @@ namespace Little_Choice_Based_RPG.World.Rooms
 
         public RoomType GetRoomType() => roomType;
 
-        public void AddDirection(RoomDirection direction) => directions.Add(direction);
-        public void RemoveDirection(RoomDirection direction) => directions.Remove(direction);
+        public void AddDirection(RoomDirection direction) => Directions.Add(direction);
+        public void RemoveDirection(RoomDirection direction) => Directions.Remove(direction);
 
         public uint ID => uniqueID;
         public RoomDescriptor Descriptors => descriptors;
         public string Name { get; private protected set; }
-        public List<RoomDirection> Directions { get; private set; } = directions;
+        public List<RoomDirection> Directions { get; private protected set; } = new List<RoomDirection>();
         public int PhysicalVisibility { get; private protected init; }
 
     }
