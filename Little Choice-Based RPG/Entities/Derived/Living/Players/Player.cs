@@ -81,10 +81,10 @@ namespace Little_Choice_Based_RPG.Entities.Derived.Living.Players
 
             GameEnvironment currentGameEnvironment = GameDomain.FindEnvironmentByID(CurrentGameEnvironmentID);
             Room currentRoom = currentGameEnvironment.FindRoomByID(CurrentRoomID);
-            foreach (RoomDirection availableDirection in currentRoom.directions)
+            foreach (RoomDirection availableDirection in currentRoom.Directions)
             {
                 Direction orientationName = availableDirection.ChosenDirection;
-                Room destinationRoom = CurrentGameEnvironmentID.FindRoomByID(availableDirection.DestinationRoomID);
+                Room destinationRoom = currentGameEnvironment.FindRoomByID(availableDirection.DestinationRoomID);
                 string destinationName = destinationRoom.Name;
 
                 string flavourText = $"Move {orientationName} towards {destinationName}";
