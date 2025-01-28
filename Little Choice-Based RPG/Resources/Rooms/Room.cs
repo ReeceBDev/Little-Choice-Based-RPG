@@ -15,13 +15,6 @@ using Little_Choice_Based_RPG.Resources.Entities.Base;
 
 namespace Little_Choice_Based_RPG.Resources.Rooms
 {
-    public enum Direction
-    {
-        North,
-        East,
-        South,
-        West,
-    }
     public struct RoomDirection
     {
         public Direction ChosenDirection { get; private set; }
@@ -35,35 +28,14 @@ namespace Little_Choice_Based_RPG.Resources.Rooms
         }
     }
 
-    public struct RoomDescriptor
-    {
-        public string generic;
-        public string initial;
-    }
-
-    public abstract class RoomDescriptorExtras
-    {
-
-
-    }
-
-    public enum RoomType
-    {
-        Desert,
-        Town
-    }
-
-    // handles rooms, each room has a scenic description, a description of what it looks like from other rooms, a list of objects that are sitting inside it, currently accessible directions to other rooms, visibility (i.e. fogginess) 0-4 clear (can view infinitely far), light fog (can view 3 far), medium fog (can view 2 far), heavy fog (can view 1 far), dark (cant view)
     public class Room
     {
         private protected static uint currentID = 0;
         private protected uint uniqueID = 0;
 
-        private protected RoomDescriptor descriptors;
+        private protected List<RoomDescriptor> currentRoomDescriptors;
 
-        private protected RoomType roomType = RoomType.Desert;
-
-        private protected bool hasPlayerVisited;
+        private protected RoomType roomType;
 
         private protected List<List<GameObject>> RoomEntities = new List<List<GameObject>>();
 
@@ -85,10 +57,30 @@ namespace Little_Choice_Based_RPG.Resources.Rooms
         public void RemoveDirection(RoomDirection direction) => Directions.Remove(direction);
 
         public uint ID => uniqueID;
-        public RoomDescriptor Descriptors => descriptors;
         public string Name { get; private protected set; }
         public List<RoomDirection> Directions { get; private protected set; } = new List<RoomDirection>();
-        public int PhysicalVisibility { get; private protected init; }
+    }
 
+    public enum RoomType
+    {
+        Desert,
+        Town
+    }
+    public enum Direction
+    {
+        North,
+        East,
+        South,
+        West,
+    }
+
+    public class RoomDescriptor
+    {
+        public string descriptor;
+        public List<GameObject> entityReferences;
+    }
+
+    public abstract class ConditionalRoomDescriptors
+    {
     }
 }
