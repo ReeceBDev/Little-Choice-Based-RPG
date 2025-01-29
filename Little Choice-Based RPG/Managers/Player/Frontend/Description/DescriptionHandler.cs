@@ -28,6 +28,16 @@ namespace Little_Choice_Based_RPG.Managers.Player.Frontend.Description
 
             return foundRoom.Descriptors.initial;
         }
+    }.
 
-    }
+
+
+
+
+
+
+
+
+
+
 }

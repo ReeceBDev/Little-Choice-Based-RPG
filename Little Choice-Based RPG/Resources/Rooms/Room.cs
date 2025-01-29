@@ -39,16 +39,15 @@ namespace Little_Choice_Based_RPG.Resources.Rooms
         West,
     }
 
-    public record class RoomDescriptor(string Descriptor, List<GameObject>? EntityReferenceIDs = null);
+    public record class RoomDescriptor(string Descriptor, List<uint>? EntityReferenceIDs = null);
 
     public class Room
     {
-        private protected List<RoomDescriptor> currentRoomDescriptors;
-
         private protected static uint currentID = 0;
         private protected uint uniqueID = 0;
 
         private protected RoomType roomType;
+        private protected RoomDescriptor genericDescriptor;
 
         private protected List<GameObject> roomEntities = new List<GameObject>();
 
@@ -58,8 +57,7 @@ namespace Little_Choice_Based_RPG.Resources.Rooms
             roomType = setRoomType;
             Name = setName;
 
-            RoomDescriptor genericDescriptor = new RoomDescriptor(setDefaultDescriptor);
-            currentRoomDescriptors.Add(genericDescriptor);
+            genericDescriptor = new RoomDescriptor(setDefaultDescriptor);
         }
 
         public RoomType GetRoomType() => roomType;
@@ -71,10 +69,16 @@ namespace Little_Choice_Based_RPG.Resources.Rooms
         public string Name { get; private protected set; }
         public List<RoomDirection> Directions { get; private protected set; } = new List<RoomDirection>();
 
-        public List<RoomDescriptor> GetActiveRoomDescriptors()
+        public List<RoomDescriptor> GetRoomDescriptors()
         {
-            List<RoomDescriptor> activeRoomDescriptors;
+            List<RoomDescriptor>? currentRoomDescriptors = CheckDescriptorConditions();
+
+            if (currentRoomDescriptors == null)
+                currentRoomDescriptors.Add(genericDescriptor);
+            return currentRoomDescriptors;
         }
+
+        private protected virtual List<RoomDescriptor> CheckDescriptorConditions() => null;
 
         public List<uint> GetRoomEntityIDs()
         {

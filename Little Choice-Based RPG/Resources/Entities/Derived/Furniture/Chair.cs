@@ -21,5 +21,8 @@ namespace Little_Choice_Based_RPG.Resources.Entities.Derived.Furniture
         {
            return new List<Choice>();
         }
+
+        public bool isUntouched { get; set; } = true;
+        public bool isBurnt { get; set; } = false;
     }
 }
