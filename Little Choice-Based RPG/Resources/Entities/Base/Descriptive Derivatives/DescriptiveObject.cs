@@ -17,7 +17,7 @@ namespace Little_Choice_Based_RPG.Objects.Base
         public SanitizedString inspect = new SanitizedString("");
         public SanitizedString distant = new SanitizedString("");
     }
-    internal class DescriptiveObject : GameObject
+    public class DescriptiveObject : GameObject
     {
         private protected ObjectDescription descriptor = new ObjectDescription();
 

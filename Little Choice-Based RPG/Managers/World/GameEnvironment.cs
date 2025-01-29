@@ -23,22 +23,10 @@ namespace Little_Choice_Based_RPG.Managers.World
 
         public void GenerateAllRooms()
         {
-            string setNorthOfAtriiKaalGenericDescriptor = "Cool Desert Vibes, you see some rocks here.";
-            string setNorthOfAtriiKaalInitialDescriptor = "You wake up with a start - you breath in sharply and sputter as heavy dust dries your mouth. \r\nIn front of you is the cracked and charred sandstone ground of the Potsun Burran. It glitters with the debris of a thousand shredded spaceships.\r\nThe high-pitched drone you hear subsides in to a roar as you realise you are laying on the ground, face-first.";
-            Room northOfAtriiKaal = new Room("NorthOfAtriiKaal", RoomType.Desert, setNorthOfAtriiKaalGenericDescriptor, setNorthOfAtriiKaalInitialDescriptor);
-
-            Room AtriiKaal = new Room("AtriiKaal", RoomType.Town, "beans", "beans beans beans");
-
-            uint uglyRoomID1 = northOfAtriiKaal.ID;
-            uint tempRoomID2uglybastard = AtriiKaal.ID;
-
-            RoomDirection oneToTwo = new RoomDirection(Direction.South, tempRoomID2uglybastard);
-            northOfAtriiKaal.AddDirection(oneToTwo);
-            RoomDirection twoToOne = new RoomDirection(Direction.North, uglyRoomID1);
-            AtriiKaal.AddDirection(twoToOne);
+            string setNorthOfAtriiKaalDefaultDescriptor = "You wake up with a start - you breath in sharply and sputter as heavy dust dries your mouth. \r\nIn front of you is the cracked and charred sandstone ground of the Potsun Burran. It glitters with the debris of a thousand shredded spaceships.\r\nThe high-pitched drone you hear subsides in to a roar as you realise you are laying on the ground, face-first.";
+            Room northOfAtriiKaal = new Room("NorthOfAtriiKaal", RoomType.Desert, setNorthOfAtriiKaalDefaultDescriptor);
 
             Rooms.Add(northOfAtriiKaal);
-            Rooms.Add(AtriiKaal);
 
         }
 

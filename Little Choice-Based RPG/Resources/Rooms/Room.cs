@@ -9,9 +9,8 @@ using System.Runtime.Serialization.Formatters;
 using System.Runtime.Serialization;
 using System.ComponentModel;
 using System.Xml;
-using Little_Choice_Based_RPG.Choices;
-using Little_Choice_Based_RPG.World.Managers;
 using Little_Choice_Based_RPG.Resources.Entities.Base;
+using System.Security.Principal;
 
 namespace Little_Choice_Based_RPG.Resources.Rooms
 {
@@ -27,40 +26,6 @@ namespace Little_Choice_Based_RPG.Resources.Rooms
             ObjectID = setObjectID;
         }
     }
-
-    public class Room
-    {
-        private protected static uint currentID = 0;
-        private protected uint uniqueID = 0;
-
-        private protected List<RoomDescriptor> currentRoomDescriptors;
-
-        private protected RoomType roomType;
-
-        private protected List<List<GameObject>> RoomEntities = new List<List<GameObject>>();
-
-        public Room(string setName, RoomType setRoomType)
-        {
-            uniqueID = ++currentID;
-            roomType = setRoomType;
-            Name = setName;
-        }
-
-        public Room(string setName, RoomType setRoomType, string newGenericDescriptor) : this(setName, setRoomType)
-        {
-            descriptors.generic = newGenericDescriptor;
-        }
-
-        public RoomType GetRoomType() => roomType;
-
-        public void AddDirection(RoomDirection direction) => Directions.Add(direction);
-        public void RemoveDirection(RoomDirection direction) => Directions.Remove(direction);
-
-        public uint ID => uniqueID;
-        public string Name { get; private protected set; }
-        public List<RoomDirection> Directions { get; private protected set; } = new List<RoomDirection>();
-    }
-
     public enum RoomType
     {
         Desert,
@@ -74,13 +39,51 @@ namespace Little_Choice_Based_RPG.Resources.Rooms
         West,
     }
 
-    public class RoomDescriptor
-    {
-        public string descriptor;
-        public List<GameObject> entityReferences;
-    }
+    public record class RoomDescriptor(string Descriptor, List<GameObject>? EntityReferenceIDs = null);
 
-    public abstract class ConditionalRoomDescriptors
+    public class Room
     {
+        private protected List<RoomDescriptor> currentRoomDescriptors;
+
+        private protected static uint currentID = 0;
+        private protected uint uniqueID = 0;
+
+        private protected RoomType roomType;
+
+        private protected List<GameObject> roomEntities = new List<GameObject>();
+
+        public Room(string setName, RoomType setRoomType, string setDefaultDescriptor)
+        {
+            uniqueID = ++currentID;
+            roomType = setRoomType;
+            Name = setName;
+
+            RoomDescriptor genericDescriptor = new RoomDescriptor(setDefaultDescriptor);
+            currentRoomDescriptors.Add(genericDescriptor);
+        }
+
+        public RoomType GetRoomType() => roomType;
+
+        public void AddDirection(RoomDirection direction) => Directions.Add(direction);
+        public void RemoveDirection(RoomDirection direction) => Directions.Remove(direction);
+
+        public uint ID => uniqueID;
+        public string Name { get; private protected set; }
+        public List<RoomDirection> Directions { get; private protected set; } = new List<RoomDirection>();
+
+        public List<RoomDescriptor> GetActiveRoomDescriptors()
+        {
+            List<RoomDescriptor> activeRoomDescriptors;
+        }
+
+        public List<uint> GetRoomEntityIDs()
+        {
+            List <uint> entityIDs = new List<uint>();
+            foreach (GameObject entity in roomEntities)
+            {
+                entityIDs.Add(entity.ID);
+            }
+            return entityIDs;
+        }
     }
 }

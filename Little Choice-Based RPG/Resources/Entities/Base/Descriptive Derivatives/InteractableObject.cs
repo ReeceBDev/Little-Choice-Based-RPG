@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Little_Choice_Based_RPG.Objects.Base
 {
-    internal abstract class InteractableObject : DescriptiveObject
+    public abstract class InteractableObject : DescriptiveObject
     {
 
         public InteractableObject(Vector2 setPosition) : base(setPosition) { }

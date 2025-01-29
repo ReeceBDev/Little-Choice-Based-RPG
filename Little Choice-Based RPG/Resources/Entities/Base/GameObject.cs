@@ -15,29 +15,15 @@ namespace Little_Choice_Based_RPG.Resources.Entities.Base
     {
         private protected static uint globalCounter;
 
-        private protected GameObject(Vector2 setPosition)
-        {
-            ID = ++globalCounter;
-            Position = setPosition;
-        }
-        private protected GameObject(string setName, decimal setWeightInKG = 0m)
+        private protected GameObject(string setName, uint setPosition, decimal setWeightInKG = 0m)
         {
             ID = ++globalCounter;
             Name.Value = setName;
-            WeightInKG = setWeightInKG;
-            Position = new Vector2(0f, 0f);
-        }
-        private protected GameObject(string setName, decimal setWeightInKG, Vector2 setPosition) : this(setName, setWeightInKG)
-        {
             Position = setPosition;
+            WeightInKG = setWeightInKG;
         }
 
-        private protected void SetName(string newName)
-        {
-            Name.Value = newName;
-        }
-
-        private protected virtual void SetPosition(Vector2 newPosition) => Position = newPosition;
+        private protected virtual void SetPosition(uint newPosition) => Position = newPosition;
 
         private protected void Attach(GameObject attachee) // Cojoin together with another object
         {
@@ -52,7 +38,7 @@ namespace Little_Choice_Based_RPG.Resources.Entities.Base
 
         public uint ID { get; init; } = 0U; // 0 is an null, Invalid ID
         public SanitizedString Name { get; set; } = new SanitizedString("i'm an error");
-        public Vector2 Position { get; private protected set; } = new Vector2(0f, 0f);
+        public uint Position { get; private protected set; }
         public HashSet<GameObject> AttachedObjects { get; private protected set; } = [];
         public decimal WeightInKG { get; private protected set; }
     }
