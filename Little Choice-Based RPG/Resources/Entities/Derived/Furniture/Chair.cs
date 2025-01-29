@@ -11,9 +11,8 @@ namespace Little_Choice_Based_RPG.Resources.Entities.Derived.Furniture
 {
     public class Chair : InteractableObject
     {
-        public Chair(string setName, string newGenericDescriptor, Vector2 setPosition, string newInspectDescriptor = "",
-    string newNativeDescriptor = "", decimal setWeightInKG = 0m)
-    : base(setName, newGenericDescriptor, setPosition, newInspectDescriptor, newNativeDescriptor, setWeightInKG)
+        public Chair(string setName, uint setPosition, string newGenericDescriptor, string newInspectDescriptor, decimal setWeightInKG = 0m)
+    : base(setName, setPosition, newGenericDescriptor, newInspectDescriptor, setWeightInKG)
         {
 
         }

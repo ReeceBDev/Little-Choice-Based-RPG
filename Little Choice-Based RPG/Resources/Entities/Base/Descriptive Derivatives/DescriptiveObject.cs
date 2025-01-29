@@ -21,13 +21,10 @@ namespace Little_Choice_Based_RPG.Objects.Base
     {
         private protected ObjectDescription descriptor = new ObjectDescription();
 
-        public DescriptiveObject(Vector2 setPosition) : base(setPosition) { }
-        public DescriptiveObject(string setName, string newGenericDescriptor, Vector2 setPosition, string newInspectDescriptor = "", 
-            string newNativeDescriptor = "", decimal setWeightInKG = 0m)
-            : base(setName, setWeightInKG, setPosition)
+        public DescriptiveObject(string setName, uint setPosition, string newGenericDescriptor, string newInspectDescriptor, decimal setWeightInKG = 0m)
+        : base(setName, setPosition, setWeightInKG)
         {
             descriptor.generic.Value = newGenericDescriptor;
-            descriptor.native.Value = newNativeDescriptor == "" ? newGenericDescriptor : newNativeDescriptor;
 
             if (newInspectDescriptor == "")
                 descriptor.inspect.Value = $"You inspect this further. Albeit, for all the wisdom you gather, it is unfortunately still just a {Name}, to the limits of your knowledge.";

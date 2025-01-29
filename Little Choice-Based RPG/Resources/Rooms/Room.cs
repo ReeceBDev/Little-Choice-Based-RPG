@@ -67,7 +67,7 @@ namespace Little_Choice_Based_RPG.Resources.Rooms
         public void AddDirection(RoomDirection direction) => Directions.Add(direction);
         public void RemoveDirection(RoomDirection direction) => Directions.Remove(direction);
 
-        public uint ID => uniqueID;
+        public uint RoomID => uniqueID;
         public string Name { get; private protected set; }
         public List<RoomDirection> Directions { get; private protected set; } = new List<RoomDirection>();
 

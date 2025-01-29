@@ -1,5 +1,6 @@
 ﻿using Little_Choice_Based_RPG.Objects.Base;
 using Little_Choice_Based_RPG.Resources.Entities.Base;
+using Little_Choice_Based_RPG.Resources.Entities.Derived.Furniture;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -28,7 +29,7 @@ namespace Little_Choice_Based_RPG.Resources.Rooms.Premade.Unique.Test
 
         public BurgundyTree()
         {
-            Chair burgundyWoodChair = new Chair("burgundyWoodChair");
+            Chair burgundyWoodChair = new Chair("burgundyWoodChair", RoomID, "Wow what a cool chair", "A chair sits here.");
             chairEntityID = burgundyWoodChair.ID;
         }
         Chair Sits Alone Without A Tree:

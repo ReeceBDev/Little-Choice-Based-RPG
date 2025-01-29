@@ -12,11 +12,8 @@ namespace Little_Choice_Based_RPG.Objects.Base
 {
     public abstract class InteractableObject : DescriptiveObject
     {
-
-        public InteractableObject(Vector2 setPosition) : base(setPosition) { }
-        public InteractableObject(string setName, string newGenericDescriptor, Vector2 setPosition, string newInspectDescriptor = "",
-            string newNativeDescriptor = "", decimal setWeightInKG = 0m)
-            : base(setName, newGenericDescriptor, setPosition, newInspectDescriptor, newNativeDescriptor, setWeightInKG)
+        public InteractableObject(string setName, uint setPosition, string newGenericDescriptor, string newInspectDescriptor, decimal setWeightInKG = 0m)
+    : base(setName, setPosition, newGenericDescriptor, newInspectDescriptor, setWeightInKG)
         {
         }
 
