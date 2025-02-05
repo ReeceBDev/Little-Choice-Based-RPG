@@ -1,7 +1,7 @@
 ﻿using Little_Choice_Based_RPG.Objects.Base;
 using Little_Choice_Based_RPG.Resources.Entities.Base;
-using Little_Choice_Based_RPG.Resources.Entities.Derived.Furniture;
-using Little_Choice_Based_RPG.Resources.Entities.Derived.Plants;
+using Little_Choice_Based_RPG.Resources.Entities.Physical.Furniture;
+using Little_Choice_Based_RPG.Resources.Entities.Physical.Plants;
 using System;
 using System.Collections.Generic;
 using System.Linq;
