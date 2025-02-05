@@ -4,7 +4,7 @@ using Little_Choice_Based_RPG.Resources.Entities.Physical.Living.Players;
 namespace Little_Choice_Based_RPG.Managers.Player_Manager.Frontend.UserInterface
 {
     /// <summary>
-    /// Privdes an overview of the userinterface process, such as concatenating logic, input, output and error handling.
+    /// Provides an overview of the userinterface process, such as concatenating logic, input, output and error handling.
     /// 
     /// This class handles the logic of the userInterface experience, such as recieving input, error handling,
     /// including choosing which interface to display, how to display it, the recieving of user input and so on.

@@ -9,9 +9,9 @@ using System.Runtime.InteropServices;
 using System.Security.Cryptography;
 using System.Text.RegularExpressions;
 using System.Xml;
-using Little_Choice_Based_RPG.Managers.Player.Frontend.UserInterface;
+using Little_Choice_Based_RPG.Managers.PlayerManager.Frontend.UserInterface;
 using Little_Choice_Based_RPG.Managers.World;
-using Little_Choice_Based_RPG.Resources.Entities.Derived.Living.Players;
+using Little_Choice_Based_RPG.Resources.Entities.Physical.Living.Players;
 using Little_Choice_Based_RPG.Types;
 
 internal class TextBasedRPG
