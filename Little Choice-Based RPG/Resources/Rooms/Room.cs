@@ -38,7 +38,7 @@ namespace Little_Choice_Based_RPG.Resources.Rooms
         South,
         West,
     }
-    public record struct EntityConditions(uint EntityReferenceID, List<EntityProperty> RequiredProperties);
+    public record struct EntityConditions(uint EntityReferenceID, List<EntityProperty>? RequiredProperties); //An ID without an EntityProperty should just be checked for being present
     public record struct ConditionalDescriptor(string Descriptor, List<EntityConditions> RequiredEntityConditions, uint Priority = 6);
 
     public class Room
@@ -91,26 +91,45 @@ namespace Little_Choice_Based_RPG.Resources.Rooms
                 Dictionary<uint, bool> validEntityStates = new();
 
                 //get each conditional ID from the condition
-                foreach (uint requiredEntityID in currentCondition.EntityReferenceIDs)
+                foreach (EntityConditions currentEntityConditions in currentCondition.RequiredEntityConditions)
                 {
                     //test the ID for all the objects in the room
                     foreach (GameObject existingObject in roomEntities)
                     {
-                        uint existingEntityID = existingObject.ID;
-
+                        //check for presence of items if there is no state
                         //when an object exists, test if it matches state
-                        if (existingEntityID == requiredEntityID)
+                        if (existingObject.ID == currentEntityConditions.EntityReferenceID)
                         {
-                            //check state matches (add later)
+                            // check state matches:
+                            // if no properties exist, then add the object being present as a valid state.
+                            if (currentEntityConditions.RequiredProperties == null)
+                            {
+                                validEntityStates.Add(existingObject.ID, true);
+                            }
+                            else //check for properties to match before adding as a valid state
+                            {
+                                Dictionary<EntityProperty, bool> validEntityPropertyStates = new();
 
-                            //if exists/state matches, add it to the valid list
-                            validEntityStates.Add(requiredEntityID, true);
+                                foreach (EntityProperty currentProperty in currentEntityConditions.RequiredProperties)
+                                {
+                                    if(existingObject.entityProperties.Contains(currentProperty))
+                                    {
+                                        validEntityPropertyStates.Add(currentProperty, true);
+                                    }
+                                }
+
+                                //if all properties match, mark the object as valid
+                                if (validEntityPropertyStates.Count == currentEntityConditions.RequiredProperties.Count)
+                                {
+                                    validEntityStates.Add(existingObject.ID, true);
+                                }
+                            }
                         }
                     }
                 }
-
+                
                 //if all the objects in a condition are valid, return its descriptor
-                if (validEntityStates.Count == currentCondition.EntityReferenceIDs.Count)
+                if (validEntityStates.Count == currentCondition.RequiredEntityConditions.Count)
                 {
                     validRoomDescriptors.Add(currentCondition.Descriptor);
                 }
