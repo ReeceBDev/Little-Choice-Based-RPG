@@ -9,9 +9,11 @@ using System.Runtime.InteropServices;
 using System.Security.Cryptography;
 using System.Text.RegularExpressions;
 using System.Xml;
-using Little_Choice_Based_RPG.Managers.PlayerManager.Frontend.UserInterface;
+using Little_Choice_Based_RPG.Managers.Player_Manager.Frontend.UserInterface;
 using Little_Choice_Based_RPG.Managers.World;
 using Little_Choice_Based_RPG.Resources.Entities.Physical.Living.Players;
+using Little_Choice_Based_RPG.Resources.Rooms;
+using Little_Choice_Based_RPG.Resources.Rooms.Premade.Unique.Test;
 using Little_Choice_Based_RPG.Types;
 
 internal class TextBasedRPG
@@ -19,18 +21,15 @@ internal class TextBasedRPG
     private static void Main(string[] args)
     {
         var mainWorld = new GameEnvironment();
-        var DefaultSpawnPosition = new Vector2 (0, 0);
-        var currentPlayer = new Player(DefaultSpawnPosition);
-
         mainWorld.GenerateAllRooms();
 
-        //currentPlayer.CurrentRoomID = mainWorld.Rooms.ElementAt(0).ID;
+        uint spawnRoomID = mainWorld.Rooms.ElementAt(1).Key;
+        var currentPlayer = new Player("Player One", spawnRoomID, 66, 32);
+        var currentUserInterfaceHandler = new UserInterfaceHandler(currentPlayer, mainWorld);
 
-        currentPlayer.UserInterface.GenerateInterface();
         while (true)
         {
-            currentPlayer.CurrentInterface.HandleUserInterface(currentPlayer, mainWorld);
-            //SanitizedString currentInput = PlayerInterface.GetInput();
+            currentUserInterfaceHandler.GenerateWorldview();
         }
     }
     /*

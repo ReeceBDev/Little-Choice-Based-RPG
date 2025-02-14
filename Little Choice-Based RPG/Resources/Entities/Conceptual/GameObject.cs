@@ -8,7 +8,7 @@ using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Little_Choice_Based_RPG.Resources.Entities.Base
+namespace Little_Choice_Based_RPG.Resources.Entities.Conceptual
 {
     public class GameObject
     {

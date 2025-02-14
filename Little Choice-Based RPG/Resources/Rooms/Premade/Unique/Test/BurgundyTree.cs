@@ -1,9 +1,9 @@
-﻿using Little_Choice_Based_RPG.Objects.Base;
-using Little_Choice_Based_RPG.Resources.Entities.Base;
+﻿using Little_Choice_Based_RPG.Resources.Entities.Conceptual;
 using Little_Choice_Based_RPG.Resources.Entities.Physical.Furniture;
 using Little_Choice_Based_RPG.Resources.Entities.Physical.Plants;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Net.NetworkInformation;
 using System.Security.Claims;
@@ -17,9 +17,10 @@ namespace Little_Choice_Based_RPG.Resources.Rooms.Premade.Unique.Test
         private protected uint chairEntityID;
         private protected uint treeEntityID;
 
-        private protected override List<RoomDescriptor> CheckDescriptorConditions()
+        /*
+        private protected override List<DescriptorCondition> ReturnValidConditionalDescriptors(List<DescriptorCondition> possibleDescriptors)
         {
-           List<RoomDescriptor> activatedRoomDescriptors = new();
+            List<DescriptorCondition> activeRoomDescriptors = new();
             GameObject? correctChair = null;
             GameObject? correctTree = null;
 
@@ -34,19 +35,19 @@ namespace Little_Choice_Based_RPG.Resources.Rooms.Premade.Unique.Test
             if (correctTree != null)
             {
                 List<uint> condition1EIDs = new([chairEntityID]);
-                RoomDescriptor condition1 = new RoomDescriptor("Gently falling from their branches, the occasional leaf drifts as a feather to rest upon a chair that sits beside the tree, carved from the same oakwood as the trunk it rests against.", condition1EIDs);
+                DescriptorCondition condition1 = new DescriptorCondition("Caramel and burgundy leaves rustle in the shallow breeze across the arid plains, the wind gently whipping around your ankles.", condition1EIDs);
             }
 
             if (correctTree != null && correctChair != null)
             {
                     List<uint> condition2EIDs = new ([treeEntityID, chairEntityID]);
-                    RoomDescriptor condition2 = new RoomDescriptor("Gently falling from their branches, the occasional leaf drifts as a feather to rest upon a chair that sits beside the tree, carved from the same oakwood as the trunk it rests against.", condition2EIDs);
+                    DescriptorCondition condition2 = new DescriptorCondition(, condition2EIDs);
             }
 
-            return activatedRoomDescriptors;
+            return activeRoomDescriptors;
         }
 
-        /*
+        
 Chair Sits Alone Without A Tree:
 Dependent on Tree = Not Present, Chair being Untouched
 "Burgundy leaves drift in the wind around the base of a mottled old chair that sits alone half in the sand, tilted and angled like it had been hammered part-way into the ground by some kind of a titan."
@@ -59,9 +60,11 @@ Dependent on Tree = Burnt, Chair being Untouched
 
         public BurgundyTree(string setName, RoomType setRoomType, string setDefaultDescriptor) : base(setName, setRoomType, setDefaultDescriptor)
         {
-            this.Name = "A Burgundy Tree";
-            this.roomType = RoomType.Desert;
-            genericDescriptor = new RoomDescriptor("Arid desert sand whips by your skin. A few burgundy leaves drift across the floor.");
+            uniqueID = ++currentID;
+
+            RoomType = setRoomType;
+            Name = setName;
+            defaultDescriptor = setDefaultDescriptor;
 
             Chair burgundyWoodChair = new Chair("Burgundy Chair", RoomID, "You are looking at a cool chair", "A chair sits here.");
             Tree burgundyWoodTree = new Tree("Burgundy Tree", RoomID, "That's a burgundy-leaved tree.", "A tree is here. It's cool. And burgundy.");
@@ -71,6 +74,19 @@ Dependent on Tree = Burnt, Chair being Untouched
 
             roomEntities.Add(burgundyWoodChair);
             roomEntities.Add(burgundyWoodTree);
+
+            List<uint> conditionIDs = new();
+
+            conditionIDs.Add(treeEntityID);
+            DescriptorCondition descriptorCondition = new DescriptorCondition("Caramel and burgundy leaves rustle in the shallow breeze across the arid plains, the wind gently whipping around your ankles.", conditionIDs);
+            PossibleDescriptorConditions.Add(descriptorCondition);
+
+            conditionIDs.Clear();
+
+            conditionIDs.Add(chairEntityID);
+            conditionIDs.Add(treeEntityID);
+            descriptorCondition = new DescriptorCondition("Gently falling from their branches, the occasional leaf drifts as a feather to rest upon a chair that sits beside the tree, carved from the same oakwood as the trunk it rests against.", conditionIDs);
+            PossibleDescriptorConditions.Add(descriptorCondition);
         }
     }
 }

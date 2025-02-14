@@ -12,8 +12,8 @@ using Little_Choice_Based_RPG.Resources.Choices;
 using Little_Choice_Based_RPG.Resources.Rooms;
 using Little_Choice_Based_RPG.Resources.Entities.Physical.Equippables.Armour.Helmets;
 using Little_Choice_Based_RPG.Managers.Player_Manager.Frontend.UserInterface;
-using Little_Choice_Based_RPG.Resources.Entities.Base.Weightbearing_Derivatives;
-using Little_Choice_Based_RPG.Resources.Entities.Base.Descriptive_Derivatives;
+using Little_Choice_Based_RPG.Resources.Entities.Conceptual.Weightbearing_Derivatives;
+using Little_Choice_Based_RPG.Resources.Entities.Conceptual.Descriptive_Derivatives;
 
 namespace Little_Choice_Based_RPG.Resources.Entities.Physical.Living.Players
 {
@@ -35,10 +35,10 @@ namespace Little_Choice_Based_RPG.Resources.Entities.Physical.Living.Players
         private protected int xPosition;
         private protected int yPosition;
 
-        public Player(uint setPosition) : base(setPosition)
+        public Player(string setName, uint setPosition, uint setWeightInKG, decimal setStrengthInKG) : base(setName, setPosition, setWeightInKG, setStrengthInKG)
         {
             this.Position = setPosition;
-            carriedGear.equippedHelmet = new DavodianMkIHelmet(Position);
+            //carriedGear.equippedHelmet = new DavodianMkIHelmet(Position);
         }
 
         public void Equip()
@@ -112,6 +112,5 @@ namespace Little_Choice_Based_RPG.Resources.Entities.Physical.Living.Players
         public SanitizedString PlayerDescriptor { get; private set; }
         public SanitizedString LastActionDescriptor { get; private set; }
         public bool CanHear => playerCanHear;
-        public UserInterface CurrentInterface { get; init; } = new UserInterface();
     }
 }

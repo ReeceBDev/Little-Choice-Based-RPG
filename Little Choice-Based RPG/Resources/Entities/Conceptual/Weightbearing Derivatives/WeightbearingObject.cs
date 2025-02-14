@@ -1,4 +1,4 @@
-﻿using Little_Choice_Based_RPG.Resources.Entities.Base;
+﻿using Little_Choice_Based_RPG.Resources.Entities.Conceptual;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,16 +6,14 @@ using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Little_Choice_Based_RPG.Resources.Entities.Base.Weightbearing_Derivatives
+namespace Little_Choice_Based_RPG.Resources.Entities.Conceptual.Weightbearing_Derivatives
 {
-    public class WeightbearingObject
+    public class WeightbearingObject : GameObject
     {
-        public GameObject testobject;
         private protected decimal strength; // maximum weightbearing capacity
         private protected decimal totalWeightHeldInKG = 0;
-        private protected WeightbearingObject(string setName, uint setPosition, decimal setWeightInKG, decimal setStrengthInKG)
+        private protected WeightbearingObject(string setName, uint setPosition, decimal setWeightInKG, decimal setStrengthInKG) : base (setName, setPosition, setWeightInKG)
         {
-            testobject = new GameObject(setPosition);
             this.strength = setStrengthInKG;
         }
 

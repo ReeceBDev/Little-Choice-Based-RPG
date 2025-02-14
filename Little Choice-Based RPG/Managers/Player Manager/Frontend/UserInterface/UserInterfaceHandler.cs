@@ -17,18 +17,17 @@ namespace Little_Choice_Based_RPG.Managers.Player_Manager.Frontend.UserInterface
     /// </summary>
     internal class UserInterfaceHandler
     {
-        private protected UserInterface currentInterface;
-        private protected UserInterfaceUtilities userInterfaceUtility;
+        internal UserInterface currentInterface;
         // Instantiate a new UserInterface
         // Handle the logic and the errors
 
         public UserInterfaceHandler(Player currentPlayer, GameEnvironment currentEnvironment)
         {
-            var currentInterface = new UserInterface(currentPlayer, currentEnvironment);
+            currentInterface = new UserInterface(currentPlayer, currentEnvironment);
         }
         public void GenerateWorldview()
         {
-            string selectedUserInterfaceStyle = currentInterface.Default();
+            string selectedUserInterfaceStyle = currentInterface.DefaultStyle();
 
             Console.WriteLine(selectedUserInterfaceStyle);
             string? userInput = Console.ReadLine();
@@ -38,7 +37,7 @@ namespace Little_Choice_Based_RPG.Managers.Player_Manager.Frontend.UserInterface
                 userInput = Console.ReadLine();
             }
 
-            userInterfaceUtility.Pause();
+            UserInterfaceUtilities.Pause();
             Console.Clear();
         }
     }

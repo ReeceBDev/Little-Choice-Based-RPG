@@ -1,4 +1,5 @@
-﻿using Little_Choice_Based_RPG.Resources.Entities.Base;
+﻿using Little_Choice_Based_RPG.Resources.Entities.Conceptual;
+using Little_Choice_Based_RPG.Resources.Entities;
 using Little_Choice_Based_RPG.Types;
 using System;
 using System.Collections.Generic;
@@ -8,14 +9,12 @@ using System.Reflection.Metadata.Ecma335;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Little_Choice_Based_RPG.Resources.Entities.Base.Descriptive_Derivatives
+namespace Little_Choice_Based_RPG.Resources.Entities.Conceptual.Descriptive_Derivatives
 {
     internal struct ObjectDescription()
     {
         public SanitizedString generic = new SanitizedString("");
-        public SanitizedString native = new SanitizedString("");
         public SanitizedString inspect = new SanitizedString("");
-        public SanitizedString distant = new SanitizedString("");
     }
     public class DescriptiveObject : GameObject
     {
@@ -40,7 +39,6 @@ namespace Little_Choice_Based_RPG.Resources.Entities.Base.Descriptive_Derivative
             get { return descriptor.generic.Value; }
             set { _SetGenericDescriptor(value); }
         }
-        public string NativeDescriptor => descriptor.native.Value;
         public string InspectDescriptor => descriptor.inspect.Value;
     }
 }

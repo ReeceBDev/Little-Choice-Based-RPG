@@ -6,19 +6,14 @@ using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Little_Choice_Based_RPG.Resources.Entities.Base.Weightbearing_Derivatives
+namespace Little_Choice_Based_RPG.Resources.Entities.Conceptual.Weightbearing_Derivatives
 {
     public class MovingObject : WeightbearingObject
     {
-        public uint CurrentRoomID { get; set; } = 0U; // this is for navigating to other rooms on its own
-        public uint CurrentGameEnvironmentID { get; set; } = 0U; // this is just to let the room be found from the currentRoomID - for getting navigable directions out of the room from its ID
-        private protected MovingObject(uint setPosition) : base(setPosition)
-        {
-            this.Position = setPosition;
-        }
-        private protected MovingObject(string setName, uint setPosition, decimal setWeightInKG, decimal setStrengthInKG)
+        private protected MovingObject(string setName, decimal setWeightInKG, uint setPosition, decimal setStrengthInKG)
             : base(setName, setPosition, setWeightInKG, setStrengthInKG)
         {
+            this.Position = setPosition;
         }
 
         public void Move(uint newPosition)
@@ -26,6 +21,6 @@ namespace Little_Choice_Based_RPG.Resources.Entities.Base.Weightbearing_Derivati
             this.Position = newPosition;
         }
 
-        public void MoveToRoom(RoomDirection direction) => this.CurrentRoomID = direction.DestinationRoomID;
+        public void MoveToRoom(RoomDirection direction) => this.Position = direction.DestinationRoomID;
     }
 }

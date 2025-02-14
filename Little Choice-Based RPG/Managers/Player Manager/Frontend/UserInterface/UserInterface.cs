@@ -10,7 +10,6 @@ using System.Security.Cryptography;
 using System.Text.RegularExpressions;
 using System.Xml;
 using Little_Choice_Based_RPG.Resources.Entities.Physical.Living.Players;
-using Little_Choice_Based_RPG.Managers.Player_Manager.Frontend.Description;
 using Little_Choice_Based_RPG.Managers.World;
 using Little_Choice_Based_RPG.Resources.Choices;
 using Little_Choice_Based_RPG.Resources.Rooms;
@@ -19,30 +18,39 @@ using Little_Choice_Based_RPG.Types;
 namespace Little_Choice_Based_RPG.Managers.Player_Manager.Frontend.UserInterface
 {
     // Outlines the possible interface styles to be used by the UserInterfaceHandler
-    internal class UserInterface
+    public class UserInterface
     {
         private protected uint currentRoomID;
-        private protected string baseDescription;
-        private protected DescriptionHandler currentPlayersDescription;
-        private protected Room? currentRoomTemporary;
+        private protected string currentRoomName;
+        private protected string currentRoomDescription;
 
         public UserInterface(Player player, GameEnvironment currentEnvironment)
         {
-            currentRoomID = player.CurrentRoomID;
-            baseDescription = currentPlayersDescription.GetRoomDescriptors(currentEnvironment, currentRoomID);
-            currentPlayersDescription = new DescriptionHandler();
-            currentRoomTemporary = currentEnvironment.FindRoomByID(currentRoomID);
+            currentRoomID = player.Position;
+            Room currentRoomPrinciple = currentEnvironment.GetRoomByID(currentRoomID);
+            currentRoomName = currentRoomPrinciple.Name;
+            currentRoomDescription = CreateRoomDescription(currentRoomPrinciple.GetRoomDescriptors());
+        }
+
+        private string CreateRoomDescription(List<string> roomDescriptors)
+        {
+            string createdRoomDescription = "";
+            foreach (string roomDescriptor in roomDescriptors)
+            {
+                createdRoomDescription += (roomDescriptor + " ");
+            }
+            return createdRoomDescription;
         }
 
         public string DefaultStyle()
         {
-            string userInterfaceStyle = string.Join(
-                          $"\n\t{currentRoomTemporary.Name}\t -=-\t Potsun Burran\t -=-\t Relative, {currentRoomID}\t -=-\t {DateTime.UtcNow.AddYears(641)}",
-                          $"\n ===========-========== ----========-========-= --..-- .",
-                          $"\n{baseDescription}",
-                          $"\n ====-====-===-=--=-=--_-----_--= =- -_ ._",
-                          $"\n ===========",
-                          $"\n\t>>> ");
+            string userInterfaceStyle = string.Join( "\n",
+                          $"{this.currentRoomName}\t -=-\t Potsun Burran\t -=-\t Relative, {currentRoomID}\t -=-\t {DateTime.UtcNow.AddYears(641)}",
+                          $" ===========-========== ----========-========-= --..-- .",
+                          $"{currentRoomDescription}",
+                          $" ====-====-===-=--=-=--_-----_--= =- -_ ._",
+                          $" ===========",
+                          $">>> ");
 
             return userInterfaceStyle;
         }
