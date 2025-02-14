@@ -16,7 +16,7 @@ namespace Little_Choice_Based_RPG.Resources.Entities.Physical.Furniture
         public Chair(string setName, uint setPosition, string newGenericDescriptor, string newInspectDescriptor, decimal setWeightInKG = 0m)
     : base(setName, setPosition, newGenericDescriptor, newInspectDescriptor, setWeightInKG)
         {
-            entityProperties.Add(new EntityProperty("isBurnt", true));
+            entityProperties.Add(new EntityProperty("isBurnt", false));
         }
 
         public override List<Choice> GenerateChoices()
