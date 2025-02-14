@@ -14,6 +14,8 @@ namespace Little_Choice_Based_RPG.Resources.Entities.Conceptual
     {
         private protected static uint globalCounter;
 
+        public Dictionary<string, bool> entityProperties = new();
+
         private protected GameObject(string setName, uint setPosition, decimal setWeightInKG = 0m)
         {
             ID = ++globalCounter;
