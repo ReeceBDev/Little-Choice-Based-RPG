@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Net.NetworkInformation;
+using System.Runtime.InteropServices;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
@@ -42,17 +43,26 @@ Dependent on Tree = Burnt, Chair being Untouched
             roomEntities.Add(burgundyWoodTree);
 
             List<uint> conditionIDs = new();
+            List<EntityConditions> conditionsList = new();
 
-            conditionIDs.Add(burgundyWoodTree.ID);
-            ConditionalDescriptor descriptorCondition = new ConditionalDescriptor("Caramel and burgundy leaves rustle in the shallow breeze across the arid plains, the wind gently whipping around your ankles.", conditionIDs);
+            conditionsList.Add(new EntityConditions(burgundyWoodTree.ID, null));
+            ConditionalDescriptor descriptorCondition = new ConditionalDescriptor("Caramel and burgundy leaves rustle in the shallow breeze across the arid plains, the wind gently whipping around your ankles.", conditionsList);
             localConditionalDescriptors.Add(descriptorCondition);
 
-            conditionIDs.Clear();
+            conditionsList.Clear();
 
-            conditionIDs.Add(burgundyWoodChair.ID);
-            conditionIDs.Add(burgundyWoodTree.ID);
-            descriptorCondition = new ConditionalDescriptor("Gently falling from their branches, the occasional leaf drifts as a feather to rest upon a chair that sits beside the tree, carved from the same oakwood as the trunk it rests against.", conditionIDs);
+            conditionsList.Add(new EntityConditions(burgundyWoodChair.ID, null));
+            conditionsList.Add(new EntityConditions(burgundyWoodTree.ID, null));
+            descriptorCondition = new ConditionalDescriptor("Gently falling from their branches, the occasional leaf drifts as a feather to rest upon a chair that sits beside the tree, carved from the same oakwood as the trunk it rests against.", conditionsList);
             localConditionalDescriptors.Add(descriptorCondition);
+
+            conditionsList.Clear();
+
+            var treeProperties = new List<EntityProperty>();
+            treeProperties.Add(new EntityProperty("isBurnt", true));
+
+            conditionsList.Add(new EntityConditions(burgundyWoodTree.ID, treeProperties));
+            descriptorCondition = new ConditionalDescriptor("Burgundy leaves drift in the wind around a burnt husk, the trunk of a charred and forgotten tree holding up a singed chair.Perhaps this was a nice spot to sit and read, once.", conditionsList, 1);
         }
     }
 }
