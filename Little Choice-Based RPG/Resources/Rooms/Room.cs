@@ -38,13 +38,11 @@ namespace Little_Choice_Based_RPG.Resources.Rooms
         South,
         West,
     }
-    public record class EntityCondition(uint EntityReferenceID, bool);
-    public record class ConditionalDescriptor(string Descriptor, List<uint>? EntityReferenceIDs = null, uint Priority = 6); // Add an option to this to check for state
+    public record struct EntityConditions(uint EntityReferenceID, List<EntityProperty> RequiredProperties);
+    public record struct ConditionalDescriptor(string Descriptor, List<EntityConditions> RequiredEntityConditions, uint Priority = 6);
 
     public class Room
     {
-        new EntityCondition testCondition = new EntityCondition(1, isOnFire = false);
-
         private protected static uint currentID = 0;
         private protected uint uniqueID = 0;
         private protected string defaultDescriptor;
