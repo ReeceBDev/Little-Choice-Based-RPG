@@ -1,4 +1,5 @@
-﻿using Little_Choice_Based_RPG.Types;
+﻿using Little_Choice_Based_RPG.Resources.Rooms;
+using Little_Choice_Based_RPG.Types;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,11 +11,12 @@ using System.Threading.Tasks;
 
 namespace Little_Choice_Based_RPG.Resources.Entities.Conceptual
 {
+    public record struct EntityProperty(string Key, bool Value);
     public class GameObject
     {
         private protected static uint globalCounter;
 
-        public Dictionary<string, bool> entityProperties = new();
+        public List<EntityProperty> entityProperties = new();
 
         private protected GameObject(string setName, uint setPosition, decimal setWeightInKG = 0m)
         {
