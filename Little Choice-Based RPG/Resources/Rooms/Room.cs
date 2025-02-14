@@ -38,27 +38,59 @@ namespace Little_Choice_Based_RPG.Resources.Rooms
         South,
         West,
     }
-
-    public record class DescriptorCondition(string Descriptor, List<uint>? EntityReferenceIDs = null); // Add an option to this to check for state
+    public record class EntityCondition(uint EntityReferenceID, bool);
+    public record class ConditionalDescriptor(string Descriptor, List<uint>? EntityReferenceIDs = null, uint Priority = 6); // Add an option to this to check for state
 
     public class Room
     {
+        new EntityCondition testCondition = new EntityCondition(1, isOnFire = false);
+
         private protected static uint currentID = 0;
         private protected uint uniqueID = 0;
+        private protected string defaultDescriptor;
+        private protected List<GameObject> roomEntities = new List<GameObject>();
+        private protected List<ConditionalDescriptor> localConditionalDescriptors = new List<ConditionalDescriptor>();
 
         public string Name;
-        private protected string defaultDescriptor;
 
-        public List<DescriptorCondition> PossibleDescriptorConditions = new List<DescriptorCondition>();
+        public Room(string setName, RoomType setRoomType, string setDefaultDescriptor) : base()
+        {
+            uniqueID = ++currentID;
+            RoomType = setRoomType;
+            Name = setName;
+            defaultDescriptor = setDefaultDescriptor;
+        }
+
+        public void AddDirection(RoomDirection direction) => Directions.Add(direction);
+        public void RemoveDirection(RoomDirection direction) => Directions.Remove(direction);
+
+        public List<uint> GetRoomEntityIDs()
+        {
+            List<uint> entityIDs = new List<uint>();
+            foreach (GameObject entity in roomEntities)
+            {
+                entityIDs.Add(entity.ID);
+            }
+            return entityIDs;
+        }
+
+        public List<string> GetRoomDescriptors()
+        {
+            List<string>? currentRoomDescriptors = ReturnValidConditionalDescriptors();
+
+            if (currentRoomDescriptors == null)
+                currentRoomDescriptors.Add(defaultDescriptor);
+            return currentRoomDescriptors;
+        }
 
         private protected List<string> ReturnValidConditionalDescriptors()
         {
             List<string> validRoomDescriptors = new();
 
-            foreach (DescriptorCondition currentCondition in PossibleDescriptorConditions)
+            foreach (ConditionalDescriptor currentCondition in localConditionalDescriptors)
             {
                 //records if entity states match the condition
-                Dictionary<uint, bool> validEntityStates = new(); 
+                Dictionary<uint, bool> validEntityStates = new();
 
                 //get each conditional ID from the condition
                 foreach (uint requiredEntityID in currentCondition.EntityReferenceIDs)
@@ -87,37 +119,6 @@ namespace Little_Choice_Based_RPG.Resources.Rooms
             }
 
             return validRoomDescriptors;
-        }
-
-        private protected List<GameObject> roomEntities = new List<GameObject>();
-        public Room(string setName, RoomType setRoomType, string setDefaultDescriptor) : base()
-        {
-            uniqueID = ++currentID;
-            RoomType = setRoomType;
-            Name = setName;
-            defaultDescriptor = setDefaultDescriptor;
-        }
-
-        public void AddDirection(RoomDirection direction) => Directions.Add(direction);
-        public void RemoveDirection(RoomDirection direction) => Directions.Remove(direction);
-
-        public List<string> GetRoomDescriptors()
-        {
-            List<string>? currentRoomDescriptors = ReturnValidConditionalDescriptors();
-
-            if (currentRoomDescriptors == null)
-                currentRoomDescriptors.Add(defaultDescriptor);
-            return currentRoomDescriptors;
-        }
-
-        public List<uint> GetRoomEntityIDs()
-        {
-            List <uint> entityIDs = new List<uint>();
-            foreach (GameObject entity in roomEntities)
-            {
-                entityIDs.Add(entity.ID);
-            }
-            return entityIDs;
         }
 
         public uint RoomID => uniqueID;
