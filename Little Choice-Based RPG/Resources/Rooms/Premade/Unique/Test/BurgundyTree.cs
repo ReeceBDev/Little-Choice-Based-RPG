@@ -63,6 +63,7 @@ Dependent on Tree = Burnt, Chair being Untouched
 
             conditionsList.Add(new EntityConditions(burgundyWoodTree.ID, treeProperties));
             descriptorCondition = new ConditionalDescriptor("Burgundy leaves drift in the wind around a burnt husk, the trunk of a charred and forgotten tree holding up a singed chair.Perhaps this was a nice spot to sit and read, once.", conditionsList, 1);
+            localConditionalDescriptors.Add(descriptorCondition);
         }
     }
 }
