@@ -38,8 +38,8 @@ namespace Little_Choice_Based_RPG.Resources.Rooms
         South,
         West,
     }
-    public record struct EntityConditions(uint EntityReferenceID, List<EntityProperty>? RequiredProperties); //An ID without an EntityProperty should just be checked for being present
-    public record struct ConditionalDescriptor(string Descriptor, List<EntityConditions> RequiredEntityConditions, uint Priority = 6);
+    public record struct EntityState(uint EntityReferenceID, List<EntityProperty>? RequiredProperties); //An ID without an EntityProperty should just be checked for being present
+    public record struct ConditionalDescriptor(string Descriptor, List<EntityState> RequiredEntityStates, uint Priority = 6);
 
     public class Room
     {
@@ -87,55 +87,61 @@ namespace Little_Choice_Based_RPG.Resources.Rooms
 
             foreach (ConditionalDescriptor currentCondition in localConditionalDescriptors)
             {
-                //records if entity states match the condition
-                Dictionary<uint, bool> validEntityStates = new();
-
-                //get each conditional ID from the condition
-                foreach (EntityConditions currentEntityConditions in currentCondition.RequiredEntityConditions)
-                {
-                    //test the ID for all the objects in the room
-                    foreach (GameObject existingObject in roomEntities)
-                    {
-                        //check for presence of items if there is no state
-                        //when an object exists, test if it matches state
-                        if (existingObject.ID == currentEntityConditions.EntityReferenceID)
-                        {
-                            // check state matches:
-                            // if no properties exist, then add the object being present as a valid state.
-                            if (currentEntityConditions.RequiredProperties == null)
-                            {
-                                validEntityStates.Add(existingObject.ID, true);
-                            }
-                            else //check for properties to match before adding as a valid state
-                            {
-                                Dictionary<EntityProperty, bool> validEntityPropertyStates = new();
-
-                                foreach (EntityProperty currentProperty in currentEntityConditions.RequiredProperties)
-                                {
-                                    if(existingObject.entityProperties.Contains(currentProperty))
-                                    {
-                                        validEntityPropertyStates.Add(currentProperty, true);
-                                    }
-                                }
-
-                                //if all properties match, mark the object as valid
-                                if (validEntityPropertyStates.Count == currentEntityConditions.RequiredProperties.Count)
-                                {
-                                    validEntityStates.Add(existingObject.ID, true);
-                                }
-                            }
-                        }
-                    }
-                }
-                
-                //if all the objects in a condition are valid, return its descriptor
-                if (validEntityStates.Count == currentCondition.RequiredEntityConditions.Count)
-                {
+                if (CheckConditionIsValid(currentCondition, roomEntities))
                     validRoomDescriptors.Add(currentCondition.Descriptor);
-                }
             }
 
             return validRoomDescriptors;
+        }
+        
+        private protected bool CheckConditionIsValid(ConditionalDescriptor condition, List<GameObject> roomEntities)
+        {
+            //records if existing entity states match the conditions' required entity states
+            List<uint> validEntityStates = new(); //EntityID
+
+            foreach (EntityState requiredEntityState in condition.RequiredEntityStates)
+            {
+                //test the ID for all the objects in the room
+                foreach (GameObject entity in roomEntities)
+                {
+                    //when an object exists, test if it matches state
+                    if (entity.ID == requiredEntityState.EntityReferenceID)
+                    {
+                        if (CheckStateIsValid(requiredEntityState, entity))
+                            validEntityStates.Add(entity.ID);
+                    }
+                }
+            }
+
+            //if all the objects in a condition are valid, return true
+            return validEntityStates.Count == condition.RequiredEntityStates.Count;
+        }
+
+        private protected bool CheckStateIsValid(EntityState testState, GameObject currentState)
+        {
+
+            if (testState.EntityReferenceID == currentState.ID) //check if the entityIDs match
+            {
+                //If no properties exist, then the object will be considered a match by default, since there are no properties being checked, just presence.
+                if (testState.RequiredProperties == null)
+                    return true;
+                else //check for properties to match before adding as a valid state
+                {
+                    //Check if each property matches the required properties
+                    List<EntityProperty> validProperties = new();
+
+                    //foreach (EntityProperty currentProperty in testState.RequiredProperties)
+                    foreach (EntityProperty requiredProperty in testState.RequiredProperties)
+                    {
+                        if (currentState.entityProperties.Contains(requiredProperty))
+                            validProperties.Add(requiredProperty);
+                    }
+
+                    //if all properties match, then the state is valid
+                    return validProperties.Count == testState.RequiredProperties.Count;
+                }
+            }
+            else return false; //entity IDs didnt match.
         }
 
         public uint RoomID => uniqueID;
