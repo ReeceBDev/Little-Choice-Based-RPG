@@ -11,6 +11,10 @@ using System.ComponentModel;
 using System.Xml;
 using Little_Choice_Based_RPG.Resources.Entities.Conceptual;
 using System.Security.Principal;
+using System.Runtime.InteropServices.Marshalling;
+using System.Collections.Immutable;
+using System.Collections;
+using System.Runtime.ConstrainedExecution;
 
 namespace Little_Choice_Based_RPG.Resources.Rooms
 {
@@ -83,15 +87,16 @@ namespace Little_Choice_Based_RPG.Resources.Rooms
 
         private protected List<string> ReturnValidConditionalDescriptors()
         {
-            List<string> validRoomDescriptors = new();
+            List<ConditionalDescriptor> validRoomDescriptors = new(); //Descriptor, Priority
 
             foreach (ConditionalDescriptor currentCondition in localConditionalDescriptors)
             {
                 if (CheckConditionIsValid(currentCondition, roomEntities))
-                    validRoomDescriptors.Add(currentCondition.Descriptor);
+                    validRoomDescriptors.Add(currentCondition);
             }
 
-            return validRoomDescriptors;
+            List<string> prioritisedDescriptors = PrioritiseDescriptorsAsStrings(validRoomDescriptors);
+            return prioritisedDescriptors;
         }
         
         private protected bool CheckConditionIsValid(ConditionalDescriptor condition, List<GameObject> roomEntities)
@@ -142,6 +147,70 @@ namespace Little_Choice_Based_RPG.Resources.Rooms
                 }
             }
             else return false; //entity IDs didnt match.
+        }
+
+        public List<string> PrioritiseDescriptorsAsStrings(List<ConditionalDescriptor> rawDescriptors)
+        {
+            uint previousPriority = 0;
+            uint currentPriority;
+            List<uint> higherPriorityObjectIDs = new();
+            List<uint> previousSamePriorityObjectIDs = new();
+            List<uint> currentObjectIDs = new();
+            List<string> prioritisedStrings = new();
+
+            List<ConditionalDescriptor> sortedDescriptors = rawDescriptors.OrderBy(i => i.Priority).ToList();
+
+            foreach (var descriptor in sortedDescriptors)
+            {
+                //Always set current priority
+                currentPriority = descriptor.Priority;
+
+                //If currentPriority is lower than previous priority:
+                if (currentPriority > previousPriority)
+                {
+                    //Then also higherpriorityobjects += previousSamePriorityObjects;
+                    foreach (uint newPreviousSamePriorityObjectID in previousSamePriorityObjectIDs)
+                    {
+                        if (!higherPriorityObjectIDs.Contains(newPreviousSamePriorityObjectID))
+                            higherPriorityObjectIDs.Add(newPreviousSamePriorityObjectID);
+                    }
+                    //Then also clear previousSamePriorityObjects
+                    previousSamePriorityObjectIDs.Clear();
+                }
+
+                //Always clear currentObjectIDs;
+                currentObjectIDs.Clear();
+
+                foreach (EntityState descriptorEntityState in descriptor.RequiredEntityStates)
+                {
+                    //Always set currentObjectIDs;
+                    if (!currentObjectIDs.Contains(descriptorEntityState.EntityReferenceID))
+                        currentObjectIDs.Add(descriptorEntityState.EntityReferenceID);
+
+                    //previousSamePriorityObjects += currentObjectIDs;
+                    if (!previousSamePriorityObjectIDs.Contains(descriptorEntityState.EntityReferenceID))
+                        previousSamePriorityObjectIDs.Add(descriptorEntityState.EntityReferenceID);
+                }
+
+                //currentObjectIDs should always be checked to see if items already exist in higherpriorityobjects.
+                //If they dont exist, this descriptor will be added valid.
+                bool descriptorRemainsValid = true;
+                foreach (uint testEntityID in currentObjectIDs)
+                {
+                    if (higherPriorityObjectIDs.Contains(testEntityID))
+                    {
+                        descriptorRemainsValid = false;
+                    }
+                }
+
+                if (descriptorRemainsValid)
+                    prioritisedStrings.Add(descriptor.Descriptor);
+
+                //Always set previousPriority = currentPriority;
+                previousPriority = currentPriority;
+            }
+
+            return prioritisedStrings;
         }
 
         public uint RoomID => uniqueID;
