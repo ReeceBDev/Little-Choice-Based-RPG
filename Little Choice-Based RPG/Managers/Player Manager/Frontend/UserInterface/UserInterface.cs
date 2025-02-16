@@ -55,6 +55,18 @@ namespace Little_Choice_Based_RPG.Managers.Player_Manager.Frontend.UserInterface
             return userInterfaceStyle;
         }
 
+        public string MenuStyle()
+        {
+            string userInterfaceStyle = string.Join("\n",
+                          $" ===========-===== WELCOME TO THE GAME ===== ----========-========-= --..-- .",
+                          @"{1. Start G\name\n\n\\\\\\\\\\\n\n\n\n }",
+                          $" ====-===- =--=-=--_-----_--= =- -_ ._",
+                          $" ===========",
+                          $">>> ");
+
+            return userInterfaceStyle;
+        }
+
         /*
                  //string lastActionDescription = player.LastActionDescriptor.Value;
                     //string listChoices = ListChoices();
