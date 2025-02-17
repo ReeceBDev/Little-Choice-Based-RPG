@@ -12,7 +12,7 @@ namespace Little_Choice_Based_RPG.Resources.Entities.Physical.Plants
     public class Tree : InteractableObject
     {
         public Tree(string setName, uint setPosition, string newGenericDescriptor, string newInspectDescriptor, decimal setWeightInKG = 0m)
-    : base(setName, setPosition, newGenericDescriptor, newInspectDescriptor, setWeightInKG)
+    : base(setName, newGenericDescriptor, newInspectDescriptor, setWeightInKG)
         {
             entityProperties.Add(new EntityProperty("isBurnt", false)); // temporarily burnt the trees
         }

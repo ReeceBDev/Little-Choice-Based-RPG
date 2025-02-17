@@ -13,8 +13,8 @@ namespace Little_Choice_Based_RPG.Resources.Entities.Conceptual.Interactions
 {
     public abstract class InteractableObject : DescriptiveObject
     {
-        public InteractableObject(string setName, uint setPosition, string newGenericDescriptor, string newInspectDescriptor, decimal setWeightInKG = 0m)
-    : base(setName, setPosition, newGenericDescriptor, newInspectDescriptor, setWeightInKG)
+        public InteractableObject(string setName, string newGenericDescriptor, string newInspectDescriptor, decimal setWeightInKG = 0m)
+    : base(setName, newGenericDescriptor, newInspectDescriptor, setWeightInKG)
         {
 
         }

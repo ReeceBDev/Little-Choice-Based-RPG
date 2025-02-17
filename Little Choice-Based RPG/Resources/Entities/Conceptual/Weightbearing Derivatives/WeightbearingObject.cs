@@ -12,9 +12,9 @@ namespace Little_Choice_Based_RPG.Resources.Entities.Conceptual.Weightbearing_De
     {
         private protected decimal strength; // maximum weightbearing capacity
         private protected decimal totalWeightHeldInKG = 0;
-        private protected WeightbearingObject(string setName, uint setPosition, decimal setWeightInKG, decimal setStrengthInKG) : base (setName, setPosition, setWeightInKG)
+        private protected WeightbearingObject(string setName, decimal setWeightInKG = 0m, decimal setStrengthInKG = 0m) : base (setName, setWeightInKG)
         {
-            this.strength = setStrengthInKG;
+            this.strength = setStrengthInKG = 0m;
         }
 
         public virtual void Carry(GameObject gameObject)

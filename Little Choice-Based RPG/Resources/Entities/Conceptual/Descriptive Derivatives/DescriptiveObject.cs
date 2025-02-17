@@ -21,8 +21,8 @@ namespace Little_Choice_Based_RPG.Resources.Entities.Conceptual.Descriptive_Deri
         private protected ObjectDescription descriptor = new ObjectDescription();
 
 
-    public DescriptiveObject (string setName, uint setPosition, string newGenericDescriptor, string newInspectDescriptor, decimal setWeightInKG = 0m)
-        : base(setName, setPosition, setWeightInKG)
+    public DescriptiveObject (string setName, string newGenericDescriptor, string newInspectDescriptor, decimal setWeightInKG = 0m)
+        : base(setName, setWeightInKG)
         {
             descriptor.generic.Value = newGenericDescriptor;
 

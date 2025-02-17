@@ -18,15 +18,12 @@ namespace Little_Choice_Based_RPG.Resources.Entities.Conceptual
 
         public List<EntityProperty> entityProperties = new();
 
-        private protected GameObject(string setName, uint setPosition, decimal setWeightInKG = 0m)
+        private protected GameObject(string setName, decimal setWeightInKG = 0m)
         {
             ID = ++globalCounter;
             Name.Value = setName;
-            Position = setPosition;
             WeightInKG = setWeightInKG;
         }
-
-        private protected virtual void SetPosition(uint newPosition) => Position = newPosition;
 
         private protected void Attach(GameObject attachee) // Cojoin together with another object
         {
@@ -41,7 +38,6 @@ namespace Little_Choice_Based_RPG.Resources.Entities.Conceptual
 
         public uint ID { get; init; } = 0U; // 0 is an null, Invalid ID
         public SanitizedString Name { get; set; } = new SanitizedString("i'm an error");
-        public uint Position { get; private protected set; }
         public HashSet<GameObject> AttachedObjects { get; private protected set; } = [];
         public decimal WeightInKG { get; private protected set; }
     }

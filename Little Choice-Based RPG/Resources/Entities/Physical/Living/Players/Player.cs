@@ -35,7 +35,7 @@ namespace Little_Choice_Based_RPG.Resources.Entities.Physical.Living.Players
         private protected int xPosition;
         private protected int yPosition;
 
-        public Player(string setName, uint setPosition, uint setWeightInKG, decimal setStrengthInKG) : base(setName, setPosition, setWeightInKG, setStrengthInKG)
+        public Player(string setName, uint setPosition, decimal setWeightInKG = 0m, decimal setStrengthInKG = 0m) : base(setName, setPosition, setWeightInKG, setStrengthInKG = 0m)
         {
             this.Position = setPosition;
             //carriedGear.equippedHelmet = new DavodianMkIHelmet(Position);

@@ -13,8 +13,8 @@ namespace Little_Choice_Based_RPG.Resources.Entities.Conceptual.Interactions
 {
     public abstract class EquippableObject : InteractableObject
     {
-        public EquippableObject(string setName, uint setPosition, string newGenericDescriptor, string newInspectDescriptor, decimal setWeightInKG = 0m)
-: base(setName, setPosition, newGenericDescriptor, newInspectDescriptor, setWeightInKG)
+        public EquippableObject(string setName, string newGenericDescriptor, string newInspectDescriptor, decimal setWeightInKG = 0m)
+: base(setName, newGenericDescriptor, newInspectDescriptor, setWeightInKG)
         {
 
         }

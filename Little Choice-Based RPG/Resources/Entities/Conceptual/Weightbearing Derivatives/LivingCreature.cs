@@ -11,12 +11,11 @@ namespace Little_Choice_Based_RPG.Resources.Entities.Conceptual.Weightbearing_De
     {
         private protected bool isAlive;
         private protected int health;
-        private protected LivingCreature(string setName, uint setPosition, uint setWeightInKG, decimal setStrengthInKG)
-            : base(setName, setPosition, setWeightInKG, setStrengthInKG)
+        private protected LivingCreature(string setName, decimal setWeightInKG = 0m, decimal setStrengthInKG = 0m)
+            : base(setName, setWeightInKG, setStrengthInKG)
         {
             isAlive = true;
             health = 100;
-            this.Position = setPosition;
         }
     }
 }
