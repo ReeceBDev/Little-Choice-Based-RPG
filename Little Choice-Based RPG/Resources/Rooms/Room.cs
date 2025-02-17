@@ -78,9 +78,9 @@ namespace Little_Choice_Based_RPG.Resources.Rooms
 
         public List<string> GetRoomDescriptors()
         {
-            List<string>? currentRoomDescriptors = ReturnValidConditionalDescriptors();
+            List<string> currentRoomDescriptors = ReturnValidConditionalDescriptors();
 
-            if (currentRoomDescriptors == null)
+            if (currentRoomDescriptors.Count() == 0)
                 currentRoomDescriptors.Add(defaultDescriptor);
             return currentRoomDescriptors;
         }
