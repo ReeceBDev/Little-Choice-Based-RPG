@@ -26,7 +26,8 @@ namespace Little_Choice_Based_RPG.Managers.Player_Manager.Frontend.UserInterface
 
         public UserInterface(Player player, GameEnvironment currentEnvironment)
         {
-            currentRoomID = player.Position;
+            currentRoomID = player.
+                ;
             Room currentRoomPrinciple = currentEnvironment.GetRoomByID(currentRoomID);
             currentRoomName = currentRoomPrinciple.Name;
             currentRoomDescription = CreateRoomDescription(currentRoomPrinciple.GetRoomDescriptors());

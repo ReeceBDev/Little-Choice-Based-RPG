@@ -15,40 +15,22 @@ using System.Runtime.InteropServices.Marshalling;
 using System.Collections.Immutable;
 using System.Collections;
 using System.Runtime.ConstrainedExecution;
+using Little_Choice_Based_RPG.Resources.Entities.Immaterial.Transition;
 
 namespace Little_Choice_Based_RPG.Resources.Rooms
 {
-    public struct RoomDirection
-    {
-        public Direction ChosenDirection { get; private set; }
-        public uint DestinationRoomID { get; private set; }
-        public uint ObjectID { get; private set; }
-        public RoomDirection(Direction setDirection, uint setDestinationRoomID, uint setObjectID = 0)
-        {
-            ChosenDirection = setDirection;
-            DestinationRoomID = setDestinationRoomID;
-            ObjectID = setObjectID;
-        }
-    }
     public enum RoomType
     {
         Desert,
         Town
-    }
-    public enum Direction
-    {
-        North,
-        East,
-        South,
-        West,
     }
     public record struct EntityState(uint EntityReferenceID, List<EntityProperty>? RequiredProperties); //An ID without an EntityProperty should just be checked for being present
     public record struct ConditionalDescriptor(string Descriptor, List<EntityState> RequiredEntityStates, uint Priority = 6);
 
     public class Room
     {
-        private protected static uint currentID = 0;
-        private protected uint uniqueID = 0;
+        private protected static uint currentID = 0U; // 0 is an null, Invalid ID
+        private protected uint uniqueID;
         private protected string defaultDescriptor;
         private protected List<GameObject> roomEntities = new List<GameObject>();
         private protected List<ConditionalDescriptor> localConditionalDescriptors = new List<ConditionalDescriptor>();

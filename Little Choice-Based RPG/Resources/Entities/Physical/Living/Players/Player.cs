@@ -100,12 +100,15 @@ namespace Little_Choice_Based_RPG.Resources.Entities.Physical.Living.Players
             return choices;
         }
         */
+
+        /*
         public string MoveToRoomFromChoice(RoomDirection direction)
         {
             string movementDescriptor = "You walked towards your destination.";
             MoveToRoom(direction);
             return movementDescriptor;
         }
+        */
 
         public SanitizedString GetEquippedHelmet() => carriedGear.equippedHelmet.Name;
 

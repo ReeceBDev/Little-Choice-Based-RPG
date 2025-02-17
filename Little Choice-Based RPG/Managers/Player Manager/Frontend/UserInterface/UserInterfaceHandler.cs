@@ -20,15 +20,14 @@ namespace Little_Choice_Based_RPG.Managers.Player_Manager.Frontend.UserInterface
         internal UserInterface currentInterface;
         // Instantiate a new UserInterface
         // Handle the logic and the errors
-
+        private string SelectedUserInterfaceStyle;
         public UserInterfaceHandler(Player currentPlayer, GameEnvironment currentEnvironment)
         {
             currentInterface = new UserInterface(currentPlayer, currentEnvironment);
+            SelectedUserInterfaceStyle = currentInterface.DefaultStyle();
         }
         public void GenerateWorldview()
         {
-            string selectedUserInterfaceStyle = currentInterface.DefaultStyle();
-
             Console.WriteLine(selectedUserInterfaceStyle);
             string? userInput = Console.ReadLine();
 
