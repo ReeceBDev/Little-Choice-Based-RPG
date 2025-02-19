@@ -11,8 +11,8 @@ namespace Little_Choice_Based_RPG.Resources.Entities.Physical.Equippables.Armour
 {
     internal class RustingHelmet : Helmet
     {
-        public RustingHelmet(string setName, uint setPosition, string newGenericDescriptor, string newInspectDescriptor, decimal setWeightInKG = 0m)
-: base(setName, setPosition, newGenericDescriptor, newInspectDescriptor, setWeightInKG)
+        public RustingHelmet(string setName, string newGenericDescriptor, string newInspectDescriptor, decimal setWeightInKG = 0m)
+: base(setName, newGenericDescriptor, newInspectDescriptor, setWeightInKG)
         {
             Name.Value = "Rusting Helmet";
             descriptor.generic.Value = "Folorn, a mudcaked helmet rots here in its own scrap, long since abandoned.";

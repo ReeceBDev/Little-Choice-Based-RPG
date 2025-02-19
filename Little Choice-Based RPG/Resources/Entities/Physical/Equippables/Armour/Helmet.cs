@@ -10,10 +10,9 @@ namespace Little_Choice_Based_RPG.Resources.Entities.Physical.Equippables.Armour
 {
     internal abstract class Helmet : EquippableObject
     {
-        private protected Helmet(string setName, uint setPosition, string newGenericDescriptor, string newInspectDescriptor, decimal setWeightInKG = 0m)
-: base(setName, setPosition, newGenericDescriptor, newInspectDescriptor, setWeightInKG)
+        private protected Helmet(string setName, string newGenericDescriptor, string newInspectDescriptor, decimal setWeightInKG = 0m)
+: base(setName, newGenericDescriptor, newInspectDescriptor, setWeightInKG)
         {
-            Position = setPosition;
             WeightInKG = 1.8m;
         }
     }

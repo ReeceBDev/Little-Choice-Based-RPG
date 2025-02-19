@@ -32,12 +32,11 @@ namespace Little_Choice_Based_RPG.Resources.Entities.Physical.Living.Players
         private protected bool playerCanMove = false;
         private protected bool isPlayerKnockedDown = true;
 
-        private protected int xPosition;
-        private protected int yPosition;
+        public uint Position;
 
-        public Player(string setName, uint setPosition, decimal setWeightInKG = 0m, decimal setStrengthInKG = 0m) : base(setName, setPosition, setWeightInKG, setStrengthInKG = 0m)
+        public Player(string setName, uint setPosition, decimal setWeightInKG = 0m, decimal setStrengthInKG = 0m) : base(setName, setWeightInKG, setStrengthInKG = 0m)
         {
-            this.Position = setPosition;
+            Position = setPosition;
             //carriedGear.equippedHelmet = new DavodianMkIHelmet(Position);
         }
 

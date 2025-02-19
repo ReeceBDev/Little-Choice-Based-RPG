@@ -1,4 +1,5 @@
 ﻿using Little_Choice_Based_RPG.Resources.Entities.Conceptual;
+using Little_Choice_Based_RPG.Resources.Entities.Physical.Equippables.Armour.Helmets;
 using Little_Choice_Based_RPG.Resources.Entities.Physical.Furniture;
 using Little_Choice_Based_RPG.Resources.Entities.Physical.Plants;
 using System;
@@ -36,8 +37,8 @@ Dependent on Tree = Burnt, Chair being Untouched
             Name = setName;
             defaultDescriptor = setDefaultDescriptor;
 
-            Chair burgundyWoodChair = new Chair("Burgundy Chair", RoomID, "You are looking at a cool chair", "A chair sits here.");
-            Tree burgundyWoodTree = new Tree("Burgundy Tree", RoomID, "That's a burgundy-leaved tree.", "A tree is here. It's cool. And burgundy.");
+            Chair burgundyWoodChair = new Chair("Burgundy Chair", "You are looking at a cool chair", "A chair sits here.");
+            Tree burgundyWoodTree = new Tree("Burgundy Tree", "That's a burgundy-leaved tree.", "A tree is here. It's cool. And burgundy.");
 
             roomEntities.Add(burgundyWoodChair);
             roomEntities.Add(burgundyWoodTree);
@@ -64,6 +65,9 @@ Dependent on Tree = Burnt, Chair being Untouched
             conditionsList3.Add(new EntityState(burgundyWoodTree.ID, treeProperties));
             descriptorCondition = new ConditionalDescriptor("Burgundy leaves drift in the wind around a burnt husk, the trunk of a charred and forgotten tree holding up a singed chair. Perhaps this was a nice spot to sit and read, once.", conditionsList3, 1);
             localConditionalDescriptors.Add(descriptorCondition);
+
+
+
         }
     }
 }

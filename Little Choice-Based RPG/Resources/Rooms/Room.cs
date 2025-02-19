@@ -58,6 +58,63 @@ namespace Little_Choice_Based_RPG.Resources.Rooms
             return entityIDs;
         }
 
+        public List<GameObject> GetRoomObjects()
+        {
+            List<GameObject> validObjects = new List<GameObject>();
+            EntityProperty immaterialProperty = new EntityProperty("isImmaterial", true);
+
+            foreach (GameObject entity in roomEntities)
+            {
+                if (!entity.entityProperties.Contains(immaterialProperty))
+                    validObjects.Add(entity);
+            }
+
+            return validObjects;
+        }
+
+        public List<GameObject> GetRoomObjects(EntityProperty requiredEntityProperty)
+        {
+            List<GameObject> validObjects = new List<GameObject>();
+            EntityProperty immaterialProperty = new EntityProperty("isImmaterial", true);
+
+            foreach (GameObject entity in roomEntities)
+            {
+                if (!entity.entityProperties.Contains(immaterialProperty))
+                {
+                    if (entity.entityProperties.Contains(requiredEntityProperty))
+                        validObjects.Add(entity);
+                }
+            }
+            return validObjects;
+        }
+
+        public List<GameObject> GetRoomObjects(List<EntityProperty> requiredProperties)
+        {
+            List<GameObject> validObjects = new List<GameObject>();
+            EntityProperty immaterialProperty = new EntityProperty("isImmaterial", true);
+
+            foreach (GameObject entity in roomEntities)
+            {
+                if (!entity.entityProperties.Contains(immaterialProperty))
+                {
+                    //Check the required properties are all contained within the entity
+                     List<EntityProperty> validProperties = new();
+
+                    //foreach (EntityProperty currentProperty in requiredProperties)
+                    foreach (EntityProperty requiredProperty in requiredProperties)
+                    {
+                        if (entity.entityProperties.Contains(requiredProperty))
+                            validProperties.Add(requiredProperty);
+                    }
+
+                    //if there are all of the validProperties, then add the entity to validObjects
+                    if (validProperties.Count == requiredProperties.Count)
+                        validObjects.Add(entity);
+                }
+            }
+            return validObjects;
+        }
+
         public List<string> GetRoomDescriptors()
         {
             List<string> currentRoomDescriptors = ReturnValidConditionalDescriptors();

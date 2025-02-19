@@ -29,7 +29,7 @@ internal class TextBasedRPG
 
         while (true)
         {
-            currentUserInterfaceHandler.GenerateWorldview();
+            currentUserInterfaceHandler.GenerateOutput();
         }
     }
     /*
