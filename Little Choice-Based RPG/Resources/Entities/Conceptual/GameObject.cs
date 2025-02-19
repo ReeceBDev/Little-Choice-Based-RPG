@@ -1,4 +1,5 @@
-﻿using Little_Choice_Based_RPG.Resources.Rooms;
+﻿using Little_Choice_Based_RPG.Resources.Choices;
+using Little_Choice_Based_RPG.Resources.Rooms;
 using Little_Choice_Based_RPG.Types;
 using System;
 using System.Collections.Generic;
@@ -25,6 +26,14 @@ namespace Little_Choice_Based_RPG.Resources.Entities.Conceptual
             WeightInKG = setWeightInKG;
         }
 
+        public virtual List<Choice> GenerateChoices()
+        {
+            List<Choice> choices = new List<Choice>();
+            // Handle additional choices here.
+            // I.e. choices.Add(HandleAttachChoices());
+            return choices;
+        }
+
         private protected void Attach(GameObject attachee) // Cojoin together with another object
         {
             AttachedObjects.Add(attachee);
@@ -40,5 +49,9 @@ namespace Little_Choice_Based_RPG.Resources.Entities.Conceptual
         public SanitizedString Name { get; set; } = new SanitizedString("i'm an error");
         public HashSet<GameObject> AttachedObjects { get; private protected set; } = [];
         public decimal WeightInKG { get; private protected set; }
+
+        //Arguments for sending to Interact
+        public GameObject GameObjectArgument1 { get; set; }
+        public Room RoomArgument1 { get; set; }
     }
 }
