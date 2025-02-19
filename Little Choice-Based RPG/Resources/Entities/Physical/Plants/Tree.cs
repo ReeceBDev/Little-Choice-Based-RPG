@@ -21,11 +21,6 @@ namespace Little_Choice_Based_RPG.Resources.Entities.Physical.Plants
 
         public override List<Choice> GenerateChoices()
         {
-            return new List<Choice>();
-        }
-
-        public override List<Choice> GenerateChoices()
-        {
             List<Choice> choices = new List<Choice>();
             choices.AddRange(HandleFixChoices());
             return choices;
