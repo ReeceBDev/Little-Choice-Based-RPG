@@ -45,9 +45,6 @@ namespace Little_Choice_Based_RPG.Resources.Rooms
             defaultDescriptor = setDefaultDescriptor;
         }
 
-        public void AddDirection(RoomDirection direction) => Directions.Add(direction);
-        public void RemoveDirection(RoomDirection direction) => Directions.Remove(direction);
-
         public List<uint> GetRoomEntityIDs()
         {
             List<uint> entityIDs = new List<uint>();
