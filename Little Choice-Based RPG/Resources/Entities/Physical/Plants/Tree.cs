@@ -31,24 +31,15 @@ namespace Little_Choice_Based_RPG.Resources.Entities.Physical.Plants
 
             if (isAudioBroken == true)
             {
-                Interact repair = new Interact(InteractArguments => Repair());
-                choices.Add(new Choice("Repair - Re-calibrate the helmets longitudinal wave sensor-array.", this, repair));
+                Interact repairInteractDelegate = new Interact(InteractArguments => Repair());
+                choices.Add(new Choice("Repair - Re-calibrate the helmets longitudinal wave sensor-array.", this, repairInteractDelegate));
             }
 
             if (isAudioBroken == false)
             {
-                Interact breakAgain = new Interact(InteractArguments => Break());
-                choices.Add(new Choice("Damage - Intentionally misalign the helmets longitudinal wave sensor-array", this, breakAgain));
+                Interact breakInteractDelegate = new Interact(InteractArguments => Break());
+                choices.Add(new Choice("Damage - Intentionally misalign the helmets longitudinal wave sensor-array", this, breakInteractDelegate));
             }
-
-            // TEST
-            EntityProperty damageTargetHasHealthRequirement = new EntityProperty("HasHealth", true);
-            Object[] damageTargetRequirements = [damageTargetHasHealthRequirement];
-
-            Interact shoot = new Interact(InteractArguments => Shoot(GameObjectArgument1));
-            choices.Add(new Choice("Shoot - [Debug] Damage Something Else - Shoot Something With A Laser Beam (TEST)", this, shoot, damageTargetRequirements, ChoiceRole.MenuCompatible));
-
-
             return choices;
         }
         public string Repair()
@@ -60,12 +51,6 @@ namespace Little_Choice_Based_RPG.Resources.Entities.Physical.Plants
         {
             isAudioBroken = true;
             return "its broken again oh nooo";
-        }
-
-        // TEST
-        public string Shoot(GameObject targetObject)
-        {
-            return $"you use a laser mounted on the helmet to blast the {targetObject.Name}";
         }
     }
 }

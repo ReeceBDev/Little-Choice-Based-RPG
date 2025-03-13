@@ -158,31 +158,15 @@ namespace Little_Choice_Based_RPG.Resources.Choices
 
             GameObject targetObject = ChooseObject(entityPropertyFilter);
 
-            return SendGameObjectToInteract(currentChoice, targetObject);
+            return SendDamageToObject(targetObject);
         }
 
-        private protected string SendGameObjectToInteract(Choice currentChoice, GameObject sendGameObject)
+        private protected string SendDamageToObject(GameObject target)
         {
-            currentChoice.Source.GameObjectArgument1 = sendGameObject;
+            target.TakeDamage(1);
 
-            return currentChoice.InteractDelegate();
+            return "You damage the thing using the thing...";
         }
-
-        private protected string SendRoomToInteract(Choice currentChoice, Room sendRoom)
-        {
-            currentChoice.Source.RoomArgument1 = sendRoom;
-
-            return currentChoice.InteractDelegate();
-        }
-
-        private protected string SendGameObjectAndRoomToInteract(Choice currentChoice, Room sendRoom, GameObject sendGameObject)
-        {
-            currentChoice.Source.RoomArgument1 = sendRoom;
-            currentChoice.Source.GameObjectArgument1 = sendGameObject;
-
-            return currentChoice.InteractDelegate();
-        }
-
         private protected Choice EventChoiceSubMenu(List<Choice> possibleChoices)
         {
             // Do the event thing

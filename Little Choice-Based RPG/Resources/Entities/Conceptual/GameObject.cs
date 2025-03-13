@@ -45,13 +45,14 @@ namespace Little_Choice_Based_RPG.Resources.Entities.Conceptual
             attachee.Unattach(this);
         }
 
+        public string TakeDamage(uint healthToLose)
+        {
+            return $"you lose {healthToLose}";
+        }
+
         public uint ID { get; init; } = 0U; // 0 is an null, Invalid ID
         public SanitizedString Name { get; set; } = new SanitizedString("i'm an error");
         public HashSet<GameObject> AttachedObjects { get; private protected set; } = [];
         public decimal WeightInKG { get; private protected set; }
-
-        //Arguments for sending to Interact
-        public GameObject GameObjectArgument1 { get; set; }
-        public Room RoomArgument1 { get; set; }
     }
 }
