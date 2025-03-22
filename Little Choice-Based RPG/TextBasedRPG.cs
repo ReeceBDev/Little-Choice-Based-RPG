@@ -15,11 +15,14 @@ using Little_Choice_Based_RPG.Resources.Entities.Physical.Living.Players;
 using Little_Choice_Based_RPG.Resources.Rooms;
 using Little_Choice_Based_RPG.Resources.Rooms.Premade.Unique.Test;
 using Little_Choice_Based_RPG.Types;
+using Little_Choice_Based_RPG.Types.EntityProperty;
 
 internal class TextBasedRPG
 {
     private static void Main(string[] args)
     {
+        PropertyDeclarations.InitialiseProperties();
+
         var mainWorld = new GameEnvironment();
         mainWorld.GenerateAllRooms();
 
