@@ -7,36 +7,44 @@ using System.Threading.Tasks;
 
 namespace Little_Choice_Based_RPG.Types.EntityProperty 
 { 
-
-public struct EntityProperty
+    public struct EntityProperty
     {
-        private string propertyName;
-        private Object propertyValue;
-        private bool isReadOnly;
-
-        public EntityProperty(string setPropertyName, Object setPropertyValue)
+        public EntityProperty(string setPropertyName, Object setPropertyValue, bool setIsFrozen = false)
         {
-            isReadOnly = false;
-
-            propertyName = setPropertyName;
-
-            propertyValue = setPropertyValue;
+            SetPropertyName(setPropertyName); // Name must be set before Value, or else the value will not know what name to validate against.
+            SetPropertyValue(setPropertyValue);
+            ReadOnly = setIsFrozen; // ReadOnly must be set at the end, or else the property might be ReadOnly before the value can be set.
         }
-
-        public EntityProperty(string setPropertyName, Object setPropertyValue, bool setIsFrozen)
+        public void SetPropertyValue(object setPropertyValue)
         {
-            isReadOnly = setIsFrozen;
-
-            propertyName = setPropertyName;
-
-            attemptedPropertyValueType = setPropertyValue.GetType()
-
-            if ( == bool)
+            if (PropertyValidation.IsValidPropertyType(setPropertyValue))
             {
-                propertyValue = setPropertyValue;
-            }
-
+                if (PropertyValidation.IsValidPropertyValue(this.PropertyName, setPropertyValue))
+                {
+                    if (ReadOnly == false)
+                        PropertyValue = setPropertyValue;
+                    else
+                        throw new ArgumentException("This property is set to ReadOnly. Unable to set the property value!");
+                }
+                else
+                    throw new ArgumentException("PropertyType doesn't match this ValidProperty. Tried to set a value for an EntityProperty that doesn't match its required PropertyType!");
+            }    
+            else
+                throw new ArgumentException("PropertyType not valid. Tried to set a value for an EntityProperty that doesn't match a valid PropertyType!");
         }
+
+        public void FreezeProperty() => ReadOnly = true;
+
+        public void ThawProperty() => ReadOnly = false;
+
+        private void SetPropertyName(string setPropertyName)
+        {
+            if (PropertyValidation.IsValidPropertyName(setPropertyName))
+                PropertyName = setPropertyName;
+            else
+                throw new ArgumentException("Name not valid. Tried to name an EntityProperty without a matching ValidProperty name!");
+        }
+
         public string PropertyName { get; private set; }
 
         public Object PropertyValue { get; private set; }
