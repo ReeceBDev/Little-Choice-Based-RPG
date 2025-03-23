@@ -16,7 +16,7 @@ namespace Little_Choice_Based_RPG.Resources.Entities.Physical.Plants
         public Tree(string setName, string newGenericDescriptor, string newInspectDescriptor, decimal setWeightInKG = 0m)
     : base(setName, newGenericDescriptor, newInspectDescriptor, setWeightInKG)
         {
-            entityProperties.Add(new EntityProperty("isBurnt", false)); // temporarily burnt the trees
+            entityProperties.CreateProperty("isBurnt", false); // temporarily burnt the trees
         }
 
         public override List<Choice> GenerateChoices()

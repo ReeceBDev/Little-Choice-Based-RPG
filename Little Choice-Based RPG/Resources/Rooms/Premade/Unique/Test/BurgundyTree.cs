@@ -2,6 +2,7 @@
 using Little_Choice_Based_RPG.Resources.Entities.Physical.Equippables.Armour.Helmets;
 using Little_Choice_Based_RPG.Resources.Entities.Physical.Furniture;
 using Little_Choice_Based_RPG.Resources.Entities.Physical.Plants;
+using Little_Choice_Based_RPG.Types.EntityProperty;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
