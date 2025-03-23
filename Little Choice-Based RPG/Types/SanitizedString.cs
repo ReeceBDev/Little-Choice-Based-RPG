@@ -11,9 +11,6 @@ namespace Little_Choice_Based_RPG.Types
         string output;
         public SanitizedString(string input)
         {
-           // if (string.IsNullOrWhiteSpace(input))
-             //   throw new ArgumentException("Invalid input!");
-
             Value = Sanitize(input); 
         }
 
