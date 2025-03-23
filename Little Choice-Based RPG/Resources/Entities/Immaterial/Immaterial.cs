@@ -11,7 +11,7 @@ namespace Little_Choice_Based_RPG.Resources.Entities.Immaterial
     {
         public Immaterial(string setName) : base(setName)
         {
-            entityProperties.CreateProperty("isImmaterial", true);
+            entityProperties.CreateProperty("IsImmaterial", true);
         }
     }
 }

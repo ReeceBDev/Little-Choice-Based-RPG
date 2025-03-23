@@ -23,7 +23,7 @@ namespace Little_Choice_Based_RPG.Resources.Entities.Immaterial.Transition
                 DependentObjectID = setDependentObjectID;
             }
 
-            entityProperties.CreateProperty("isImmaterial", true);
+            entityProperties.CreateProperty("IsImmaterial", true);
         }
 
         public uint GetDestinationID(GameObject? usingKey = null) // Returns 0 if the key does not match DependentObjectID. usingKey should be the calling object.

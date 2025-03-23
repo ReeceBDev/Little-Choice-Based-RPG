@@ -62,7 +62,7 @@ namespace Little_Choice_Based_RPG.Resources.Rooms
 
             foreach (GameObject entity in roomEntities)
             {
-                if (!entity.entityProperties.HasPropertyAndValue("isImmaterial", true))
+                if (!entity.entityProperties.HasPropertyAndValue("IsImmaterial", true))
                     validObjects.Add(entity);
             }
 
@@ -75,7 +75,7 @@ namespace Little_Choice_Based_RPG.Resources.Rooms
 
             foreach (GameObject entity in roomEntities)
             {
-                if (!entity.entityProperties.HasPropertyAndValue("isImmaterial", true))
+                if (!entity.entityProperties.HasPropertyAndValue("IsImmaterial", true))
                 {
                     if (entity.entityProperties.HasProperty(requiredEntityPropertyName))
                         validObjects.Add(entity);
@@ -89,7 +89,7 @@ namespace Little_Choice_Based_RPG.Resources.Rooms
 
             foreach (GameObject entity in roomEntities)
             {
-                if (!entity.entityProperties.HasPropertyAndValue("isImmaterial", true))
+                if (!entity.entityProperties.HasPropertyAndValue("IsImmaterial", true))
                 {
                     if (entity.entityProperties.HasPropertyAndValue(requiredEntityPropertyName, requiredEntityPropertyValue))
                         validObjects.Add(entity);
@@ -104,7 +104,7 @@ namespace Little_Choice_Based_RPG.Resources.Rooms
 
             foreach (GameObject entity in roomEntities)
             {
-                if (!entity.entityProperties.HasPropertyAndValue("isImmaterial", true))
+                if (!entity.entityProperties.HasPropertyAndValue("IsImmaterial", true))
                 {
                     //Check the required properties are all contained within the entity
                      List<EntityProperty> validProperties = new();

@@ -19,7 +19,7 @@ namespace Little_Choice_Based_RPG.Types.EntityProperty
         private static Dictionary<string, PropertyType> validProperties = new Dictionary<string, PropertyType>()
         {
             //Defines default Properties.
-            {"IsImmutable", PropertyType.Boolean},
+            {"IsImmaterial", PropertyType.Boolean},
 
             //Strength System
             {"WeightInKG", PropertyType.UInt32},
