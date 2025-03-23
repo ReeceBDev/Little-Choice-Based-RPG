@@ -13,12 +13,12 @@ using System.Threading.Tasks;
 
 namespace Little_Choice_Based_RPG.Resources.Entities.Conceptual
 {
-    public record struct EntityProperty(string Key, object Value);
+    //public record struct EntityProperty(string Key, object Value);
     public class GameObject
     {
-        //private PropertyHandler entityProperties;
+        public PropertyHandler entityProperties = new PropertyHandler();
 
-        public List<EntityProperty> entityProperties = new List<EntityProperty> (); // Comment out once new entityProperties is in.
+        //public List<EntityProperty> entityProperties = new List<EntityProperty> (); // Comment out once new entityProperties is in.
 
         private protected static uint globalCounter;
 
