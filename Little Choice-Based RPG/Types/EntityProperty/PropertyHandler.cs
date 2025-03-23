@@ -60,12 +60,26 @@ namespace Little_Choice_Based_RPG.Types.EntityProperty
 
         public object GetPropertyValue(string propertyName) => FetchPropertyByName(propertyName).PropertyValue; //Retrives the property value.
 
-        public bool HasProperty(string propertyName) //Check if a property exists in EntityProperties.
+        ///Check if a property exists in EntityProperties.
+        public bool HasProperty(string propertyName) 
         {
             foreach (EntityProperty testProperty in EntityProperties)
             {
                 if (testProperty.PropertyName == propertyName)
                     return true;
+            }
+
+            return false;
+        }
+
+        ///Check if a property exists in EntityProperties.
+        public bool HasPropertyAndValue(string propertyName, object propertyValue) 
+        {
+            foreach (EntityProperty testProperty in EntityProperties)
+            {
+                if (testProperty.PropertyName == propertyName)
+                    if (testProperty.PropertyValue == propertyValue)
+                        return true;
             }
 
             return false;
