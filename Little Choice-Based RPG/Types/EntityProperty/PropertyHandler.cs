@@ -23,7 +23,7 @@ namespace Little_Choice_Based_RPG.Types.EntityProperty
         {
             EntityProperty targetProperty = FetchPropertyByName(propertyName);
             if (!IsPropertyReadOnly(propertyName))
-                targetProperty.SetValue(setPropertyValue);
+                targetProperty.SetPropertyValue(setPropertyValue);
             else
                 throw new ArgumentException("Can't update this property. This EntityProperty is set to ReadOnly. (ReadOnly = True)");
         }
@@ -87,7 +87,7 @@ namespace Little_Choice_Based_RPG.Types.EntityProperty
         public void FreezeProperty(string propertyName) // Sets a property to ReadOnly = True
         {
             if (!IsPropertyReadOnly(propertyName))
-                FetchPropertyByName(propertyName).Freeze();
+                FetchPropertyByName(propertyName).FreezeProperty();
             else
                 throw new ArgumentException("Can't freeze this property. This EntityProperty is already Frozen. (ReadOnly = True)");
         }
@@ -95,7 +95,7 @@ namespace Little_Choice_Based_RPG.Types.EntityProperty
         public void ThawProperty(string propertyName) // Sets a property to ReadOnly = False
         {
             if (!IsPropertyReadOnly(propertyName))
-                FetchPropertyByName(propertyName).Thaw();
+                FetchPropertyByName(propertyName).ThawProperty();
             else
                 throw new ArgumentException("Can't thaw this property. This EntityProperty is already Thawed. (ReadOnly = False)");
         }
