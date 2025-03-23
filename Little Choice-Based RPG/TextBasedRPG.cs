@@ -21,8 +21,6 @@ internal class TextBasedRPG
 {
     private static void Main(string[] args)
     {
-        PropertyDeclarations.InitialiseProperties();
-
         var mainWorld = new GameEnvironment();
         mainWorld.GenerateAllRooms();
 
