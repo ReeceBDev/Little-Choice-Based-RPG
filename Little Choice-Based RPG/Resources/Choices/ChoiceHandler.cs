@@ -4,6 +4,7 @@ using Little_Choice_Based_RPG.Resources.Entities.Conceptual;
 using Little_Choice_Based_RPG.Resources.Entities.Physical.Living.Players;
 using Little_Choice_Based_RPG.Resources.Rooms;
 using Little_Choice_Based_RPG.Types;
+using Little_Choice_Based_RPG.Types.EntityProperty;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -70,7 +71,7 @@ namespace Little_Choice_Based_RPG.Resources.Choices
             return allChoices;
         }
 
-        public List<Choice> GetChoices(EntityProperty entityPropertyFilter)
+        public List<Choice> GetChoices(string filterByEntityPropertyName)
         {
             List<Choice> allChoices = new List<Choice>();
 
@@ -78,7 +79,30 @@ namespace Little_Choice_Based_RPG.Resources.Choices
             Room currentRoomPrinciple = currentEnvironment.GetRoomByID(currentRoomID);
             List<GameObject> validObjects = new List<GameObject>();
 
-            validObjects = currentRoomPrinciple.GetRoomObjects(entityPropertyFilter);
+            validObjects = currentRoomPrinciple.GetRoomObjects(filterByEntityPropertyName);
+
+            foreach (GameObject currentObject in validObjects)
+            {
+                List<Choice> currentChoices = new List<Choice>(currentObject.GenerateChoices());
+
+                foreach (Choice additionalChoice in currentChoices)
+                {
+                    allChoices.Add(additionalChoice);
+                }
+            }
+
+            return allChoices;
+        }
+
+        public List<Choice> GetChoices(string filterByEntityPropertyName, object filterByEntityPropertyValue)
+        {
+            List<Choice> allChoices = new List<Choice>();
+
+            uint currentRoomID = currentPlayer.Position;
+            Room currentRoomPrinciple = currentEnvironment.GetRoomByID(currentRoomID);
+            List<GameObject> validObjects = new List<GameObject>();
+
+            validObjects = currentRoomPrinciple.GetRoomObjects(filterByEntityPropertyName, filterByEntityPropertyValue);
 
             foreach (GameObject currentObject in validObjects)
             {
