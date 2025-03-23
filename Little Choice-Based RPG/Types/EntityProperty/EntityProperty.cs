@@ -9,12 +9,14 @@ namespace Little_Choice_Based_RPG.Types.EntityProperty
 { 
     public struct EntityProperty
     {
+        
         public EntityProperty(string setPropertyName, Object setPropertyValue, bool setIsFrozen = false)
         {
             SetPropertyName(setPropertyName); // Name must be set before Value, or else the value will not know what name to validate against.
             SetPropertyValue(setPropertyValue);
             ReadOnly = setIsFrozen; // ReadOnly must be set at the end, or else the property might be ReadOnly before the value can be set.
         }
+
         public void SetPropertyValue(object setPropertyValue)
         {
             if (!PropertyValidation.IsValidPropertyType(setPropertyValue))
@@ -29,9 +31,9 @@ namespace Little_Choice_Based_RPG.Types.EntityProperty
             PropertyValue = setPropertyValue;
         }
 
-        public void FreezeProperty() => ReadOnly = true;
+        public void SetPropertyAsReadOnly() => ReadOnly = true;
 
-        public void ThawProperty() => ReadOnly = false;
+        public void UnsetPropertyAsReadOnly() => ReadOnly = false;
 
         private void SetPropertyName(string setPropertyName)
         {
