@@ -10,7 +10,8 @@ namespace Little_Choice_Based_RPG.Types.EntityProperty
     enum PropertyType //Defines all possible types that may be contained within a property. Properties only contain one PropertyType each.
     {
         Boolean,
-        String
+        String,
+        UInt32
     }
 
     internal static class PropertyValidation //Defines all valid properties for the program. These properties may be applied to GameObjects, Rooms, etc.
@@ -18,8 +19,24 @@ namespace Little_Choice_Based_RPG.Types.EntityProperty
         private static Dictionary<string, PropertyType> validProperties = new Dictionary<string, PropertyType>()
         {
             //Defines default Properties.
-            { "isImmutable", PropertyType.Boolean },
-            { "isBurnt", PropertyType.Boolean }
+            {"IsImmutable", PropertyType.Boolean},
+
+            //Strength System
+            {"WeightInKG", PropertyType.UInt32},
+            {"StrengthInKG", PropertyType.UInt32},
+            {"TotalWeightHeldInKG", PropertyType.UInt32},
+
+            //Living
+            {"IsAlive", PropertyType.Boolean},
+            {"Health", PropertyType.UInt32},
+
+            //Player
+            {"CanSee", PropertyType.Boolean},
+            {"CanMove", PropertyType.Boolean},
+            {"IsKnockedDown", PropertyType.Boolean},
+
+            //Object Damage
+            {"IsBurnt", PropertyType.Boolean}
         };
 
         public static void CreateValidProperty(string setPropertyName, PropertyType setPropertyType) //Defines additional properties.
