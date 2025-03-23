@@ -17,20 +17,16 @@ namespace Little_Choice_Based_RPG.Types.EntityProperty
         }
         public void SetPropertyValue(object setPropertyValue)
         {
-            if (PropertyValidation.IsValidPropertyType(setPropertyValue))
-            {
-                if (PropertyValidation.IsValidPropertyValue(this.PropertyName, setPropertyValue))
-                {
-                    if (ReadOnly == false)
-                        PropertyValue = setPropertyValue;
-                    else
-                        throw new ArgumentException("This property is set to ReadOnly. Unable to set the property value!");
-                }
-                else
-                    throw new ArgumentException("PropertyType doesn't match this ValidProperty. Tried to set a value for an EntityProperty that doesn't match its required PropertyType!");
-            }    
-            else
+            if (!PropertyValidation.IsValidPropertyType(setPropertyValue))
                 throw new ArgumentException("PropertyType not valid. Tried to set a value for an EntityProperty that doesn't match a valid PropertyType!");
+
+            if (!PropertyValidation.IsValidPropertyValue(this.PropertyName, setPropertyValue))
+                throw new ArgumentException("PropertyType doesn't match this ValidProperty. Tried to set a value for an EntityProperty that doesn't match its required PropertyType!");
+                
+            if (ReadOnly)
+                throw new ArgumentException("This property is set to ReadOnly. Unable to set the property value!");
+                    
+            PropertyValue = setPropertyValue;
         }
 
         public void FreezeProperty() => ReadOnly = true;
