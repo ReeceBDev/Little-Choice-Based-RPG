@@ -9,7 +9,7 @@ namespace Little_Choice_Based_RPG.Types.EntityProperty
 {
     enum PropertyType //Defines all possible types that may be contained within a property. Properties only contain one PropertyType each.
     {
-        Bool,
+        Boolean,
         String
     }
 
@@ -18,8 +18,8 @@ namespace Little_Choice_Based_RPG.Types.EntityProperty
         private static Dictionary<string, PropertyType> validProperties = new Dictionary<string, PropertyType>()
         {
             //Defines default Properties.
-            { "isImmutable", PropertyType.Bool },
-            { "isBurnt", PropertyType.Bool }
+            { "isImmutable", PropertyType.Boolean },
+            { "isBurnt", PropertyType.Boolean }
         };
 
         public static void CreateValidProperty(string setPropertyName, PropertyType setPropertyType) //Defines additional properties.
@@ -30,13 +30,13 @@ namespace Little_Choice_Based_RPG.Types.EntityProperty
                 throw new ArgumentException("Duplicate ValidProperty name. Tried to add a ValidProperty which already exists!");
         }
 
-        public static bool IsValidPropertyType(object propertyValueType) => Enum.IsDefined(Type PropertyType, propertyValueType.GetType()); //Tests if a property value's type exists.
+        public static bool IsValidPropertyType(object propertyValueType) => Enum.IsDefined(typeof(PropertyType), propertyValueType.GetType().Name.ToString()); //Tests if a property value's type exists.
         public static bool IsValidPropertyName(string propertyName) => validProperties.ContainsKey(propertyName); //Tests if a property name exists.
         public static bool IsValidPropertyValue(string propertyName, object propertyValueType)  //Tests if a property value aligns with its associated name's required type.
         {
             if (IsValidPropertyName(propertyName))
             {
-                return validProperties.GetValueOrDefault(propertyName) == propertyValueType.GetType();
+                return validProperties.GetValueOrDefault(propertyName).ToString() == propertyValueType.GetType().Name.ToString();
             }
             else
                 throw new ArgumentException("Name not found. Tried to search for a ValidProperty name which doesn't exist!");
@@ -46,7 +46,7 @@ namespace Little_Choice_Based_RPG.Types.EntityProperty
         {
             if (IsValidPropertyName(propertyName))
             {
-                return validProperties.ContainsValue(propertyValueType.GetType());
+                return validProperties.GetValueOrDefault(propertyName).ToString() == propertyValueType.GetType().Name.ToString();
             }
             else
                 return false;
