@@ -9,26 +9,30 @@ namespace Little_Choice_Based_RPG.Types.EntityProperty
 {
     public class PropertyHandler
     {
-        public void CreateProperty(string setPropertyName, object setPropertyValue) // Creates a new property
+        /// <summary> Creates a new property on this object. </summary>
+        public void CreateProperty(string setPropertyName, object setPropertyValue)
         {
             EntityProperties.Add(new EntityProperty(setPropertyName, setPropertyValue));
         }
 
-        public void CreateProperty(string setPropertyName, object setPropertyValue, bool isReadOnly) // Creates a new property with a ReadOnly value
+        /// <summary> Creates a new property as ReadOnly on this object. </summary>
+        public void CreateProperty(string setPropertyName, object setPropertyValue, bool isReadOnly)
         {
             EntityProperties.Add(new EntityProperty(setPropertyName, setPropertyValue, isReadOnly));
         }
 
-        public void UpdateProperty(string propertyName, object setPropertyValue) // Updates a property which is not frozen.
+        /// <summary> Updates a property on this object, which is not currently frozen. </summary>
+        public void UpdateProperty(string propertyName, object setPropertyValue)
         {
-            EntityProperty targetProperty = FetchPropertyByName(propertyName);
+            EntityProperty targetProperty = GetEntityProperty(propertyName);
             if (!IsPropertyReadOnly(propertyName))
                 targetProperty.SetPropertyValue(setPropertyValue);
             else
                 throw new ArgumentException("Can't update this property. This EntityProperty is set to ReadOnly. (ReadOnly = True)");
         }
 
-        public void UpdateProperty(string propertyName, object setPropertyValue, bool isReadOnly) // Updates a property which is not frozen, including its new frozen value.
+        /// <summary> Updates a property on this object, which is not currently frozen, including its new readonly value. </summary>
+        public void UpdateProperty(string propertyName, object setPropertyValue, bool isReadOnly)
         {
             if (!IsPropertyReadOnly(propertyName))
             {
@@ -42,26 +46,26 @@ namespace Little_Choice_Based_RPG.Types.EntityProperty
                 throw new ArgumentException("Can't update this property. This EntityProperty is set to ReadOnly. (ReadOnly = True)");
         }
 
-        public void UpsertProperty(string setPropertyName, object setPropertyValue) // Place this property on an object. Over-rides an existing property, unless frozen.
+        /// <summary> Places this property on an object. Over-rides an existing property, unless frozen.</summary>
+        public void UpsertProperty(string setPropertyName, object setPropertyValue) 
         {
-            if (IsExistingProperty(setPropertyName))
+            if (HasProperty(setPropertyName))
                 UpdateProperty(setPropertyName, setPropertyValue);
             else
                 CreateProperty(setPropertyName, setPropertyValue);
         }
 
-        public void UpsertProperty(string setPropertyName, object setPropertyValue, bool isReadOnly) // Place this property on an object. Over-rides an existing property, unless frozen.
+        /// <summary> Places a property on this object. Over-rides an existing property, unless frozen. </summary>
+        public void UpsertProperty(string setPropertyName, object setPropertyValue, bool isReadOnly)
         {
-            if (IsExistingProperty(setPropertyName))
+            if (HasProperty(setPropertyName))
                 UpdateProperty(setPropertyName, setPropertyValue, isReadOnly);
             else
                 CreateProperty(setPropertyName, setPropertyValue, isReadOnly);
         }
 
-        public object GetPropertyValue(string propertyName) => FetchPropertyByName(propertyName).PropertyValue; //Retrives the property value.
-
-        ///Check if a property exists in EntityProperties.
-        public bool HasProperty(string propertyName) 
+        /// <summary> Checks if a property exists on this object. </summary>
+        public bool HasProperty(string propertyName)
         {
             foreach (EntityProperty testProperty in EntityProperties)
             {
@@ -72,7 +76,7 @@ namespace Little_Choice_Based_RPG.Types.EntityProperty
             return false;
         }
 
-        ///Check if a property exists in EntityProperties.
+        /// <summary> Checks if a property matches by both name and value, on this Object. </summary>
         public bool HasPropertyAndValue(string propertyName, object propertyValue) 
         {
             foreach (EntityProperty testProperty in EntityProperties)
@@ -85,47 +89,47 @@ namespace Little_Choice_Based_RPG.Types.EntityProperty
             return false;
         }
 
+        /// <summary> Removes a property from this Object. </summary>
         public void DeleteProperty(string propertyName) //Removes a property, unless frozen.
-        {
-            EntityProperty targetProperty = FetchPropertyByName(propertyName);
+        {          
+            EntityProperty targetProperty = GetEntityProperty(propertyName);
             
             if (IsPropertyReadOnly(propertyName) == false)
                 EntityProperties.Remove(targetProperty);
             else
                 throw new ArgumentException("Can't delete this property. This EntityProperty is set to ReadOnly. (ReadOnly = True)");
-            
+
         }
 
-        public bool IsPropertyReadOnly(string propertyName) => FetchPropertyByName(propertyName).ReadOnly; // Tests if property is ReadOnly
-
-        public void FreezeProperty(string propertyName) // Sets a property to ReadOnly = True
+        /// <summary> Sets a property as ReadOnly. This disables modifications to the property. </summary>
+        public void FreezeProperty(string propertyName)
         {
             if (!IsPropertyReadOnly(propertyName))
-                FetchPropertyByName(propertyName).FreezeProperty();
+                GetEntityProperty(propertyName).SetPropertyAsReadOnly();
             else
                 throw new ArgumentException("Can't freeze this property. This EntityProperty is already Frozen. (ReadOnly = True)");
         }
 
+        /// <summary> Lifts the ReadOnly restriction from a property. This allows modifications to the property. </summary>
         public void ThawProperty(string propertyName) // Sets a property to ReadOnly = False
         {
             if (!IsPropertyReadOnly(propertyName))
-                FetchPropertyByName(propertyName).ThawProperty();
+                GetEntityProperty(propertyName).UnsetPropertyAsReadOnly();
             else
                 throw new ArgumentException("Can't thaw this property. This EntityProperty is already Thawed. (ReadOnly = False)");
         }
 
-        public bool IsExistingProperty(string propertyName)
-        {
-            foreach (EntityProperty testProperty in EntityProperties)
-            {
-                if (testProperty.PropertyName == propertyName)
-                    return true;
-            }
 
-            return false;
-        }
+        /// <summary> Checks if property is modifiable. </summary>
+        public bool IsPropertyReadOnly(string propertyName) => GetEntityProperty(propertyName).ReadOnly;
 
-        private EntityProperty FetchPropertyByName(string propertyName) //Retrives the property itself
+
+        /// <summary> Returns a value from a matching property name on this object. </summary>
+        public object GetPropertyValue(string propertyName) => GetEntityProperty(propertyName).PropertyValue;
+
+
+        /// <summary> Returns an EntityProperty from a matching property name on this object. </summary>
+        public EntityProperty GetEntityProperty(string propertyName)
         {
             foreach (EntityProperty testProperty in EntityProperties)
             {
@@ -135,6 +139,7 @@ namespace Little_Choice_Based_RPG.Types.EntityProperty
 
             throw new ArgumentException("No such EntityProperty exists inside this objects list of EntityProperties.");
         }
+
 
         public List<EntityProperty> EntityProperties = new List<EntityProperty>();
     }
