@@ -19,9 +19,11 @@ namespace Little_Choice_Based_RPG.Types.EntityProperty
         private static Dictionary<string, PropertyType> validProperties = new Dictionary<string, PropertyType>()
         {
             //Defines default Properties.
+            {"Type", PropertyType.String},
             {"IsImmaterial", PropertyType.Boolean},
 
             //Strength System
+            {"IsWeightBearing", PropertyType.Boolean},
             {"WeightInKG", PropertyType.UInt32},
             {"StrengthInKG", PropertyType.UInt32},
             {"TotalWeightHeldInKG", PropertyType.UInt32},
@@ -36,7 +38,17 @@ namespace Little_Choice_Based_RPG.Types.EntityProperty
             {"IsKnockedDown", PropertyType.Boolean},
 
             //Object Damage
-            {"IsBurnt", PropertyType.Boolean}
+            {"IsBroken", PropertyType.Boolean},
+            {"IsBurnt", PropertyType.Boolean},
+
+            //Descriptor System
+            {"Descriptor.Generic", PropertyType.String},
+            {"Descriptor.Inspect", PropertyType.String},
+            {"Descriptor.Equip", PropertyType.String},
+            {"Descriptor.Unequip", PropertyType.String},
+
+            //DavodianMk1Helmet Specific
+            {"IsAudioBroken", PropertyType.Boolean}
         };
 
         public static void CreateValidProperty(string setPropertyName, PropertyType setPropertyType) //Defines additional properties.
