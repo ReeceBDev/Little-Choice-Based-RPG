@@ -71,29 +71,6 @@ namespace Little_Choice_Based_RPG.Resources.Choices
             return allChoices;
         }
 
-        public List<Choice> GetChoices(string filterByEntityPropertyName)
-        {
-            List<Choice> allChoices = new List<Choice>();
-
-            uint currentRoomID = currentPlayer.Position;
-            Room currentRoomPrinciple = currentEnvironment.GetRoomByID(currentRoomID);
-            List<GameObject> validObjects = new List<GameObject>();
-
-            validObjects = currentRoomPrinciple.GetRoomObjects(filterByEntityPropertyName);
-
-            foreach (GameObject currentObject in validObjects)
-            {
-                List<Choice> currentChoices = new List<Choice>(currentObject.GenerateChoices());
-
-                foreach (Choice additionalChoice in currentChoices)
-                {
-                    allChoices.Add(additionalChoice);
-                }
-            }
-
-            return allChoices;
-        }
-
         public List<Choice> GetChoices(string filterByEntityPropertyName, object filterByEntityPropertyValue)
         {
             List<Choice> allChoices = new List<Choice>();
