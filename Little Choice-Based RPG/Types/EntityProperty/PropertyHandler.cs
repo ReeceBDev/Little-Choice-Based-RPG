@@ -10,29 +10,13 @@ namespace Little_Choice_Based_RPG.Types.EntityProperty
     public class PropertyHandler
     {
         /// <summary> Creates a new property on this object. </summary>
-        public void CreateProperty(string setPropertyName, object setPropertyValue)
-        {
-            EntityProperties.Add(new EntityProperty(setPropertyName, setPropertyValue));
-        }
-
-        /// <summary> Creates a new property as ReadOnly on this object. </summary>
-        public void CreateProperty(string setPropertyName, object setPropertyValue, bool isReadOnly)
+        public void CreateProperty(string setPropertyName, object setPropertyValue, bool isReadOnly = false)
         {
             EntityProperties.Add(new EntityProperty(setPropertyName, setPropertyValue, isReadOnly));
         }
 
         /// <summary> Updates a property on this object, which is not currently frozen. </summary>
-        public void UpdateProperty(string propertyName, object setPropertyValue)
-        {
-            EntityProperty targetProperty = GetEntityProperty(propertyName);
-            if (!IsPropertyReadOnly(propertyName))
-                targetProperty.SetPropertyValue(setPropertyValue);
-            else
-                throw new ArgumentException("Can't update this property. This EntityProperty is set to ReadOnly. (ReadOnly = True)");
-        }
-
-        /// <summary> Updates a property on this object, which is not currently frozen, including its new readonly value. </summary>
-        public void UpdateProperty(string propertyName, object setPropertyValue, bool isReadOnly)
+        public void UpdateProperty(string propertyName, object setPropertyValue, bool isReadOnly = false)
         {
             if (!IsPropertyReadOnly(propertyName))
             {
@@ -46,47 +30,13 @@ namespace Little_Choice_Based_RPG.Types.EntityProperty
                 throw new ArgumentException("Can't update this property. This EntityProperty is set to ReadOnly. (ReadOnly = True)");
         }
 
-        /// <summary> Places this property on an object. Over-rides an existing property, unless frozen.</summary>
-        public void UpsertProperty(string setPropertyName, object setPropertyValue) 
-        {
-            if (HasProperty(setPropertyName))
-                UpdateProperty(setPropertyName, setPropertyValue);
-            else
-                CreateProperty(setPropertyName, setPropertyValue);
-        }
-
         /// <summary> Places a property on this object. Over-rides an existing property, unless frozen. </summary>
-        public void UpsertProperty(string setPropertyName, object setPropertyValue, bool isReadOnly)
+        public void UpsertProperty(string setPropertyName, object setPropertyValue, bool isReadOnly = false)
         {
             if (HasProperty(setPropertyName))
                 UpdateProperty(setPropertyName, setPropertyValue, isReadOnly);
             else
                 CreateProperty(setPropertyName, setPropertyValue, isReadOnly);
-        }
-
-        /// <summary> Checks if a property exists on this object. </summary>
-        public bool HasProperty(string propertyName)
-        {
-            foreach (EntityProperty testProperty in EntityProperties)
-            {
-                if (testProperty.PropertyName == propertyName)
-                    return true;
-            }
-
-            return false;
-        }
-
-        /// <summary> Checks if a property matches by both name and value, on this Object. </summary>
-        public bool HasPropertyAndValue(string propertyName, object propertyValue) 
-        {
-            foreach (EntityProperty testProperty in EntityProperties)
-            {
-                if (testProperty.PropertyName == propertyName)
-                    if (testProperty.PropertyValue == propertyValue)
-                        return true;
-            }
-
-            return false;
         }
 
         /// <summary> Removes a property from this Object. </summary>
@@ -119,17 +69,41 @@ namespace Little_Choice_Based_RPG.Types.EntityProperty
                 throw new ArgumentException("Can't thaw this property. This EntityProperty is already Thawed. (ReadOnly = False)");
         }
 
+        /// <summary> Checks if a property exists on this object. </summary>
+        public bool HasProperty(string propertyName)
+        {
+            foreach (EntityProperty testProperty in EntityProperties)
+            {
+                if (testProperty.PropertyName == propertyName)
+                    return true;
+            }
 
-        /// <summary> Checks if property is modifiable. </summary>
-        public bool IsPropertyReadOnly(string propertyName) => GetEntityProperty(propertyName).ReadOnly;
+            return false;
+        }
 
+        /// <summary> Checks if a property matches by both name and value, on this Object. </summary>
+        public bool HasPropertyAndValue(string propertyName, object propertyValue)
+        {
+            foreach (EntityProperty testProperty in EntityProperties)
+            {
+                if (testProperty.PropertyName == propertyName)
+                    if (testProperty.PropertyValue == propertyValue)
+                        return true;
+            }
+
+            return false;
+        }
 
         /// <summary> Returns a value from a matching property name on this object. </summary>
         public object GetPropertyValue(string propertyName) => GetEntityProperty(propertyName).PropertyValue;
 
 
+        /// <summary> Checks if property is modifiable. </summary>
+        public bool IsPropertyReadOnly(string propertyName) => GetEntityProperty(propertyName).ReadOnly;
+
+
         /// <summary> Returns an EntityProperty from a matching property name on this object. </summary>
-        public EntityProperty GetEntityProperty(string propertyName)
+        private EntityProperty GetEntityProperty(string propertyName)
         {
             foreach (EntityProperty testProperty in EntityProperties)
             {
@@ -140,7 +114,6 @@ namespace Little_Choice_Based_RPG.Types.EntityProperty
             throw new ArgumentException("No such EntityProperty exists inside this objects list of EntityProperties.");
         }
 
-
-        public List<EntityProperty> EntityProperties = new List<EntityProperty>();
+        public List<EntityProperty> EntityProperties { get; private set; } = new List<EntityProperty>();
     }
 }
