@@ -69,20 +69,6 @@ namespace Little_Choice_Based_RPG.Resources.Rooms
             return validObjects;
         }
 
-        public List<GameObject> GetRoomObjects(string requiredEntityPropertyName)
-        {
-            List<GameObject> validObjects = new List<GameObject>();
-
-            foreach (GameObject entity in roomEntities)
-            {
-                if (!entity.entityProperties.HasPropertyAndValue("IsImmaterial", true))
-                {
-                    if (entity.entityProperties.HasProperty(requiredEntityPropertyName))
-                        validObjects.Add(entity);
-                }
-            }
-            return validObjects;
-        }
         public List<GameObject> GetRoomObjects(string requiredEntityPropertyName, object requiredEntityPropertyValue)
         {
             List<GameObject> validObjects = new List<GameObject>();
