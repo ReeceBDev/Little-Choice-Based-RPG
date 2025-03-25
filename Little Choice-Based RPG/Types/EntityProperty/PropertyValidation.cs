@@ -7,14 +7,16 @@ using System.Text;
 using System.Threading.Tasks;
 namespace Little_Choice_Based_RPG.Types.EntityProperty
 {
-    enum PropertyType //Defines all possible types that may be contained within a property. Properties only contain one PropertyType each.
+    /// <summary> Defines all possible types that may be contained within a property. Properties only contain one PropertyType each. </summary>
+    enum PropertyType
     {
         Boolean,
         String,
         UInt32
     }
 
-    internal static class PropertyValidation //Defines all valid properties for the program. These properties may be applied to GameObjects, Rooms, etc.
+    /// <summary> Defines all valid properties for the program. These properties may be applied to GameObjects, Rooms, etc. </summary>
+    internal static class PropertyValidation 
     {
         private static Dictionary<string, PropertyType> validProperties = new Dictionary<string, PropertyType>()
         {
@@ -38,7 +40,6 @@ namespace Little_Choice_Based_RPG.Types.EntityProperty
             {"IsKnockedDown", PropertyType.Boolean},
 
             //Object Damage
-            {"IsBroken", PropertyType.Boolean},
             {"IsBurnt", PropertyType.Boolean},
 
             //Descriptor System
@@ -51,7 +52,8 @@ namespace Little_Choice_Based_RPG.Types.EntityProperty
             {"IsAudioBroken", PropertyType.Boolean}
         };
 
-        public static void CreateValidProperty(string setPropertyName, PropertyType setPropertyType) //Defines additional properties.
+        /// <summary> Defines additional properties. </summary>
+        public static void CreateValidProperty(string setPropertyName, PropertyType setPropertyType)
         {
             if (!IsValidPropertyName(setPropertyName))
                 validProperties.Add(setPropertyName, setPropertyType);
@@ -59,9 +61,14 @@ namespace Little_Choice_Based_RPG.Types.EntityProperty
                 throw new ArgumentException("Duplicate ValidProperty name. Tried to add a ValidProperty which already exists!");
         }
 
-        public static bool IsValidPropertyType(object propertyValueType) => Enum.IsDefined(typeof(PropertyType), propertyValueType.GetType().Name.ToString()); //Tests if a property value's type exists.
-        public static bool IsValidPropertyName(string propertyName) => validProperties.ContainsKey(propertyName); //Tests if a property name exists.
-        public static bool IsValidPropertyValue(string propertyName, object propertyValueType)  //Tests if a property value aligns with its associated name's required type.
+        /// <summary> Tests if a property value's type exists. </summary>
+        public static bool IsValidPropertyType(object propertyValueType) => Enum.IsDefined(typeof(PropertyType), propertyValueType.GetType().Name.ToString());
+
+        /// <summary> Tests if a property name exists. </summary>
+        public static bool IsValidPropertyName(string propertyName) => validProperties.ContainsKey(propertyName);
+
+        /// <summary> Tests if a property value aligns with its associated name's required type. </summary>
+        public static bool IsValidPropertyValue(string propertyName, object propertyValueType) 
         {
             if (IsValidPropertyName(propertyName))
             {
@@ -71,7 +78,8 @@ namespace Little_Choice_Based_RPG.Types.EntityProperty
                 throw new ArgumentException("Name not found. Tried to search for a ValidProperty name which doesn't exist!");
         }
 
-        public static bool IsValidProperty(string propertyName, object propertyValueType)  //Tests if a property exists - whether both its name and type are valid.
+        /// <summary> Tests if a property exists - whether both its name and type are valid. </summary>
+        public static bool IsValidProperty(string propertyName, object propertyValueType) 
         {
             if (IsValidPropertyName(propertyName))
             {
