@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Little_Choice_Based_RPG.Types.EntityProperty;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,6 +9,6 @@ namespace Little_Choice_Based_RPG.Resources.Systems.Damage.Break
 {
     public interface IBreakable
     {
-        void Break();
+        void Break(PropertyHandler sourcePropertyHandler);
     }
 }

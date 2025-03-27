@@ -24,7 +24,7 @@ namespace Little_Choice_Based_RPG.Resources.Systems.Damage.Break
             PropertyValidation.CreateValidProperty("Descriptor.Choice.Break", PropertyType.String); //Describes the action of breaking it when a player uses the Break() choice.
         }
 
-        static void Break(PropertyHandler sourcePropertyHandler)
+        public void Break(PropertyHandler sourcePropertyHandler)
         {
             if (!sourcePropertyHandler.HasPropertyAndValue("IsBreakable", true))
                 throw new Exception("This object is not breakable! Tried to break an object where there is no EntityProperty of IsBreakable = true.");

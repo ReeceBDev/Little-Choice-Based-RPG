@@ -1,4 +1,5 @@
 ﻿using Little_Choice_Based_RPG.Resources.Entities.Conceptual;
+using Little_Choice_Based_RPG.Types.EntityProperty;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +10,6 @@ namespace Little_Choice_Based_RPG.Resources.Systems.Damage.Repair
 {
     public interface IRepairable
     {
-        void Repair(GameObject withRepairAsset);
+        void Repair(PropertyHandler sourcePropertyHandler, GameObject withRepairAsset);
     }
 }

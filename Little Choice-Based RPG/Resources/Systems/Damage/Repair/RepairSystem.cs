@@ -22,7 +22,7 @@ namespace Little_Choice_Based_RPG.Resources.Systems.Damage.Repair
             PropertyValidation.CreateValidProperty("Descriptor.Choice.Repair", PropertyType.String); //Describes the action of repairing it when a player uses the Repair() choice.
         }
 
-        public void Repair(GameObject withRepairAsset)
+        public void Repair(PropertyHandler sourcePropertyHandler, GameObject withRepairAsset)
         {
 
         }
