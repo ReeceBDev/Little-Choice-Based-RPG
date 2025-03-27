@@ -5,6 +5,7 @@ using Little_Choice_Based_RPG.Resources.Entities.Physical.Living.Players;
 using Little_Choice_Based_RPG.Resources.Rooms;
 using Little_Choice_Based_RPG.Types;
 using Little_Choice_Based_RPG.Types.EntityProperty;
+using Little_Choice_Based_RPG.Types.InteractDelegate;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -30,6 +31,7 @@ namespace Little_Choice_Based_RPG.Resources.Choices
         // Either way, all the display-side and user interface side of this should be handled by the Styles or maybe even a userInterface resize thing,
         // rather than by this class - whos sole function is the listing and using of choices as a whole.
 
+        /*
         public GameObject ChooseObject(EntityProperty entityPropertyFilter)
         {
             List<Choice> relevantChoices = new List<Choice>();
@@ -47,6 +49,7 @@ namespace Little_Choice_Based_RPG.Resources.Choices
             Choice chosenChoice = EventChoiceSubMenu(relevantChoices);
             return chosenChoice.Source;
         }
+        */
 
         public List<Choice> GetChoices()
         {
@@ -118,56 +121,68 @@ namespace Little_Choice_Based_RPG.Resources.Choices
         }
 
         //This is the main execute for InteractDelegate
-        public string ActivateInteract(Choice currentChoice)
+        public void SelectChoice(Choice currentChoice)
         {
-            if (currentChoice.InteractArguments != null)
-                return HandleInteractParameters(currentChoice);
-            else
-                return currentChoice.InteractDelegate();
-        }
+            List<DelegateParameter> requiredParameters = DelegateValidation.GetDelegateParameters(currentChoice.InteractDelegate.GetType().Name.ToString());
+            object[] locatedParameters = new object[requiredParameters.Count];
 
-        //If the InteractDelegate has requirements, handle the requirements here.
-        private protected string HandleInteractParameters(Choice currentChoice)
-        {
-            if (currentChoice.InteractArguments != null)
+            int iteration = 0;
+            foreach (DelegateParameter parameter in requiredParameters)
             {
-                if (TestForHealthPropertyOnly(currentChoice))
-                    return HandleHealthPropertyOnly(currentChoice);
-                /*if (TestForRoomArgumentAndHealthProperty(currentChoice))
-                    return HandleRoomArgumentAndHealthProperty(currentChoice);
-                */
-                throw new Exception("Tried to HandleInteractParameters with an InteractArguments which didn't match any possible test.");
+                locatedParameters[iteration] = DelegateHandler.GetParameter(parameter);
+                iteration++;
             }
-            else throw new Exception("Tried to HandleInteractParameters with null InteractArguments?");
+
+            currentChoice.InteractDelegate.DynamicInvoke([locatedParameters]); // How do i just normally invoke?
+
+
         }
 
-        private protected bool TestForHealthPropertyOnly(Choice currentChoice)
+        /*
+    //If the InteractDelegate has requirements, handle the requirements here.
+    private protected string HandleInteractParameters(Choice currentChoice)
+    {
+        if (currentChoice.InteractArguments != null)
         {
-            EntityProperty testForEntityPropertyHasHealth = new EntityProperty("HasHealth", true);
-
-            if (currentChoice.InteractArguments.Length == 1)
-                if (currentChoice.InteractArguments.Contains(testForEntityPropertyHasHealth))
-                    return true;
-
-            return false;
+            if (TestForHealthPropertyOnly(currentChoice))
+                return HandleHealthPropertyOnly(currentChoice);
+            /*if (TestForRoomArgumentAndHealthProperty(currentChoice))
+                return HandleRoomArgumentAndHealthProperty(currentChoice);
+            *//*
+            throw new Exception("Tried to HandleInteractParameters with an InteractArguments which didn't match any possible test.");
         }
+        else throw new Exception("Tried to HandleInteractParameters with null InteractArguments?");
+    }
 
-        private protected string HandleHealthPropertyOnly(Choice currentChoice)
-        {
-            List<GameObject> itemsWithHealth;
-            EntityProperty entityPropertyFilter = new EntityProperty("HasHealth", true);
+    private protected bool TestForHealthPropertyOnly(Choice currentChoice)
+    {
+        EntityProperty testForEntityPropertyHasHealth = new EntityProperty("HasHealth", true);
 
-            GameObject targetObject = ChooseObject(entityPropertyFilter);
+        if (currentChoice.InteractArguments.Length == 1)
+            if (currentChoice.InteractArguments.Contains(testForEntityPropertyHasHealth))
+                return true;
 
-            return SendDamageToObject(targetObject);
-        }
+        return false;
+    }
 
-        private protected string SendDamageToObject(GameObject target)
-        {
-            target.TakeDamage(1);
+    private protected string HandleHealthPropertyOnly(Choice currentChoice)
+    {
+        List<GameObject> itemsWithHealth;
+        EntityProperty entityPropertyFilter = new EntityProperty("HasHealth", true);
 
-            return "You damage the thing using the thing...";
-        }
+        GameObject targetObject = ChooseObject(entityPropertyFilter);
+
+        return SendDamageToObject(targetObject);
+}
+
+private protected string SendDamageToObject(GameObject target)
+{
+    target.TakeDamage(1);
+
+    return "You damage the thing using the thing...";
+}
+*/
+        /*
         private protected Choice EventChoiceSubMenu(List<Choice> possibleChoices)
         {
             // Do the event thing
@@ -175,7 +190,7 @@ namespace Little_Choice_Based_RPG.Resources.Choices
             Console.WriteLine("Here are your options:");
 
             uint foreachindex = 0;
-            foreach(Choice choice in possibleChoices)
+            foreach (Choice choice in possibleChoices)
             {
                 Console.WriteLine($"{++foreachindex}. {choice.Name}");
             }
@@ -183,7 +198,8 @@ namespace Little_Choice_Based_RPG.Resources.Choices
 
             UserInterfaceUtilities.Pause();
             Choice temporarySelection = possibleChoices[1]; //temporarily chooses index 1 by default (option 2)
-            return temporarySelection;
+            return temporarySelectioniteration;
         }
+        */
     }
 }
