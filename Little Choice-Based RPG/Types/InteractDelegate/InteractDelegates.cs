@@ -24,4 +24,44 @@ namespace Little_Choice_Based_RPG.Types.InteractDelegate
             DelegateValidation.CreateValidDelegate("InteractOnSourcePropertiesUsingTargetObject", [DelegateParameter.Source_PropertyHandler, DelegateParameter.Target_GameObject]);
         }
     }
+
+
+    public class ChoiceAction
+    {
+        private readonly Delegate _action;
+
+        // Constructor for a one-parameter action
+        public ChoiceAction(Action<PropertyHandler> action)
+        {
+            _action = action;
+        }
+
+        // Constructor for a two-parameter action
+        public ChoiceAction(Action<PropertyHandler, GameObject> action)
+        {
+            _action = action;
+        }
+
+        // Method to invoke the action
+        public void Invoke(ChoiceHandler handler)
+        {
+            if (_action is Action<PropertyHandler> action1)
+            {
+                // Populate parameter for one-parameter action
+                PropertyHandler sourceProperty = DelegateHandler.GetParameter<PropertyHandler>(DelegateParameter.Source_PropertyHandler);
+                action1(sourceProperty);
+            }
+            else if (_action is Action<PropertyHandler, GameObject> action2)
+            {
+                // Populate parameters for two-parameter action
+                var sourceProperty = DelegateHandler.GetParameter(DelegateParameter.Source_PropertyHandler);
+                var targetObject = DelegateHandler.GetParameter(DelegateParameter.Target_GameObject);
+                action2(sourceProperty, targetObject);
+            }
+            else
+            {
+                throw new InvalidOperationException("Unsupported action type.");
+            }
+        }
+    }
 }

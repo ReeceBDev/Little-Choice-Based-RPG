@@ -1,12 +1,14 @@
 ﻿using Little_Choice_Based_RPG.Resources.Choices;
 using Little_Choice_Based_RPG.Resources.Entities.Conceptual;
 using Little_Choice_Based_RPG.Resources.Entities.Conceptual.Interactions;
+using Little_Choice_Based_RPG.Types.EntityProperty;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using static Little_Choice_Based_RPG.Resources.Choices.Choice;
+using static Little_Choice_Based_RPG.Types.InteractDelegate.InteractDelegates;
 
 namespace Little_Choice_Based_RPG.Resources.Entities.Physical.Plants
 {
@@ -31,26 +33,27 @@ namespace Little_Choice_Based_RPG.Resources.Entities.Physical.Plants
 
             if (isAudioBroken == true)
             {
-                Interact repairInteractDelegate = new Interact(InteractArguments => Repair());
+                InteractOnSourcePropertiesUsingTargetObject repairInteractDelegate = Repair;
                 choices.Add(new Choice("Repair - Re-calibrate the helmets longitudinal wave sensor-array.", this, repairInteractDelegate));
             }
 
             if (isAudioBroken == false)
             {
-                Interact breakInteractDelegate = new Interact(InteractArguments => Break());
+                InteractOnSourceProperties breakInteractDelegate = Break;
                 choices.Add(new Choice("Damage - Intentionally misalign the helmets longitudinal wave sensor-array", this, breakInteractDelegate));
             }
             return choices;
         }
-        public string Repair()
+
+        public void Repair(PropertyHandler setEntityProperties, GameObject requiredObject)
         {
             isAudioBroken = false;
-            return "you fixed the helmet! yay!";
+            Console.WriteLine("You fixed the helmet, yayy");
         }
-        public string Break()
+        public void Break(PropertyHandler setEntityProperties)
         {
             isAudioBroken = true;
-            return "its broken again oh nooo";
+            Console.WriteLine("its broken again oh nooo");
         }
     }
 }
