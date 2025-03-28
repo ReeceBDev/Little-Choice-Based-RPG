@@ -1,5 +1,7 @@
 ﻿using Little_Choice_Based_RPG.Resources.Entities.Conceptual;
 using Little_Choice_Based_RPG.Types;
+using Little_Choice_Based_RPG.Types.EntityProperty;
+using Little_Choice_Based_RPG.Types.InteractDelegate;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.Metrics;
@@ -17,21 +19,22 @@ namespace Little_Choice_Based_RPG.Resources.Choices
         Default,
         MenuCompatible,
     }
+
     public class Choice
     {
         private protected static uint globalCounter;
-        public delegate string Interact(params object[] InteractArguments);
-        public Choice(string setName, GameObject setSource, Interact setInteractDelegate, object[]? setInteractArguments = null, Enum setChoiceRole = null)
+
+        public Choice(string setName, GameObject setSource, Delegate setInteractDelegate, List<DelegateParameter>? setInteractArguments = null, Enum setChoiceRole = null)
         {
             ID = ++globalCounter;
             Name.Value = setName;
 
             Source = setSource; 
             InteractDelegate = setInteractDelegate;
-
+            
             if (setInteractArguments == null)
                 InteractArguments = null;
-            else 
+            else
                 InteractArguments = setInteractArguments;
 
             if (setChoiceRole == null)
@@ -41,8 +44,8 @@ namespace Little_Choice_Based_RPG.Resources.Choices
         public uint ID { get; init; } = 0U; // 0 is an null, Invalid ID
         public SanitizedString Name { get; private protected set; } = new SanitizedString(string.Empty);
         public GameObject Source { get; private set; }
-        public Interact InteractDelegate { get; private set; }
-        public object[]? InteractArguments { get; private set; }
+        public Delegate InteractDelegate { get; private set; }
+        public List<DelegateParameter>? InteractArguments { get; private set; }
         public ChoiceRole Role { get; private set; }
     }
 }
