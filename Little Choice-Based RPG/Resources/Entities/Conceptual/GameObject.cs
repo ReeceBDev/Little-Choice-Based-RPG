@@ -18,8 +18,6 @@ namespace Little_Choice_Based_RPG.Resources.Entities.Conceptual
     {
         public PropertyHandler entityProperties = new PropertyHandler();
 
-        public List<Choice> choices = new List<Choice>();
-
         //public List<EntityProperty> entityProperties = new List<EntityProperty> (); // Comment out once new entityProperties is in.
 
         private protected static uint globalCounter;
@@ -33,7 +31,7 @@ namespace Little_Choice_Based_RPG.Resources.Entities.Conceptual
 
         public virtual List<Choice> GenerateChoices()
         {
-            
+            List<Choice> choices = new List<Choice>();
             // Handle additional choices here.
             // I.e. choices.Add(HandleAttachChoices());
             return choices;

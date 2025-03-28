@@ -43,11 +43,8 @@ namespace Little_Choice_Based_RPG.Types.EntityProperty
             {"IsBurnt", PropertyType.Boolean},
 
             //Descriptor System
-            {"Descriptor.Generic.Current", PropertyType.String}, //The one the object is currently using
-            {"Descriptor.Inspect.Current", PropertyType.String}, //The one the object is currently using
-
-            {"Descriptor.Generic.Default", PropertyType.String},
-            {"Descriptor.Inspect.Default", PropertyType.String},
+            {"Descriptor.Generic", PropertyType.String},
+            {"Descriptor.Inspect", PropertyType.String},
             {"Descriptor.Equip", PropertyType.String},
             {"Descriptor.Unequip", PropertyType.String},
 
