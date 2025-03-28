@@ -10,6 +10,6 @@ namespace Little_Choice_Based_RPG.Resources.Systems.Damage.Repair
 {
     public interface IRepairable
     {
-        void Repair(PropertyHandler sourcePropertyHandler, GameObject withRepairAsset);
+        void Repair(GameObject withRepairAsset);
     }
 }

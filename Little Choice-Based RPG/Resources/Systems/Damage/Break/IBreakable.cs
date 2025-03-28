@@ -9,6 +9,6 @@ namespace Little_Choice_Based_RPG.Resources.Systems.Damage.Break
 {
     public interface IBreakable
     {
-        void Break(PropertyHandler sourcePropertyHandler);
+        void Break();
     }
 }
