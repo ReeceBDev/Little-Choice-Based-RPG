@@ -9,31 +9,11 @@ using System.Xml.Linq;
 
 namespace Little_Choice_Based_RPG.Types.InteractDelegate
 {
-    /// <summary> Describes parameters and what they should be sourced from. </summary>
-    public enum DelegateParameter
+    public static class InteractionValidation
     {
-        //Syntax: Target_Type -- The type will be used by the delegate/method. The target tells the ChoiceHandler where to retrieve that type. 
-        // i.e. AllNearby_MetalCabinets_List_GameObject should return a list of gameobject that match the target description (List<GameObject>).
+        private static Dictionary<string, List<InteractionParameter>> validDelegates = new Dictionary<string, List<InteractionParameter>>();
 
-        //General GameObject
-        Source_GameObject,
-        Target_GameObject, //Target means asking the player to decide what to put in. // Issue: how to differentiate roomtarget or inventorytargets
-
-        //General PropertyHandler
-        Source_PropertyHandler,
-        Target_PropertyHandler,
-
-        //Flitered PropertyHandler
-        // -- Filters apply to the target. 
-        // -- i.e. Target_PropertyHandler_Filtered would mean a propertyhandler from a target gameobject in the local room filtered by having a list of properties.
-        Target_PropertyHandler_Filtered
-    }
-
-    public static class DelegateValidation
-    {
-        private static Dictionary<string, List<DelegateParameter>> validDelegates = new Dictionary<string, List<DelegateParameter>>();
-
-        public static void CreateValidDelegate(string setDelegateName, List<DelegateParameter> setDelegateParameters)
+        public static void CreateValidDelegate(string setDelegateName, List<InteractionParameter> setDelegateParameters)
         {
             if (!IsValidDelegateName(setDelegateName))
                 validDelegates.Add(setDelegateName, setDelegateParameters);
@@ -44,7 +24,7 @@ namespace Little_Choice_Based_RPG.Types.InteractDelegate
         /// <summary> Tests if a delegate name exists. </summary>
         public static bool IsValidDelegateName(string delegateName) => validDelegates.ContainsKey(delegateName);
 
-        public static List<DelegateParameter> GetDelegateParameters(string delegateName)
+        public static List<InteractionParameter> GetDelegateParameters(string delegateName)
         {
             if (!validDelegates.ContainsKey(delegateName))
                 throw new ArgumentException($"This validDelegate does not exists! There is no validDelegate named {delegateName}.");
@@ -53,11 +33,11 @@ namespace Little_Choice_Based_RPG.Types.InteractDelegate
         }
 
         /// <summary> Tests if a delegate exists - whether both its name and parameters are valid. </summary>
-        public static bool IsValidDelegate(string testName, List<DelegateParameter> testParameters)
+        public static bool IsValidDelegate(string testName, List<InteractionParameter> testParameters)
         {
             if (IsValidDelegateName(testName))
             {
-                List<DelegateParameter> validParameters = validDelegates[testName];
+                List<InteractionParameter> validParameters = validDelegates[testName];
 
                 if (validParameters == testParameters)
                    return true;
