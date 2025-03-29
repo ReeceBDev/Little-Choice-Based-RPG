@@ -123,19 +123,17 @@ namespace Little_Choice_Based_RPG.Resources.Choices
         //This is the main execute for InteractDelegate
         public void SelectChoice(Choice currentChoice)
         {
-            List<DelegateParameter> requiredParameters = DelegateValidation.GetDelegateParameters(currentChoice.InteractDelegate.GetType().Name.ToString());
+            List<InteractionParameter> requiredParameters = InteractionValidation.GetDelegateParameters(currentChoice.InteractDelegate.GetType().Name.ToString());
             object[] locatedParameters = new object[requiredParameters.Count];
 
             int iteration = 0;
-            foreach (DelegateParameter parameter in requiredParameters)
+            foreach (InteractionParameter parameter in requiredParameters)
             {
-                locatedParameters[iteration] = DelegateHandler.GetParameter(parameter);
+                locatedParameters[iteration] = InteractionParameterHandler.GetParameter(parameter);
                 iteration++;
             }
 
             currentChoice.InteractDelegate.DynamicInvoke([locatedParameters]); // How do i just normally invoke?
-
-
         }
 
         /*
