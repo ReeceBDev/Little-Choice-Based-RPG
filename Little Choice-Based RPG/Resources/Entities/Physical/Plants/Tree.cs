@@ -8,7 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using static Little_Choice_Based_RPG.Resources.Choices.Choice;
-using static Little_Choice_Based_RPG.Types.InteractDelegate.InteractDelegates;
+using static Little_Choice_Based_RPG.Types.InteractDelegate.InteractDelegates.InteractDelegate;
 
 namespace Little_Choice_Based_RPG.Resources.Entities.Physical.Plants
 {

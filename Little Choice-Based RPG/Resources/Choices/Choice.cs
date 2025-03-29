@@ -24,7 +24,7 @@ namespace Little_Choice_Based_RPG.Resources.Choices
     {
         private protected static uint globalCounter;
 
-        public Choice(string setName, GameObject setSource, Delegate setInteractDelegate, List<DelegateParameter>? setInteractArguments = null, Enum setChoiceRole = null)
+        public Choice(string setName, GameObject setSource, Delegate setInteractDelegate, List<InteractionParameter>? setInteractArguments = null, Enum setChoiceRole = null)
         {
             ID = ++globalCounter;
             Name.Value = setName;
@@ -45,7 +45,7 @@ namespace Little_Choice_Based_RPG.Resources.Choices
         public SanitizedString Name { get; private protected set; } = new SanitizedString(string.Empty);
         public GameObject Source { get; private set; }
         public Delegate InteractDelegate { get; private set; }
-        public List<DelegateParameter>? InteractArguments { get; private set; }
+        public List<InteractionParameter>? InteractArguments { get; private set; }
         public ChoiceRole Role { get; private set; }
     }
 }
