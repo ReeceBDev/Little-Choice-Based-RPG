@@ -2,6 +2,7 @@
 using Little_Choice_Based_RPG.Resources.Rooms;
 using Little_Choice_Based_RPG.Types;
 using Little_Choice_Based_RPG.Types.EntityProperty;
+using Little_Choice_Based_RPG.Types.InteractDelegate.InteractDelegates;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,7 +19,7 @@ namespace Little_Choice_Based_RPG.Resources.Entities.Conceptual
     {
         public PropertyHandler entityProperties = new PropertyHandler();
 
-        public List<Choice> choices = new List<Choice>();
+        public List<IInvokableInteraction> InteractionChoices = new List<IInvokableInteraction>();
 
         //public List<EntityProperty> entityProperties = new List<EntityProperty> (); // Comment out once new entityProperties is in.
 
