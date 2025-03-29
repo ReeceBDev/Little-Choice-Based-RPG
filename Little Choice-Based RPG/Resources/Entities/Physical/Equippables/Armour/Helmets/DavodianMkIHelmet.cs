@@ -4,7 +4,7 @@ using Little_Choice_Based_RPG.Resources.Entities.Physical.Equippables.Armour;
 using Little_Choice_Based_RPG.Resources.Rooms;
 using Little_Choice_Based_RPG.Resources.Systems.Damage.Break;
 using Little_Choice_Based_RPG.Types.EntityProperty;
-using Little_Choice_Based_RPG.Types.InteractDelegate;
+using Little_Choice_Based_RPG.Types.InteractDelegate.InteractDelegates;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -14,7 +14,9 @@ using System.Reflection.Metadata.Ecma335;
 using System.Text;
 using System.Threading.Tasks;
 using static Little_Choice_Based_RPG.Resources.Choices.Choice;
-using static Little_Choice_Based_RPG.Types.InteractDelegate.InteractDelegates;
+using static Little_Choice_Based_RPG.Types.InteractDelegate.InteractDelegates.InteractDelegate;
+using static Little_Choice_Based_RPG.Types.InteractDelegate.InteractDelegates.InteractWithNothing;
+using static Little_Choice_Based_RPG.Types.InteractDelegate.InteractDelegates.InteractWithTargetObject;
 
 namespace Little_Choice_Based_RPG.Resources.Entities.Physical.Equippables.Armour.Helmets
 {
@@ -37,22 +39,26 @@ namespace Little_Choice_Based_RPG.Resources.Entities.Physical.Equippables.Armour
             return choices;
         }
 
-        private List<Choice> HandleFixChoices()
+        private void HandleFixChoices()
         {
             List<Choice> choices = new List<Choice>();
 
             if (isAudioBroken == true)
             {
-                InteractOnSourcePropertiesUsingTargetObject repairInteractDelegate = Repair;
-                choices.Add(new Choice("Repair - Re-calibrate the helmets longitudinal wave sensor-array.", this, repairInteractDelegate));
+                InteractUsingTargetObject repairDelegate = Repair;
+                InteractionChoices.Add(new InteractWithTargetObject(repairDelegate, "Repair - Re-calibrate the helmets longitudinal wave sensor-array.", "You fixed the helmet, yayy"));
             }
 
             if (isAudioBroken == false)
             {
-                InteractOnSourceProperties breakInteractDelegate = Break;
-                choices.Add(new Choice("Damage - Intentionally misalign the helmets longitudinal wave sensor-array", this, breakInteractDelegate));
+                InteractUsingNothing breakDelegate = Break;
+                InteractionChoices.Add(new InteractWithNothing(breakDelegate, "Damage - Intentionally misalign the helmets longitudinal wave sensor-array", "its broken again oh nooo"));
+
+                foreach (IInvokableInteraction interaction in InteractionChoices)
+                {
+                    interaction.Invoke();
+                }
             }
-            return choices;
         }
 
         public void Repair(GameObject requiredObject)
