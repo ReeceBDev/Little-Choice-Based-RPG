@@ -1,5 +1,5 @@
 ﻿using Little_Choice_Based_RPG.Resources.Entities.Conceptual;
-using Little_Choice_Based_RPG.Types.EntityProperty;
+using Little_Choice_Based_RPG.Types.EntityProperties;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 
-namespace Little_Choice_Based_RPG.Types.InteractDelegate
+namespace Little_Choice_Based_RPG.Types.Interactions.InteractDelegate
 {
     public static class InteractionValidation
     {

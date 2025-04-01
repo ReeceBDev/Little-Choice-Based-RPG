@@ -1,6 +1,5 @@
-﻿using Little_Choice_Based_RPG.Resources.Choices;
-using Little_Choice_Based_RPG.Resources.Entities.Conceptual;
-using Little_Choice_Based_RPG.Types.EntityProperty;
+﻿using Little_Choice_Based_RPG.Resources.Entities.Conceptual;
+using Little_Choice_Based_RPG.Types.EntityProperties;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -9,20 +8,20 @@ using System.Text;
 using System.Threading.Tasks;
 using static System.Collections.Specialized.BitVector32;
 
-namespace Little_Choice_Based_RPG.Types.InteractDelegate.InteractDelegates
+namespace Little_Choice_Based_RPG.Types.Interactions.InteractDelegate
 {
     /// <summary> Provides a way to present options and choices to the player by exposing a delegate with pre-defined parameters. </summary>
-    public abstract class InteractDelegate : IInvokableInteraction
+    public abstract class Interaction : IInvokableInteraction
     {
-        static InteractDelegate()
+        static Interaction()
         {
             AddSelfIntoDelegateValidation();
         }
 
         /// <summary> Creates a new interaction for players to be presented with in ChoiceHandler. </summary>
-        public InteractDelegate(string setInteractTitle, string setInteractDescriptor, InteractionContext setInteractRole = InteractionContext.Explore)
+        public Interaction(string setInteractTitle, string setInteractDescriptor, InteractionRole setInteractRole = InteractionRole.Explore)
         {
-            InteractionRole = setInteractRole;
+            InteractionContext = setInteractRole;
             InteractionTitle.Value = setInteractTitle;
             InteractDescriptor.Value = setInteractDescriptor;
         }
@@ -51,6 +50,6 @@ namespace Little_Choice_Based_RPG.Types.InteractDelegate.InteractDelegates
         public SanitizedString InteractDescriptor { get; private protected set; } = new SanitizedString(string.Empty);
 
         /// <summary> Describes how an Interaction should be presented by the User Interface, for example, if it belongs to a context-menu. </summary>
-        public InteractionContext InteractionRole { get; private protected set; }
+        public InteractionRole InteractionContext { get; private protected set; }
     }
 }

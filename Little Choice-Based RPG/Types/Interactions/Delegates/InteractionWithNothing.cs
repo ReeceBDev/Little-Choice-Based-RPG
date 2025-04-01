@@ -5,10 +5,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Little_Choice_Based_RPG.Types.InteractDelegate.InteractDelegates
+namespace Little_Choice_Based_RPG.Types.Interactions.InteractDelegate
 {
     /// <summary> Provides a way to present options and choices to the player by exposing a delegate with pre-defined parameters. </summary>
-    public class InteractWithNothing : InteractDelegate
+    public class InteractionWithNothing : Interaction
     {
         /// <summary> Create a delegate which uses no additional parameters. </summary>
         public delegate void InteractUsingNothing();
@@ -16,13 +16,13 @@ namespace Little_Choice_Based_RPG.Types.InteractDelegate.InteractDelegates
         /// <summary> Stores the delegate to be invoked later with Invoke(). </summary>
         public InteractUsingNothing storedDelegate;
 
-        static InteractWithNothing()
+        static InteractionWithNothing()
         {
             InteractionValidation.CreateValidDelegate("InteractUsingNothing", []);
         }
 
         /// <summary> Creates a new interaction for players to be presented with in ChoiceHandler. </summary>
-        public InteractWithNothing(InteractUsingNothing setDelegate, string setInteractTitle, string setInteractDescriptor, InteractionContext setInteractRole = InteractionContext.Explore)
+        public InteractionWithNothing(InteractUsingNothing setDelegate, string setInteractTitle, string setInteractDescriptor, InteractionRole setInteractRole = InteractionRole.Explore)
             : base(setInteractTitle, setInteractDescriptor, setInteractRole)
         {
             storedDelegate = setDelegate;

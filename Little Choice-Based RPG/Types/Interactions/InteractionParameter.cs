@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Little_Choice_Based_RPG.Types.InteractDelegate
+namespace Little_Choice_Based_RPG.Types.Interactions.InteractDelegate
 {
     /// <summary> Describes parameters and what they should be sourced from. </summary>
     public enum InteractionParameter
@@ -13,16 +13,13 @@ namespace Little_Choice_Based_RPG.Types.InteractDelegate
         // i.e. AllNearby_MetalCabinets_List_GameObject should return a list of gameobject that match the target description (List<GameObject>).
 
         //General GameObject
-        Source_GameObject,
         Target_GameObject, //Target means asking the player to decide what to put in. // Issue: how to differentiate roomtarget or inventorytargets
 
-        //General PropertyHandler
-        Source_PropertyHandler,
-        Target_PropertyHandler,
-
-        //Flitered PropertyHandler
+        //Flitered
         // -- Filters apply to the target. 
-        // -- i.e. Target_PropertyHandler_Filtered would mean a propertyhandler from a target gameobject in the local room filtered by having a list of properties.
-        Target_PropertyHandler_Filtered
+        // -- i.e. Target_GameObject_IsRepairTool_True would mean a target GameObject in the local room, filtered by being a repair tool.
+        // Filters may request multiple properties at once.
+        Target_GameObject_IsRepairTool_True,
+        Target_GameObject_RepairToolSize_Medium //Must be a repair tool, and must by of the right size to repair mechs and cars.
     }
 }
