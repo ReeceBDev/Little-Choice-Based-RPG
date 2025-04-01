@@ -15,7 +15,7 @@ using Little_Choice_Based_RPG.Resources.Entities.Physical.Living.Players;
 using Little_Choice_Based_RPG.Resources.Rooms;
 using Little_Choice_Based_RPG.Resources.Rooms.Premade.Unique.Test;
 using Little_Choice_Based_RPG.Types;
-using Little_Choice_Based_RPG.Types.EntityProperty;
+using Little_Choice_Based_RPG.Types.EntityProperties;
 
 internal class TextBasedRPG
 {
