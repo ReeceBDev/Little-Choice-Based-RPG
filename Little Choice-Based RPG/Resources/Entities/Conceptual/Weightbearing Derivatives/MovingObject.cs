@@ -15,7 +15,7 @@ namespace Little_Choice_Based_RPG.Resources.Entities.Conceptual.Weightbearing_De
         {
 
         }
-
+        
         public void Move(uint newPosition)
         {
             //this.Position = newPosition;

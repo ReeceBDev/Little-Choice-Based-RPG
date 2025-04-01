@@ -16,7 +16,7 @@ using System.Collections.Immutable;
 using System.Collections;
 using System.Runtime.ConstrainedExecution;
 using Little_Choice_Based_RPG.Resources.Entities.Immaterial.Transition;
-using Little_Choice_Based_RPG.Types.EntityProperty;
+using Little_Choice_Based_RPG.Types.EntityProperties;
 
 namespace Little_Choice_Based_RPG.Resources.Rooms
 {
@@ -56,63 +56,42 @@ namespace Little_Choice_Based_RPG.Resources.Rooms
             return entityIDs;
         }
 
-        public List<GameObject> GetRoomObjects()
+        public List<GameObject> GetRoomObjects(string requiredEntityPropertyName, object requiredEntityPropertyValue) 
+            => GetRoomObjects(new List<EntityProperty> { new EntityProperty(requiredEntityPropertyName, requiredEntityPropertyValue) });
+
+        public List<GameObject> GetRoomObjects(List<EntityProperty>? requiredProperties = null)
         {
             List<GameObject> validObjects = new List<GameObject>();
 
             foreach (GameObject entity in roomEntities)
             {
-                if (!entity.entityProperties.HasPropertyAndValue("IsImmaterial", true))
-                    validObjects.Add(entity);
-            }
-
-            return validObjects;
-        }
-
-        public List<GameObject> GetRoomObjects(string requiredEntityPropertyName, object requiredEntityPropertyValue)
-        {
-            List<GameObject> validObjects = new List<GameObject>();
-
-            foreach (GameObject entity in roomEntities)
-            {
-                if (!entity.entityProperties.HasPropertyAndValue("IsImmaterial", true))
+                if (!entity.entityProperties.HasProperty("IsImmaterial", true))
                 {
-                    if (entity.entityProperties.HasPropertyAndValue(requiredEntityPropertyName, requiredEntityPropertyValue))
-                        validObjects.Add(entity);
-                }
-            }
-            return validObjects;
-        }
-
-        public List<GameObject> GetRoomObjects(List<EntityProperty> requiredProperties)
-        {
-            List<GameObject> validObjects = new List<GameObject>();
-
-            foreach (GameObject entity in roomEntities)
-            {
-                if (!entity.entityProperties.HasPropertyAndValue("IsImmaterial", true))
-                {
-                    //Check the required properties are all contained within the entity
-                     List<EntityProperty> validProperties = new();
-
-                    //foreach (EntityProperty currentProperty in requiredProperties)
-                    foreach (EntityProperty requiredProperty in requiredProperties)
+                    if (requiredProperties != null)
                     {
-                        string propertyName = requiredProperty.PropertyName;
-                        object propertyValue = requiredProperty.PropertyValue;
+                        //Check the required properties are all contained within the entity
+                        List<EntityProperty> validProperties = new();
 
-                        if (entity.entityProperties.HasPropertyAndValue(propertyName, propertyValue))
-                            validProperties.Add(requiredProperty);
+                        //foreach (EntityProperty currentProperty in requiredProperties)
+                        foreach (EntityProperty requiredProperty in requiredProperties)
+                        {
+                            string propertyName = requiredProperty.PropertyName;
+                            object propertyValue = requiredProperty.PropertyValue;
+
+                            if (entity.entityProperties.HasProperty(propertyName, propertyValue))
+                                validProperties.Add(requiredProperty);
+                        }
+
+                        //if an object has all of the validProperties, then add the entity to validObjects
+                        if (validProperties.Count == requiredProperties.Count)
+                            validObjects.Add(entity);
                     }
-
-                    //if there are all of the validProperties, then add the entity to validObjects
-                    if (validProperties.Count == requiredProperties.Count)
-                        validObjects.Add(entity);
+                    else
+                        validObjects.Add(entity); //If objects require no properties, then they all match and should be added.
                 }
             }
             return validObjects;
         }
-
         public List<string> GetRoomDescriptors()
         {
             List<string> currentRoomDescriptors = ReturnValidConditionalDescriptors();
@@ -178,7 +157,7 @@ namespace Little_Choice_Based_RPG.Resources.Rooms
                         string propertyName = requiredProperty.PropertyName;
                         object propertyValue = requiredProperty.PropertyValue;
 
-                        if (currentState.entityProperties.HasPropertyAndValue(propertyName, propertyValue))
+                        if (currentState.entityProperties.HasProperty(propertyName, propertyValue))
                             validProperties.Add(requiredProperty);
                     }
 
@@ -252,6 +231,8 @@ namespace Little_Choice_Based_RPG.Resources.Rooms
 
             return prioritisedStrings;
         }
+
+        public bool RoomContainsObject(GameObject ofGameObject) => roomEntities.Contains(ofGameObject);
 
         public uint RoomID => uniqueID;
         public RoomType RoomType { get; init; }

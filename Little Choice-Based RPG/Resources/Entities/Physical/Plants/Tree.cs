@@ -1,14 +1,14 @@
 ﻿using Little_Choice_Based_RPG.Resources.Choices;
 using Little_Choice_Based_RPG.Resources.Entities.Conceptual;
 using Little_Choice_Based_RPG.Resources.Entities.Conceptual.Interactions;
-using Little_Choice_Based_RPG.Types.EntityProperty;
+using Little_Choice_Based_RPG.Types.EntityProperties;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using static Little_Choice_Based_RPG.Resources.Choices.Choice;
-using static Little_Choice_Based_RPG.Types.InteractDelegate.InteractDelegates.InteractDelegate;
+using static Little_Choice_Based_RPG.Types.Interactions.InteractDelegate.Interaction;
 
 namespace Little_Choice_Based_RPG.Resources.Entities.Physical.Plants
 {

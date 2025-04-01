@@ -1,6 +1,6 @@
 ﻿using Little_Choice_Based_RPG.Resources.Entities.Conceptual;
 using Little_Choice_Based_RPG.Resources.Systems.Damage.Repair;
-using Little_Choice_Based_RPG.Types.EntityProperty;
+using Little_Choice_Based_RPG.Types.EntityProperties;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -42,10 +42,10 @@ namespace Little_Choice_Based_RPG.Resources.Systems.Damage.Repair
         public void Repair(GameObject? repairTool = null)
         {
             //Guard clauses for the values in use.
-            if (!parentObject.entityProperties.HasPropertyAndValue("IsRepairable", true))
+            if (!parentObject.entityProperties.HasProperty("IsRepairable", true))
                 throw new Exception("This object is not repairable! Tried to repair an object where there is no EntityProperty of IsRepairable = true.");
 
-            if (!parentObject.entityProperties.HasProperty("Descriptor.Repairing"))
+            if (!parentObject.entityProperties.HasExistingPropertyName("Descriptor.Repairing"))
                 throw new Exception("This object has no repairing description! Tried to repair an object where there is no EntityProperty of Descriptor.Repairing.");
 
             //Main repairing logic.

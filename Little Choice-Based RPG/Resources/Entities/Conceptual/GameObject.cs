@@ -1,8 +1,7 @@
-﻿using Little_Choice_Based_RPG.Resources.Choices;
-using Little_Choice_Based_RPG.Resources.Rooms;
+﻿using Little_Choice_Based_RPG.Resources.Rooms;
 using Little_Choice_Based_RPG.Types;
-using Little_Choice_Based_RPG.Types.EntityProperty;
-using Little_Choice_Based_RPG.Types.InteractDelegate.InteractDelegates;
+using Little_Choice_Based_RPG.Types.EntityProperties;
+using Little_Choice_Based_RPG.Types.Interactions.InteractDelegate;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,8 +20,6 @@ namespace Little_Choice_Based_RPG.Resources.Entities.Conceptual
 
         public List<IInvokableInteraction> InteractionChoices = new List<IInvokableInteraction>();
 
-        //public List<EntityProperty> entityProperties = new List<EntityProperty> (); // Comment out once new entityProperties is in.
-
         private protected static uint globalCounter;
 
         private protected GameObject(string setName, decimal setWeightInKG = 0m)
@@ -30,14 +27,6 @@ namespace Little_Choice_Based_RPG.Resources.Entities.Conceptual
             ID = ++globalCounter;
             Name.Value = setName;
             WeightInKG = setWeightInKG;
-        }
-
-        public virtual List<Choice> GenerateChoices()
-        {
-            
-            // Handle additional choices here.
-            // I.e. choices.Add(HandleAttachChoices());
-            return choices;
         }
 
         private protected void Attach(GameObject attachee) // Cojoin together with another object

@@ -1,6 +1,6 @@
 ﻿using Little_Choice_Based_RPG.Resources.Entities.Conceptual;
 using Little_Choice_Based_RPG.Resources.Systems.Damage.Repair;
-using Little_Choice_Based_RPG.Types.EntityProperty;
+using Little_Choice_Based_RPG.Types.EntityProperties;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -45,13 +45,13 @@ namespace Little_Choice_Based_RPG.Resources.Systems.Damage.Break
         public void Break()
         {
             //Guard clauses for the values in use.
-            if (!parentObject.entityProperties.HasPropertyAndValue("IsBreakable", true))
+            if (!parentObject.entityProperties.HasProperty("IsBreakable", true))
                 throw new Exception("This object is not breakable! Tried to break an object where there is no EntityProperty of IsBreakable = true.");
 
-            if (!parentObject.entityProperties.HasProperty("Descriptor.Breaking"))
+            if (!parentObject.entityProperties.HasExistingPropertyName("Descriptor.Breaking"))
                 throw new Exception("This object has no break description! Tried to break an object where there is no EntityProperty of Descriptor.Breaking.");
 
-            if (!parentObject.entityProperties.HasProperty("Descriptor.Generic.Broken"))
+            if (!parentObject.entityProperties.HasExistingPropertyName("Descriptor.Generic.Broken"))
                 throw new Exception("This object has no broken description! Tried to break an object where there is no EntityProperty of Descriptor.Generic.Broken.");
 
             //Main breaking logic.
@@ -61,7 +61,7 @@ namespace Little_Choice_Based_RPG.Resources.Systems.Damage.Break
             parentObject.entityProperties.UpdateProperty("Descriptor.Generic.Current", parentObject.entityProperties.GetPropertyValue("Descriptor.Generic.Broken"));
 
             //Set inspect descriptor or default to generic.
-            if (!parentObject.entityProperties.HasProperty("Descriptor.Inspect.Broken"))
+            if (!parentObject.entityProperties.HasExistingPropertyName("Descriptor.Inspect.Broken"))
                 parentObject.entityProperties.UpdateProperty("Descriptor.Inspect.Current", parentObject.entityProperties.GetPropertyValue("Descriptor.Inspect.Broken"));
             else
                 parentObject.entityProperties.UpdateProperty("Descriptor.Inspect.Current", parentObject.entityProperties.GetPropertyValue("Descriptor.Generic.Broken"));
