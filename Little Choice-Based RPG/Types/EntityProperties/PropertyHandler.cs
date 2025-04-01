@@ -5,7 +5,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Little_Choice_Based_RPG.Types.EntityProperty
+namespace Little_Choice_Based_RPG.Types.EntityProperties
 {
     public class PropertyHandler
     {
@@ -33,7 +33,7 @@ namespace Little_Choice_Based_RPG.Types.EntityProperty
         /// <summary> Places a property on this object. Over-rides an existing property, unless frozen. </summary>
         public void UpsertProperty(string setPropertyName, object setPropertyValue, bool isReadOnly = false)
         {
-            if (HasProperty(setPropertyName))
+            if (HasExistingPropertyName(setPropertyName))
                 UpdateProperty(setPropertyName, setPropertyValue, isReadOnly);
             else
                 CreateProperty(setPropertyName, setPropertyValue, isReadOnly);
@@ -69,26 +69,26 @@ namespace Little_Choice_Based_RPG.Types.EntityProperty
                 throw new ArgumentException("Can't thaw this property. This EntityProperty is already Thawed. (ReadOnly = False)");
         }
 
-        /// <summary> Checks if a property exists on this object. </summary>
-        public bool HasProperty(string propertyName)
-        {
-            foreach (EntityProperty testProperty in EntityProperties)
-            {
-                if (testProperty.PropertyName == propertyName)
-                    return true;
-            }
-
-            return false;
-        }
-
         /// <summary> Checks if a property matches by both name and value, on this Object. </summary>
-        public bool HasPropertyAndValue(string propertyName, object propertyValue)
+        public bool HasProperty(string propertyName, object propertyValue)
         {
             foreach (EntityProperty testProperty in EntityProperties)
             {
                 if (testProperty.PropertyName == propertyName)
                     if (testProperty.PropertyValue == propertyValue)
                         return true;
+            }
+
+            return false;
+        }
+
+        /// <summary> Checks if a property exists on this object. Cannot be used to check for values. </summary>
+        public bool HasExistingPropertyName(string propertyName)
+        {
+            foreach (EntityProperty testProperty in EntityProperties)
+            {
+                if (testProperty.PropertyName == propertyName)
+                    return true;
             }
 
             return false;
@@ -114,6 +114,8 @@ namespace Little_Choice_Based_RPG.Types.EntityProperty
             throw new ArgumentException("No such EntityProperty exists inside this objects list of EntityProperties.");
         }
 
+        public event EventHandler<EntityProperty> PropertyUpdate;
+        protected private void OnPropertyChanged(EntityProperty updatedProperty) => PropertyUpdate?.Invoke(this, updatedProperty);
         public List<EntityProperty> EntityProperties { get; private set; } = new List<EntityProperty>();
     }
 }

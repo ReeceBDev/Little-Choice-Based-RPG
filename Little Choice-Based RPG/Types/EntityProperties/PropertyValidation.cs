@@ -5,7 +5,7 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
-namespace Little_Choice_Based_RPG.Types.EntityProperty
+namespace Little_Choice_Based_RPG.Types.EntityProperties
 {
     /// <summary> Defines all valid properties for the program. These properties may be applied to GameObjects, Rooms, etc. </summary>
     internal static class PropertyValidation 

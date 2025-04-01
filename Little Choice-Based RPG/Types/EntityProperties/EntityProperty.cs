@@ -5,11 +5,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Little_Choice_Based_RPG.Types.EntityProperty 
+namespace Little_Choice_Based_RPG.Types.EntityProperties 
 { 
     public struct EntityProperty
     {
-        
         public EntityProperty(string setPropertyName, Object setPropertyValue, bool setIsFrozen = false)
         {
             SetPropertyName(setPropertyName); // Name must be set before Value, or else the value will not know what name to validate against.
