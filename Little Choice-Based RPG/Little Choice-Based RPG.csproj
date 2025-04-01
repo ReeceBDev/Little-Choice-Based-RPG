@@ -15,6 +15,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Managers\Player Manager\Frontend\UserInterface\UserInterfaceStrategies\ParserConsole\" />
+    <Folder Include="Managers\Player Manager\Frontend\UserInterface\UserInterfaceStrategies\NumberedMUD\" />
+    <Folder Include="Managers\Player Manager\Frontend\UserInterface\UserInterfaceStrategies\GraphicalWeb\" />
+    <Folder Include="Managers\Player Manager\Frontend\UserInterface\UserInterfaceStrategies\ParserMUD\" />
     <Folder Include="Resources\Entities\Physical\Vehicles\" />
   </ItemGroup>
 
