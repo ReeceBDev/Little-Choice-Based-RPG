@@ -94,29 +94,11 @@ namespace Little_Choice_Based_RPG.Managers.Player_Manager.Frontend.UserInterface
         }
 
         /// <summary> Generates a Sub-Menu asking the player to choose an object from the room, which optionally matches property filters. </summary>
-        private GameObject? GenerateSubMenu(string requirementDescription, EntityProperty[]? setFilters = null)
+        private GameObject? GenerateSubMenu(string requirementDescription, List<EntityProperty>? setFilters = null)
         {
-            List<GameObject> possibleObjects = currentRoom.GetRoomObjects();
+            List<GameObject> possibleObjects = currentRoom.GetRoomObjects(setFilters);
             List<GameObject> listedObjects = new List<GameObject>();
 
-            int filterAmount = setFilters.Length;
-
-            //Check if objects have all of the required filters on them.
-            foreach (GameObject testObject in possibleObjects)
-            {
-                int matchingFilters = 0;
-
-                foreach (EntityProperty testProperty in setFilters)
-                {
-                    if (testObject.entityProperties.HasPropertyAndValue(testProperty.PropertyName, testProperty.PropertyValue))
-                    {
-                        matchingFilters++;
-                    }
-                }
-
-                if (matchingFilters == filterAmount)
-                    listedObjects.Add(testObject);
-            }
             //Write the Sub-Menu to the user interface.
             ExploreMenuTextEntry[] listToWrite = InitialiseSubMenuTextEntries(textEntries, requirementDescription, listedObjects);
 
