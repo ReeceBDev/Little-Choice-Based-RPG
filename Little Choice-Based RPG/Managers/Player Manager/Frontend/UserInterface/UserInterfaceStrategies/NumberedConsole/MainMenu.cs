@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Little_Choice_Based_RPG.Managers.Player_Manager.Frontend.UserInterface.UserInterfaceStyles
 {
-    public class MainMenuStyle : IUserInterface
+    public class MainMenu : IUserInterface
     {
         public string OutputMainBody()
         {
