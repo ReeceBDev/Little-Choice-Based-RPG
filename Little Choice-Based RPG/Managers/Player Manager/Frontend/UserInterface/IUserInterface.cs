@@ -11,17 +11,22 @@ using System.Text.RegularExpressions;
 using System.Xml;
 using Little_Choice_Based_RPG.Resources.Entities.Physical.Living.Players;
 using Little_Choice_Based_RPG.Managers.World;
-using Little_Choice_Based_RPG.Resources.Choices;
 using Little_Choice_Based_RPG.Resources.Rooms;
 using Little_Choice_Based_RPG.Types;
+using Little_Choice_Based_RPG.Types.Interactions.InteractDelegate;
+using Little_Choice_Based_RPG.Resources.Entities.Conceptual;
+using Little_Choice_Based_RPG.Types.EntityProperties;
 
 namespace Little_Choice_Based_RPG.Managers.Player_Manager.Frontend.UserInterface
 {
     // Outlines the possible interface styles to be used by the UserInterfaceHandler
     public interface IUserInterface
     {
-        public string OutputMainBody();
-
+        public void RunMenu();
+        /*
+        public IInvokableInteraction RequestUserChoosesInteraction(List<IInvokableInteraction> possibleInteractionChoices);
+        public GameObject RequestUserChoosesGameObject(List<EntityProperty>? propertyFilter = null);
+        */
 
 
         /*
