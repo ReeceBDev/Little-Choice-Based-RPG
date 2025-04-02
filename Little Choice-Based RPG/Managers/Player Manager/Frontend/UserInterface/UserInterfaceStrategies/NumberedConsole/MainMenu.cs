@@ -8,16 +8,14 @@ namespace Little_Choice_Based_RPG.Managers.Player_Manager.Frontend.UserInterface
 {
     public class MainMenu : IUserInterface
     {
-        public string OutputMainBody()
+        public void RunMenu()
         {
-            string userInterfaceStyle = string.Join("\n",
+            Console.WriteLine(string.Join("\n",
                           $" ===========-===== WELCOME TO THE GAME ===== ----========-========-= --..-- .",
                           @"{1. Start G\name\n\n\\\\\\\\\\\n\n\n\n }",
                           $" ====-===- =--=-=--_-----_--= =- -_ ._",
                           $" ===========",
-                          $">>> ");
-
-            return userInterfaceStyle;
+                          $">>> "));
         }
     }
 }

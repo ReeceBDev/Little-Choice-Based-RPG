@@ -8,9 +8,9 @@ namespace Little_Choice_Based_RPG.Managers.Player_Manager.Frontend.UserInterface
 {
     public class InteractionMenu : IUserInterface
     {
-        public string OutputMainBody()
+        public void RunMenu()
         {
-            string userInterfaceStyle = string.Join("\n",
+            Console.WriteLine(string.Join("\n",
                           $" =You have opened your inventory INVENTORY SCREEN :: CURRENT WEIGHT 0/0 MAN -- .",
                           @"{1. next screen}",
                           $" =2. previous screen===-===- =--=-=--_-----_--= =- -_ ._",
@@ -18,9 +18,7 @@ namespace Little_Choice_Based_RPG.Managers.Player_Manager.Frontend.UserInterface
                           $" ==4. inspect item=========",
                           $" ==5. drop item=========",
                           $" ==6. exit to main menu=========",
-                          $">>> ");
-
-            return userInterfaceStyle;
+                          $">>> "));
         }
     }
 }
