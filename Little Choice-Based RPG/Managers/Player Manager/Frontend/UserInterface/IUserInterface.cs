@@ -22,6 +22,7 @@ namespace Little_Choice_Based_RPG.Managers.Player_Manager.Frontend.UserInterface
     // Outlines the possible interface styles to be used by the UserInterfaceHandler
     public interface IUserInterface
     {
+        static uint uniqueIdentifier;
         public void RunMenu();
         /*
         public IInvokableInteraction RequestUserChoosesInteraction(List<IInvokableInteraction> possibleInteractionChoices);
