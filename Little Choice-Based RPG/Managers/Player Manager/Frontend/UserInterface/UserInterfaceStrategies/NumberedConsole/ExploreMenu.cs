@@ -431,7 +431,7 @@ namespace Little_Choice_Based_RPG.Managers.Player_Manager.Frontend.UserInterface
             return formattedObjectList;
         }
 
-        private void ReturnToMainMenu()
+        private void ReturnToMainMenu(IUserInterface currentInterface)
         {
             changeInterfaceStyleCallback(new MainMenu());
             exitExploreMenu = true;
