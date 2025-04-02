@@ -1,4 +1,5 @@
-﻿using Little_Choice_Based_RPG.Types.EntityProperties;
+﻿using Little_Choice_Based_RPG.Managers.Player_Manager.Frontend.UserInterface;
+using Little_Choice_Based_RPG.Types.EntityProperties;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +10,6 @@ namespace Little_Choice_Based_RPG.Resources.Systems.Damage.Break
 {
     public interface IBreakable
     {
-        void Break();
+        void Break(IUserInterface mutexHolder);
     }
 }

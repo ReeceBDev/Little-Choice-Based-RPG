@@ -1,4 +1,5 @@
-﻿using Little_Choice_Based_RPG.Resources.Entities.Conceptual;
+﻿using Little_Choice_Based_RPG.Managers.Player_Manager.Frontend.UserInterface;
+using Little_Choice_Based_RPG.Resources.Entities.Conceptual;
 using Little_Choice_Based_RPG.Types.EntityProperties;
 using System;
 using System.Collections.Generic;
@@ -10,6 +11,6 @@ namespace Little_Choice_Based_RPG.Resources.Systems.Damage.Repair
 {
     public interface IRepairable
     {
-        void Repair(GameObject withRepairAsset);
+        void Repair(IUserInterface mutexHolder, GameObject withRepairAsset);
     }
 }
