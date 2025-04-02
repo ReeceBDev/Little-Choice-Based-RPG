@@ -1,4 +1,5 @@
-﻿using Little_Choice_Based_RPG.Resources.Entities.Conceptual;
+﻿using Little_Choice_Based_RPG.Managers.Player_Manager.Frontend.UserInterface;
+using Little_Choice_Based_RPG.Resources.Entities.Conceptual;
 using Little_Choice_Based_RPG.Resources.Systems.Damage.Repair;
 using Little_Choice_Based_RPG.Types.EntityProperties;
 using System;
@@ -15,15 +16,15 @@ namespace Little_Choice_Based_RPG.Resources.Systems.Damage.Repair
         static RepairSystem()
         {
             //RepairSystem logic
-            PropertyValidation.CreateValidProperty("IsRepairable", PropertyType.Boolean); //Activates all this class and all of these properties when true :)
-            PropertyValidation.CreateValidProperty("IsRepairableByChoice", PropertyType.Boolean); //Lets players choose to repair it by choice.
+            PropertyValidation.CreateValidProperty("Repair.IsRepairable", PropertyType.Boolean); //Activates all this class and all of these properties when true :)
+            PropertyValidation.CreateValidProperty("Repair.IsRepairableByChoice", PropertyType.Boolean); //Lets players choose to repair it by choice.
             PropertyValidation.CreateValidProperty("Repair.MustRequireTool", PropertyType.Boolean); //Requires tools if true, but may be repaired by hand if not.
             PropertyValidation.CreateValidProperty("Repair.RepairToolType", PropertyType.String); //Must match the type on the repair tool (subject to change upon fleshing out this system.)
 
             //Descriptors
-            PropertyValidation.CreateValidProperty("Descriptor.Repairing", PropertyType.String); //Describes how it looks when it gets repaired.
-            PropertyValidation.CreateValidProperty("Descriptor.Choice.Repair.Interact", PropertyType.String); //Describes the interact option presented to the player.
-            PropertyValidation.CreateValidProperty("Descriptor.Choice.Repairing", PropertyType.String); //Describes the action of repairing it when a player uses the Repair() choice.
+            PropertyValidation.CreateValidProperty("Descriptor.Repair.Repairing", PropertyType.String); //Describes how it looks when it gets repaired.
+            PropertyValidation.CreateValidProperty("Descriptor.Repair.Choice.Interact", PropertyType.String); //Describes the interact option presented to the player.
+            PropertyValidation.CreateValidProperty("Descriptor.Repair.Choice.Repairing", PropertyType.String); //Describes the action of repairing it when a player uses the Repair() choice.
         }
 
         /// <summary> Allows repairs to occur on this object. Requires DamageCommon. </summary>
@@ -39,7 +40,7 @@ namespace Little_Choice_Based_RPG.Resources.Systems.Damage.Repair
         }
 
         /// <summary> Sets IsBroken to false, from the BreakSystem. </summary>
-        public void Repair(GameObject? repairTool = null)
+        public void Repair(IUserInterface mutexHolder, GameObject? repairTool = null)
         {
             //Guard clauses for the values in use.
             if (!parentObject.entityProperties.HasProperty("IsRepairable", true))
