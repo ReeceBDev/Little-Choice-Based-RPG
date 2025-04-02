@@ -15,7 +15,7 @@ using System.Reflection.Metadata;
 using System.Text;
 using System.Threading.Tasks;
 using static Little_Choice_Based_RPG.Managers.Player_Manager.Frontend.UserInterface.UserInterfaceHandler;
-using static Little_Choice_Based_RPG.Types.Interactions.InteractDelegate.InteractionWithNothing;
+using static Little_Choice_Based_RPG.Types.Interactions.InteractDelegate.InteractionUsingNothing;
 
 namespace Little_Choice_Based_RPG.Managers.Player_Manager.Frontend.UserInterface.UserInterfaceStyles
 {
@@ -60,8 +60,8 @@ namespace Little_Choice_Based_RPG.Managers.Player_Manager.Frontend.UserInterface
         {
             List<IInvokableInteraction> allCurrentChoices = new List<IInvokableInteraction>();
 
-            InteractUsingNothing returnToMainMenu = new InteractUsingNothing(ReturnToMainMenu);
-            allCurrentChoices.Add(new InteractionWithNothing(returnToMainMenu, "Go back to main menu.", "Returning to main menu...", InteractionRole.System));
+            InteractionUsingNothingDelegate returnToMainMenu = new InteractionUsingNothingDelegate(ReturnToMainMenu);
+            allCurrentChoices.Add(new InteractionUsingNothing(returnToMainMenu, "Go back to main menu.", "Returning to main menu...", InteractionRole.System));
 
             return allCurrentChoices;
         }
@@ -70,8 +70,7 @@ namespace Little_Choice_Based_RPG.Managers.Player_Manager.Frontend.UserInterface
         {
             List<IInvokableInteraction> allCurrentChoices = new List<IInvokableInteraction>();
 
-            InteractUsingNothing abortInteraction = new InteractUsingNothing(AbortInteraction);
-            allCurrentChoices.Add(new InteractionWithNothing(abortInteraction, "Cancel selection", "Cancelling this interaction...", InteractionRole.System));
+            //Add permanent sub-menu choices here.
 
             return allCurrentChoices;
         }
@@ -94,10 +93,12 @@ namespace Little_Choice_Based_RPG.Managers.Player_Manager.Frontend.UserInterface
         }
 
         /// <summary> Generates a Sub-Menu asking the player to choose an object from the room, which optionally matches property filters. </summary>
-        private GameObject? GenerateSubMenu(string requirementDescription, List<EntityProperty>? setFilters = null)
+        private void GenerateSubMenu(IInvokableInteraction sender, string requirementDescription, IInvokableInteraction abortInteraction, List<EntityProperty>? setFilters = null)
         {
             List<GameObject> possibleObjects = currentRoom.GetRoomObjects(setFilters);
             List<GameObject> listedObjects = new List<GameObject>();
+
+            subMenuSystemChoices.Add(abortInteraction);
 
             //Write the Sub-Menu to the user interface.
             ExploreMenuTextEntry[] listToWrite = InitialiseSubMenuTextEntries(textEntries, requirementDescription, listedObjects);
@@ -111,15 +112,22 @@ namespace Little_Choice_Based_RPG.Managers.Player_Manager.Frontend.UserInterface
             if (userInput <= (choiceIndexOffset + (listedObjects.Count - 1)))
             {
                 GameObject chosenObject = listedObjects.ElementAt(userInput - choiceIndexOffset);
-                return chosenObject;
-            }
 
+                sender.GiveRequiredParameter(chosenObject, this);
+
+                //Reset the additional SubMenu choice
+                subMenuSystemChoices.Remove(abortInteraction);
+            }
+            
             if (userInput > (choiceIndexOffset + (listedObjects.Count - 1)))
             {
                 subMenuSystemChoices.ElementAt(userInput - (listedObjects.Count + choiceIndexOffset));
-                // NEEDS TO BE IMPLEMENTED AS A CANCEL! Maybe returning null just means cancel? Or use events, sommehow.
-                throw new Exception("Not yet implemented.");
+                abortInteraction.AttemptInvoke(this);
+
+                //Reset the additional SubMenu choice
+                subMenuSystemChoices.Remove(abortInteraction);
             }
+            
 
             throw new Exception("userInput didn't land into either if statements. That means it hit neither the system options, nor the object options.");
         }
@@ -174,7 +182,7 @@ namespace Little_Choice_Based_RPG.Managers.Player_Manager.Frontend.UserInterface
             }
 
             //Invoke!
-            selectedInteraction.Invoke();
+            selectedInteraction.AttemptInvoke(this);
         }
 
         //Record the action in the TransitionalAction if the location around the player changed.
@@ -223,16 +231,12 @@ namespace Little_Choice_Based_RPG.Managers.Player_Manager.Frontend.UserInterface
             subMenu.Append(new ExploreMenuTextEntry(ExploreMenuIdentity.None, subMenuFormatPart2, 0));
 
             subMenu.Append(new ExploreMenuTextEntry(ExploreMenuIdentity.None, FormatSubMenuChoices(listedObjects), 0));
+            subMenu.Append(new ExploreMenuTextEntry(ExploreMenuIdentity.None, FormatChoices(subMenuSystemChoices), 0));
 
             subMenu.Append(new ExploreMenuTextEntry(ExploreMenuIdentity.None, GetStyleLine(4), 0));
             subMenu.Append(new ExploreMenuTextEntry(ExploreMenuIdentity.None, GetStyleLine(5), 0));
 
             return subMenu.ToArray();
-        }
-
-        private void AbortInteraction()
-        {
-            //Abort interaction...
         }
 
         private ExploreMenuTextEntry GetTextEntryByIdentifier(ExploreMenuIdentity targetIdentifier)
