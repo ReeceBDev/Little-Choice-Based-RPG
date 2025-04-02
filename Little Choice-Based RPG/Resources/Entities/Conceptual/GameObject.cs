@@ -14,14 +14,17 @@ using System.Threading.Tasks;
 namespace Little_Choice_Based_RPG.Resources.Entities.Conceptual
 {
     //public record struct EntityProperty(string Key, object Value);
-    public class GameObject
+    public class GameObject : PropertyContainer
     {
-        public PropertyHandler entityProperties = new PropertyHandler();
-
         public List<IInvokableInteraction> InteractionChoices = new List<IInvokableInteraction>();
 
         private protected static uint globalCounter;
 
+        static GameObject()
+        {
+            PropertyValidation.CreateValidProperty("Name", PropertyType.Boolean);
+            entityProperties.UpsertProperty("Name", "Davodian MkI Covered Faceplate");
+        }
         private protected GameObject(string setName, decimal setWeightInKG = 0m)
         {
             ID = ++globalCounter;
