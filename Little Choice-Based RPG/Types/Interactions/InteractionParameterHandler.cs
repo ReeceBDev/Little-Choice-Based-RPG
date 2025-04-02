@@ -34,10 +34,10 @@ namespace Little_Choice_Based_RPG.Types.Interactions.InteractDelegate
 
                 Regex grabTypeName = new Regex("(?<=_)[A-Za-z]*"); //Remember to throw guard clauses before allowing this to execute, to check that the InteractionParameter is formatted in a way that this class understands. It doesn't need to be a comprehensive validation.
                 string returnTypeName = grabTypeName.Match(enumName.ToString()).Value;
-                Type returnType = //reflection to turn the returnTypeName into the actual type.
+                //Type returnType = //reflection to turn the returnTypeName into the actual type.
                     
                     //Imitate the below with reflection. This should create delegates of different return types.
-                Delegate getTarget_GameObjectDelegate = Delegate.CreateDelegate(typeof(GameObject), GetTarget_GameObject, "getTarget_GameObjectDelegate");
+                //Delegate getTarget_GameObjectDelegate = Delegate.CreateDelegate(typeof(GameObject), GetTarget_GameObject, "getTarget_GameObjectDelegate");
             }
 
             // Do reflection to create these two lines automatically:
