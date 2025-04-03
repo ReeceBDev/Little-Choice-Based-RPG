@@ -13,17 +13,17 @@ namespace Little_Choice_Based_RPG.Resources
         public PropertyHandler entityProperties = new PropertyHandler();
         protected static uint globalCounter;
 
-        private static Dictionary<string, PropertyType> requiredProperties = new Dictionary<string, PropertyType>()
+        private readonly static Dictionary<string, PropertyType> requiredProperties = new Dictionary<string, PropertyType>()
         {
             { "ID", PropertyType.UInt32 },
         };
 
-        private static Dictionary<string, PropertyType> optionalProperties = new Dictionary<string, PropertyType>()
+        private readonly static Dictionary<string, PropertyType> optionalProperties = new Dictionary<string, PropertyType>()
         {
 
         };
 
-        private static Dictionary<string, object> defaultProperties = new Dictionary<string, object>()
+        private readonly static Dictionary<string, object> defaultProperties = new Dictionary<string, object>()
         {
             {"ID", ++globalCounter},
         };

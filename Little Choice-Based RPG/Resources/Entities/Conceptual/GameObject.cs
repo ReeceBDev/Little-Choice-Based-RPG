@@ -18,7 +18,7 @@ namespace Little_Choice_Based_RPG.Resources.Entities.Conceptual
     {
         public List<IInvokableInteraction> InteractionChoices = new List<IInvokableInteraction>();
 
-        private static Dictionary<string, PropertyType> requiredProperties = new Dictionary<string, PropertyType>()
+        private readonly static Dictionary<string, PropertyType> requiredProperties = new Dictionary<string, PropertyType>()
         {
             { "Name", PropertyType.String },
             { "WeightInKG", PropertyType.Decimal}
@@ -29,7 +29,7 @@ namespace Little_Choice_Based_RPG.Resources.Entities.Conceptual
 
         };
 
-        private static Dictionary<string, object> defaultProperties = new Dictionary<string, object>()
+        private readonly static Dictionary<string, object> defaultProperties = new Dictionary<string, object>()
         {
             {"Name", "Default Generic GameObject Name Test"},
             {"Weight", 1.0m},
