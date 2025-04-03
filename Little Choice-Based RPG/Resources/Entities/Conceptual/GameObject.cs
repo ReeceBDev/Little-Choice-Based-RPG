@@ -18,18 +18,42 @@ namespace Little_Choice_Based_RPG.Resources.Entities.Conceptual
     {
         public List<IInvokableInteraction> InteractionChoices = new List<IInvokableInteraction>();
 
-        private protected static uint globalCounter;
+        private static Dictionary<string, PropertyType> requiredProperties = new Dictionary<string, PropertyType>()
+        {
+            { "Name", PropertyType.String },
+            { "WeightInKG", PropertyType.Decimal}
+        };
+
+        private readonly static Dictionary<string, PropertyType> optionalProperties = new Dictionary<string, PropertyType>()
+        {
+
+        };
+
+        private static Dictionary<string, object> defaultProperties = new Dictionary<string, object>()
+        {
+            {"Name", "Default Generic GameObject Name Test"},
+            {"Weight", 1.0m},
+        };
 
         static GameObject()
         {
-            PropertyValidation.CreateValidProperty("Name", PropertyType.Boolean);
-            entityProperties.UpsertProperty("Name", "Davodian MkI Covered Faceplate");
+            //Define new required and optional ValidProperties for this class
+            DeclareNewPropertyTypes(requiredProperties);
+            DeclareNewPropertyTypes(optionalProperties);
         }
-        private protected GameObject(string setName, decimal setWeightInKG = 0m)
+
+        private protected GameObject(PropertyHandler? derivedProperties = null) 
+            : base(SetLocalProperties(derivedProperties ??= new PropertyHandler()))
         {
-            ID = ++globalCounter;
-            Name.Value = setName;
-            WeightInKG = setWeightInKG;
+            //Validate required properties have been set on entityProperties
+            ValidateRequiredProperties(requiredProperties);
+        }
+        private static PropertyHandler SetLocalProperties(PropertyHandler derivedProperties)
+        {
+            //Apply default properties for this class to the current list of derivedProperties
+            ApplyDefaultProperties(derivedProperties, defaultProperties);
+
+            return derivedProperties; //Return is required to give (base) the derived list.
         }
 
         private protected void Attach(GameObject attachee) // Cojoin together with another object
@@ -47,10 +71,6 @@ namespace Little_Choice_Based_RPG.Resources.Entities.Conceptual
         {
             return $"you lose {healthToLose}";
         }
-
-        public uint ID { get; init; } = 0U; // 0 is an null, Invalid ID
-        public SanitizedString Name { get; set; } = new SanitizedString("i'm an error");
         public HashSet<GameObject> AttachedObjects { get; private protected set; } = [];
-        public decimal WeightInKG { get; private protected set; }
     }
 }
