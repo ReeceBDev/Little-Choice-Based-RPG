@@ -11,6 +11,7 @@ namespace Little_Choice_Based_RPG.Types.EntityProperties
     {
         Boolean,
         String,
-        UInt32
+        UInt32,
+        Decimal
     }
 }
