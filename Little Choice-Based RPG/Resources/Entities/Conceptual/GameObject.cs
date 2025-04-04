@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Mail;
 using System.Numerics;
+using System.Runtime.CompilerServices;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
@@ -20,8 +21,9 @@ namespace Little_Choice_Based_RPG.Resources.Entities.Conceptual
 
         private readonly static Dictionary<string, PropertyType> requiredProperties = new Dictionary<string, PropertyType>()
         {
-            { "Name", PropertyType.String },
-            { "WeightInKG", PropertyType.Decimal}
+            {"Name", PropertyType.String},
+            {"Type", PropertyType.String},
+            {"WeightInKG", PropertyType.Decimal}
         };
 
         private readonly static Dictionary<string, PropertyType> optionalProperties = new Dictionary<string, PropertyType>()
@@ -42,9 +44,12 @@ namespace Little_Choice_Based_RPG.Resources.Entities.Conceptual
             DeclareNewPropertyTypes(optionalProperties);
         }
 
-        private protected GameObject(PropertyHandler? derivedProperties = null) 
+        private protected GameObject(PropertyHandler? derivedProperties = null)
             : base(SetLocalProperties(derivedProperties ??= new PropertyHandler()))
         {
+            //Set the type property to reflect the classes type.
+            entityProperties.UpsertProperty("Type", this.GetType());
+
             //Validate required properties have been set on entityProperties
             ValidateRequiredProperties(requiredProperties);
         }
