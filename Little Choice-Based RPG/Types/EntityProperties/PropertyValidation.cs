@@ -10,10 +10,18 @@ namespace Little_Choice_Based_RPG.Types.EntityProperties
     /// <summary> Defines all valid properties for the program. These properties may be applied to GameObjects, Rooms, etc. </summary>
     internal static class PropertyValidation 
     {
-        /// <summary> Central repository for schemas of every valid properties that may be used. 
-        /// If a property does not match a schema on this list, it cannot be used. </summary> 
         private static Dictionary<string, PropertyType> validProperties = new Dictionary<string, PropertyType>()
         {
+            //Defines default Properties.
+            {"Type", PropertyType.String},
+            {"IsImmaterial", PropertyType.Boolean},
+
+            //Strength System
+            {"IsWeightBearing", PropertyType.Boolean},
+            {"WeightInKG", PropertyType.UInt32},
+            {"StrengthInKG", PropertyType.UInt32},
+            {"TotalWeightHeldInKG", PropertyType.UInt32},
+
             //Living
             {"IsAlive", PropertyType.Boolean},
             {"Health", PropertyType.UInt32},
@@ -27,6 +35,11 @@ namespace Little_Choice_Based_RPG.Types.EntityProperties
             {"IsBurnt", PropertyType.Boolean},
 
             //Descriptor System
+            {"Descriptor.Generic.Current", PropertyType.String}, //The one the object is currently using
+            {"Descriptor.Inspect.Current", PropertyType.String}, //The one the object is currently using
+
+            {"Descriptor.Generic.Default", PropertyType.String},
+            {"Descriptor.Inspect.Default", PropertyType.String},
             {"Descriptor.Equip", PropertyType.String},
             {"Descriptor.Unequip", PropertyType.String},
 
