@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Little_Choice_Based_RPG.Resources
 {
-    public class PropertyContainer
+    public abstract class PropertyContainer
     {
         public PropertyHandler entityProperties = new PropertyHandler();
         protected static uint globalCounter;
