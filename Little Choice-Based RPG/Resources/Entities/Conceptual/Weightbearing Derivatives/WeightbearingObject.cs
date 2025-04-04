@@ -1,4 +1,5 @@
 ﻿using Little_Choice_Based_RPG.Resources.Entities.Conceptual;
+using Little_Choice_Based_RPG.Types.EntityProperties;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,27 +11,72 @@ namespace Little_Choice_Based_RPG.Resources.Entities.Conceptual.Weightbearing_De
 {
     public class WeightbearingObject : GameObject
     {
-        private protected decimal strength; // maximum weightbearing capacity
-        private protected decimal totalWeightHeldInKG = 0;
-        private protected WeightbearingObject(string setName, decimal setWeightInKG = 0m, decimal setStrengthInKG = 0m) : base (setName, setWeightInKG)
+        private readonly static Dictionary<string, PropertyType> requiredProperties = new Dictionary<string, PropertyType>()
         {
-            this.strength = setStrengthInKG = 0m;
+            {"IsWeightBearing", PropertyType.Boolean},
+            {"StrengthInKG", PropertyType.UInt32}, // maximum weightbearing capacity
+            {"TotalWeightHeldInKG", PropertyType.UInt32}, //current weight held
+        };
+
+        private readonly static Dictionary<string, PropertyType> optionalProperties = new Dictionary<string, PropertyType>()
+        {
+
+        };
+
+        private readonly static Dictionary<string, object> defaultProperties = new Dictionary<string, object>()
+        {
+            {"IsWeightBearing", true }
+        };
+
+        static WeightbearingObject()
+        {
+            //Define new required and optional ValidProperties for this class
+            DeclareNewPropertyTypes(requiredProperties);
+            DeclareNewPropertyTypes(optionalProperties);
         }
 
-        public virtual void Carry(GameObject gameObject)
+        private protected WeightbearingObject(PropertyHandler? derivedProperties = null)
+            : base(SetLocalProperties(derivedProperties ??= new PropertyHandler()))
         {
-            if (strength >= (totalWeightHeldInKG + gameObject.WeightInKG))
-            {
-                Attach(gameObject);
-                totalWeightHeldInKG += gameObject.WeightInKG;
-            }
-            else
-                throw new Exception("the object is too heavy to be picked up by this"); // I dont think this should be handled like this. Shouldnt it just try something else if its an NPC or say this to the player?
+            //Validate required properties have been set on entityProperties
+            ValidateRequiredProperties(requiredProperties);
         }
-        public void Drop(GameObject gameObject)
+
+        private static PropertyHandler SetLocalProperties(PropertyHandler derivedProperties)
         {
-            Unattach(gameObject);
-            totalWeightHeldInKG -= gameObject.WeightInKG;
+            //Apply default properties for this class to the current list of derivedProperties
+            ApplyDefaultProperties(derivedProperties, defaultProperties);
+
+            return derivedProperties; //Return is required to give (base) the derived list.
         }
+        public void Carry(GameObject target)
+        {
+            if (!entityProperties.HasProperty("IsWeightBearing", true))
+                throw new Exception($"{this} is unable to hold any weight itself!");
+
+            uint totalStrength = (uint)entityProperties.GetPropertyValue("StrengthInKG");
+            uint weightHeld = (uint)entityProperties.GetPropertyValue("TotalWeightHeldInKG");
+
+            uint targetWeight = (uint)target.entityProperties.GetPropertyValue("WeightInKG");
+
+            if (totalStrength < (weightHeld + targetWeight))
+                throw new Exception("the object is too heavy to be picked up by this"); // This should just be an error, really.
+
+            Attach(target);
+            entityProperties.UpdateProperty("TotalWeightHeldInKG", weightHeld + targetWeight);
+        }
+
+        public void Drop(GameObject target)
+        {
+            uint targetWeight = (uint)target.entityProperties.GetPropertyValue("WeightInKG");
+            uint weightHeld = (uint)entityProperties.GetPropertyValue("TotalWeightHeldInKG");
+
+            if (0 > (weightHeld - targetWeight))
+                throw new Exception($"{this} went below 0kg weight held when it tried to drop the {target}. That shouldn't happen!");
+
+            Unattach(target);
+            entityProperties.UpdateProperty("TotalWeightHeldInKG", weightHeld - targetWeight);
+        }
+
     }
 }
