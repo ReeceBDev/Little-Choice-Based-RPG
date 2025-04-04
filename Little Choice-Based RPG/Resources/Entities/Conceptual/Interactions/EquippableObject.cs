@@ -4,6 +4,7 @@ using Little_Choice_Based_RPG.Types.EntityProperties;
 using Microsoft.VisualBasic;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.Metrics;
 using System.Linq;
 using System.Numerics;
 using System.Runtime.CompilerServices;
@@ -16,7 +17,9 @@ namespace Little_Choice_Based_RPG.Resources.Entities.Conceptual.Interactions
     {
         private readonly static Dictionary<string, PropertyType> requiredProperties = new Dictionary<string, PropertyType>()
         {
-
+            {"Descriptor.IsEquipped", PropertyType.Boolean},
+            {"Descriptor.Equip", PropertyType.String},
+            {"Descriptor.Unequip", PropertyType.String},
         };
 
         private readonly static Dictionary<string, PropertyType> optionalProperties = new Dictionary<string, PropertyType>()
@@ -26,17 +29,19 @@ namespace Little_Choice_Based_RPG.Resources.Entities.Conceptual.Interactions
 
         private readonly static Dictionary<string, object> defaultProperties = new Dictionary<string, object>()
         {
-
+            {"Descriptor.IsEquipped", false},
+            {"Descriptor.Equip", "You equip this and feel much better prepared for the Potsun Burran and its challenges." },
+            {"Descriptor.Unequip", "Unequipping it with due care, you free yourself up for something else in its place." }
         };
 
-        static changeme()
+        static EquippableObject()
         {
             //Define new required and optional ValidProperties for this class
             DeclareNewPropertyTypes(requiredProperties);
             DeclareNewPropertyTypes(optionalProperties);
         }
 
-        private protected changeme(PropertyHandler? derivedProperties = null)
+        private protected EquippableObject(PropertyHandler? derivedProperties = null)
             : base(SetLocalProperties(derivedProperties ??= new PropertyHandler()))
         {
             //Validate required properties have been set on entityProperties
@@ -50,11 +55,7 @@ namespace Little_Choice_Based_RPG.Resources.Entities.Conceptual.Interactions
 
             return derivedProperties; //Return is required to give (base) the derived list.
         }
-        public EquippableObject(string setName, string newGenericDescriptor, string newInspectDescriptor, decimal setWeightInKG = 0m)
-: base(setName, newGenericDescriptor, newInspectDescriptor, setWeightInKG)
-        {
 
-        }
         /*
         public virtual void HandleEquipChoices()
         {
@@ -64,26 +65,14 @@ namespace Little_Choice_Based_RPG.Resources.Entities.Conceptual.Interactions
                 ChoiceHandler.Add(new Choice($"Unequip the {this.Name}.", Unequip));
         }
         */
-        public virtual void ApplyModifiers()
-        {
 
-        }
-        public virtual void RemoveModifiers()
-        {
-
-        }
         public void Equip()
         {
-            Console.WriteLine(EquipDescriptor);
-            ApplyModifiers();
+            Console.WriteLine(entityProperties.GetPropertyValue("Descriptor.Equip"));
         }
         public void Unequip()
         {
-            Console.WriteLine(UnequipDescriptor);
-            RemoveModifiers();
+            Console.WriteLine(entityProperties.GetPropertyValue("Descriptor.Unequip"));
         }
-        public string EquipDescriptor { get; set; } = "You equip this and feel much better prepared for the Potsun Burran and its challenges.";
-        public string UnequipDescriptor { get; set; } = "Unequipping it with due care, you free yourself up for something else in its place.";
-        public bool IsEquipped { get; set; } = false;
     }
 }
