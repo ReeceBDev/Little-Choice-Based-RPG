@@ -1,0 +1,32 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Little_Choice_Based_RPG.Resources.Entities.Conceptual.Weightbearing_Derivatives.LivingCreature" Collapsed="true">
+    <Position X="6.75" Y="8.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAg=</HashCode>
+      <FileName>Resources\Entities\Conceptual\Weightbearing Derivatives\LivingCreature.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Little_Choice_Based_RPG.Resources.Entities.Conceptual.Interactions.EquippableObject" Collapsed="true">
+    <Position X="2.25" Y="8.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAggABAAAAAAAAAAgAAAAAYAACAA=</HashCode>
+      <FileName>Resources\Entities\Conceptual\Interactions\EquippableObject.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Little_Choice_Based_RPG.Resources.Entities.Physical.Furniture.Chair" Collapsed="true">
+    <Position X="4.5" Y="8.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Resources\Entities\Physical\Furniture\Chair.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Little_Choice_Based_RPG.Resources.Entities.Physical.Plants.Tree" Collapsed="true">
+    <Position X="9.75" Y="8.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAIAAAAAEAAQBACAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Resources\Entities\Physical\Plants\Tree.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>
