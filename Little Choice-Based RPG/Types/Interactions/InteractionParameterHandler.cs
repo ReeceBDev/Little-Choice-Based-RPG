@@ -41,10 +41,11 @@ namespace Little_Choice_Based_RPG.Types.Interactions.InteractDelegate
             }
 
             // Do reflection to create these two lines automatically:
-            GetGameObjectDelegate getTarget_GameObjectDelegate = GetTarget_GameObject;
-            parameterHandlers.Add(InteractionParameter.Target_GameObject, getTarget_GameObjectDelegate);
+            //GetGameObjectDelegate getTarget_GameObjectDelegate = GetTarget_GameObject;
+            //parameterHandlers.Add(InteractionParameter.Target_GameObject, getTarget_GameObjectDelegate);
         }
         
+        /*
         public static T GetParameter<T>(InteractionParameter requiredParameter) // Entry point. Should basically be a dynamically written switch statement pointing to delegates of other methods.
         {
             if (!parameterHandlers.ContainsKey(requiredParameter))
@@ -70,5 +71,6 @@ namespace Little_Choice_Based_RPG.Types.Interactions.InteractDelegate
         {
             //Launchs an event requesting user input, maybe sending the struct GameObjectRequest at the top of this document?
         }
+        */
     }
 }
