@@ -51,7 +51,7 @@ namespace Little_Choice_Based_RPG.Resources.Rooms
             List<uint> entityIDs = new List<uint>();
             foreach (GameObject entity in roomEntities)
             {
-                entityIDs.Add(entity.ID);
+                entityIDs.Add((uint) entity.entityProperties.GetPropertyValue("ID"));
             }
             return entityIDs;
         }
@@ -125,11 +125,13 @@ namespace Little_Choice_Based_RPG.Resources.Rooms
                 //test the ID for all the objects in the room
                 foreach (GameObject entity in roomEntities)
                 {
+                    uint entityID = (uint)entity.entityProperties.GetPropertyValue("ID");
+
                     //when an object exists, test if it matches state
-                    if (entity.ID == requiredEntityState.EntityReferenceID)
+                    if (entityID == requiredEntityState.EntityReferenceID)
                     {
                         if (CheckStateIsValid(requiredEntityState, entity))
-                            validEntityStates.Add(entity.ID);
+                            validEntityStates.Add(entityID);
                     }
                 }
             }
@@ -141,7 +143,7 @@ namespace Little_Choice_Based_RPG.Resources.Rooms
         private protected bool CheckStateIsValid(EntityState testState, GameObject currentState)
         {
 
-            if (testState.EntityReferenceID == currentState.ID) //check if the entityIDs match
+            if (testState.EntityReferenceID == (uint) currentState.entityProperties.GetPropertyValue("ID")) //check if the entityIDs match
             {
                 //If no properties exist, then the object will be considered a match by default, since there are no properties being checked, just presence.
                 if (testState.RequiredProperties == null)
