@@ -1,5 +1,4 @@
-﻿using Little_Choice_Based_RPG.Resources.Choices;
-using Little_Choice_Based_RPG.Resources.Entities.Conceptual;
+﻿using Little_Choice_Based_RPG.Resources.Entities.Conceptual;
 using Little_Choice_Based_RPG.Resources.Entities.Conceptual.Interactions;
 using Little_Choice_Based_RPG.Types.EntityProperties;
 using System;
@@ -7,53 +6,47 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using static Little_Choice_Based_RPG.Resources.Choices.Choice;
 using static Little_Choice_Based_RPG.Types.Interactions.InteractDelegate.Interaction;
 
 namespace Little_Choice_Based_RPG.Resources.Entities.Physical.Plants
 {
     public class Tree : InteractableObject
     {
-        private protected bool isAudioBroken = true;
-        public Tree(string setName, string newGenericDescriptor, string newInspectDescriptor, decimal setWeightInKG = 0m)
-    : base(setName, newGenericDescriptor, newInspectDescriptor, setWeightInKG)
+        private readonly static Dictionary<string, PropertyType> requiredProperties = new Dictionary<string, PropertyType>()
         {
-            entityProperties.CreateProperty("IsBurnt", false); // temporarily burnt the trees
+
+        };
+
+        private readonly static Dictionary<string, PropertyType> optionalProperties = new Dictionary<string, PropertyType>()
+        {
+
+        };
+
+        private readonly static Dictionary<string, object> defaultProperties = new Dictionary<string, object>()
+        {
+
+        };
+
+        static Tree()
+        {
+            //Define new required and optional ValidProperties for this class
+            DeclareNewPropertyTypes(requiredProperties);
+            DeclareNewPropertyTypes(optionalProperties);
         }
 
-        public override List<Choice> GenerateChoices()
+        public Tree(Dictionary<string, object>? derivedProperties = null)
+            : base(SetLocalProperties(derivedProperties ??= new Dictionary<string, object>()))
         {
-            List<Choice> choices = new List<Choice>();
-            choices.AddRange(HandleFixChoices());
-            return choices;
-        }
-        private List<Choice> HandleFixChoices()
-        {
-            List<Choice> choices = new List<Choice>();
-
-            if (isAudioBroken == true)
-            {
-                InteractOnSourcePropertiesUsingTargetObject repairInteractDelegate = Repair;
-                choices.Add(new Choice("Repair - Re-calibrate the helmets longitudinal wave sensor-array.", this, repairInteractDelegate));
-            }
-
-            if (isAudioBroken == false)
-            {
-                InteractOnSourceProperties breakInteractDelegate = Break;
-                choices.Add(new Choice("Damage - Intentionally misalign the helmets longitudinal wave sensor-array", this, breakInteractDelegate));
-            }
-            return choices;
+            //Validate required properties have been set on entityProperties
+            ValidateRequiredProperties(requiredProperties);
         }
 
-        public void Repair(PropertyHandler setEntityProperties, GameObject requiredObject)
+        private static Dictionary<string, object> SetLocalProperties(Dictionary<string, object> derivedProperties)
         {
-            isAudioBroken = false;
-            Console.WriteLine("You fixed the helmet, yayy");
-        }
-        public void Break(PropertyHandler setEntityProperties)
-        {
-            isAudioBroken = true;
-            Console.WriteLine("its broken again oh nooo");
+            //Apply default properties for this class to the current list of derivedProperties
+            ApplyDefaultProperties(derivedProperties, defaultProperties);
+
+            return derivedProperties; //Return is required to give (base) the derived list.
         }
     }
 }
