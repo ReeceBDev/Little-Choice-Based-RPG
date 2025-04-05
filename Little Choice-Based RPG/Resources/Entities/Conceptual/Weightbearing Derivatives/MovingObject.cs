@@ -13,7 +13,8 @@ namespace Little_Choice_Based_RPG.Resources.Entities.Conceptual.Weightbearing_De
     {
         private readonly static Dictionary<string, PropertyType> requiredProperties = new Dictionary<string, PropertyType>()
         {
-
+            { "CanMove", PropertyType.Boolean },
+            { "Position", PropertyType.UInt32 }
         };
 
         private readonly static Dictionary<string, PropertyType> optionalProperties = new Dictionary<string, PropertyType>()
@@ -23,7 +24,7 @@ namespace Little_Choice_Based_RPG.Resources.Entities.Conceptual.Weightbearing_De
 
         private readonly static Dictionary<string, object> defaultProperties = new Dictionary<string, object>()
         {
-
+            { "CanMove", true }
         };
 
         static MovingObject()
@@ -33,14 +34,14 @@ namespace Little_Choice_Based_RPG.Resources.Entities.Conceptual.Weightbearing_De
             DeclareNewPropertyTypes(optionalProperties);
         }
 
-        private protected MovingObject(PropertyHandler? derivedProperties = null)
-            : base(SetLocalProperties(derivedProperties ??= new PropertyHandler()))
+        private protected MovingObject(Dictionary<string, object>? derivedProperties = null)
+            : base(SetLocalProperties(derivedProperties ??= new Dictionary<string, object>()))
         {
             //Validate required properties have been set on entityProperties
             ValidateRequiredProperties(requiredProperties);
         }
 
-        private static PropertyHandler SetLocalProperties(PropertyHandler derivedProperties)
+        private static Dictionary<string, object> SetLocalProperties(Dictionary<string, object> derivedProperties)
         {
             //Apply default properties for this class to the current list of derivedProperties
             ApplyDefaultProperties(derivedProperties, defaultProperties);
