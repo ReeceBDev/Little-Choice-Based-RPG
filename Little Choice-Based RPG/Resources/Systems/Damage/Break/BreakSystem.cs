@@ -1,4 +1,5 @@
-﻿using Little_Choice_Based_RPG.Resources.Entities.Conceptual;
+﻿using Little_Choice_Based_RPG.Managers.Player_Manager.Frontend.UserInterface;
+using Little_Choice_Based_RPG.Resources.Entities.Conceptual;
 using Little_Choice_Based_RPG.Resources.Systems.Damage.Repair;
 using Little_Choice_Based_RPG.Types.EntityProperties;
 using System;
@@ -31,9 +32,11 @@ namespace Little_Choice_Based_RPG.Resources.Systems.Damage.Break
         /// <summary> Allows objects to break. Requires DamageCommon. </summary>
         public BreakSystem(GameObject instantiatingObject)
         {
+            /*
             //Enforces IRepairable on the instantiating class
             if (!(instantiatingObject is IBreakable))
                 throw new Exception($"{instantiatingObject.GetType()} does not implement IBreakable!");
+            */
 
             DamageCommon damageCommonInstantisation = DamageCommon.Instance;
 
@@ -42,7 +45,7 @@ namespace Little_Choice_Based_RPG.Resources.Systems.Damage.Break
         }
 
         /// <summary> Sets IsBroken to true. </summary>
-        public void Break()
+        public void Break(IUserInterface mutexHolder)
         {
             //Guard clauses for the values in use.
             if (!parentObject.entityProperties.HasProperty("IsBreakable", true))
