@@ -38,8 +38,8 @@ namespace Little_Choice_Based_RPG.Resources.Entities.Immaterial.Transition
             DeclareNewPropertyTypes(optionalProperties);
         }
 
-        private protected RoomDirection(PropertyHandler? derivedProperties = null)
-            : base(SetLocalProperties(derivedProperties ??= new PropertyHandler()))
+        private protected RoomDirection(Dictionary<string, object>? derivedProperties = null)
+            : base(SetLocalProperties(derivedProperties ??= new Dictionary<string, object>()))
         {
             // When the direction is associated with an object, make it invisible by default.
             // This forces the implementing object to reveal the direction when accessible, i.e. a Door being open.
@@ -50,7 +50,7 @@ namespace Little_Choice_Based_RPG.Resources.Entities.Immaterial.Transition
             ValidateRequiredProperties(requiredProperties);
         }
 
-        private static PropertyHandler SetLocalProperties(PropertyHandler derivedProperties)
+        private static Dictionary<string, object> SetLocalProperties(Dictionary<string, object> derivedProperties)
         {
             //Apply default properties for this class to the current list of derivedProperties
             ApplyDefaultProperties(derivedProperties, defaultProperties);
