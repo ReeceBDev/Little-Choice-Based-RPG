@@ -12,27 +12,7 @@ namespace Little_Choice_Based_RPG.Types.EntityProperties
     {
         /// <summary> Central repository for schemas of every valid properties that may be used. 
         /// If a property does not match a schema on this list, it cannot be used. </summary> 
-        private static Dictionary<string, PropertyType> validProperties = new Dictionary<string, PropertyType>()
-        {
-            //Living
-            {"IsAlive", PropertyType.Boolean},
-            {"Health", PropertyType.UInt32},
-
-            //Player
-            {"CanSee", PropertyType.Boolean},
-            {"CanMove", PropertyType.Boolean},
-            {"IsKnockedDown", PropertyType.Boolean},
-
-            //Object Damage
-            {"IsBurnt", PropertyType.Boolean},
-
-            //Descriptor System
-            {"Descriptor.Equip", PropertyType.String},
-            {"Descriptor.Unequip", PropertyType.String},
-
-            //DavodianMk1Helmet Specific
-            {"IsAudioBroken", PropertyType.Boolean}
-        };
+        private static Dictionary<string, PropertyType> validProperties = new Dictionary<string, PropertyType>();
 
         /// <summary> Defines additional properties. </summary>
         public static void CreateValidProperty(string setPropertyName, PropertyType setPropertyType)
