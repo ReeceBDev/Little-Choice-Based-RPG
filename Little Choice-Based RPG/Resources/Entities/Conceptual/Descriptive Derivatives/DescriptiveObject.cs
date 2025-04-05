@@ -42,8 +42,8 @@ namespace Little_Choice_Based_RPG.Resources.Entities.Conceptual.Descriptive_Deri
             DeclareNewPropertyTypes(optionalProperties);
         }
 
-        private protected DescriptiveObject(PropertyHandler? derivedProperties = null)
-            : base(SetLocalProperties(derivedProperties ??= new PropertyHandler()))
+        private protected DescriptiveObject(Dictionary<string, object>? derivedProperties = null)
+            : base(SetLocalProperties(derivedProperties ??= new Dictionary<string, object>()))
         {
             //Freeze default descriptors.
             entityProperties.FreezeProperty("Descriptor.Generic.Default");
@@ -57,7 +57,7 @@ namespace Little_Choice_Based_RPG.Resources.Entities.Conceptual.Descriptive_Deri
             ValidateRequiredProperties(requiredProperties);
         }
 
-        private static PropertyHandler SetLocalProperties(PropertyHandler derivedProperties)
+        private static Dictionary<string, object> SetLocalProperties(Dictionary<string, object> derivedProperties)
         {
             //Apply default properties for this class to the current list of derivedProperties
             ApplyDefaultProperties(derivedProperties, defaultProperties);

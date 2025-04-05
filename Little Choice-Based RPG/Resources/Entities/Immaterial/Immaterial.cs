@@ -32,8 +32,8 @@ namespace Little_Choice_Based_RPG.Resources.Entities.Immaterial
             DeclareNewPropertyTypes(optionalProperties);
         }
 
-        private protected Immaterial(PropertyHandler? derivedProperties = null)
-            : base(SetLocalProperties(derivedProperties ??= new PropertyHandler()))
+        private protected Immaterial(Dictionary<string, object>? derivedProperties = null)
+            : base(SetLocalProperties(derivedProperties ??= new Dictionary<string, object>()))
         {
             //Freeze IsImmaterial property.
             entityProperties.FreezeProperty("IsImmaterial");
@@ -42,7 +42,7 @@ namespace Little_Choice_Based_RPG.Resources.Entities.Immaterial
             ValidateRequiredProperties(requiredProperties);
         }
 
-        private static PropertyHandler SetLocalProperties(PropertyHandler derivedProperties)
+        private static Dictionary<string, object> SetLocalProperties(Dictionary<string, object> derivedProperties)
         {
             //Apply default properties for this class to the current list of derivedProperties
             ApplyDefaultProperties(derivedProperties, defaultProperties);

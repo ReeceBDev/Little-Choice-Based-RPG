@@ -41,14 +41,14 @@ namespace Little_Choice_Based_RPG.Resources.Entities.Conceptual.Interactions
             DeclareNewPropertyTypes(optionalProperties);
         }
 
-        private protected EquippableObject(PropertyHandler? derivedProperties = null)
-            : base(SetLocalProperties(derivedProperties ??= new PropertyHandler()))
+        private protected EquippableObject(Dictionary<string, object>? derivedProperties = null)
+            : base(SetLocalProperties(derivedProperties ??= new Dictionary<string, object>()))
         {
             //Validate required properties have been set on entityProperties
             ValidateRequiredProperties(requiredProperties);
         }
 
-        private static PropertyHandler SetLocalProperties(PropertyHandler derivedProperties)
+        private static Dictionary<string, object> SetLocalProperties(Dictionary<string, object> derivedProperties)
         {
             //Apply default properties for this class to the current list of derivedProperties
             ApplyDefaultProperties(derivedProperties, defaultProperties);
