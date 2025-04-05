@@ -25,7 +25,7 @@ internal class TextBasedRPG
         mainWorld.GenerateAllRooms();
 
         uint spawnRoomID = mainWorld.Rooms.ElementAt(1).Key;
-        var currentPlayer = new Player("Player One", spawnRoomID, 66, 32);
+        var currentPlayer = new Player(spawnRoomID);
         var currentUserInterfaceHandler = new UserInterfaceHandler(currentPlayer, mainWorld);
 
         while (true)
