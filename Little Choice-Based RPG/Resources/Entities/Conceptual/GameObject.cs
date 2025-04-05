@@ -1,4 +1,5 @@
-﻿using Little_Choice_Based_RPG.Resources.Rooms;
+﻿using Little_Choice_Based_RPG.Resources.Entities.Physical.Furniture;
+using Little_Choice_Based_RPG.Resources.Rooms;
 using Little_Choice_Based_RPG.Types;
 using Little_Choice_Based_RPG.Types.EntityProperties;
 using Little_Choice_Based_RPG.Types.Interactions.InteractDelegate;
@@ -15,7 +16,7 @@ using System.Threading.Tasks;
 namespace Little_Choice_Based_RPG.Resources.Entities.Conceptual
 {
     //public record struct EntityProperty(string Key, object Value);
-    public class GameObject : PropertyContainer
+    public abstract class GameObject : PropertyContainer
     {
         public List<IInvokableInteraction> InteractionChoices = new List<IInvokableInteraction>();
 
@@ -34,7 +35,7 @@ namespace Little_Choice_Based_RPG.Resources.Entities.Conceptual
         private readonly static Dictionary<string, object> defaultProperties = new Dictionary<string, object>()
         {
             {"Name", "Default Generic GameObject Name Test"},
-            {"Weight", 1.0m},
+            {"WeightInKG", 1.0m},
         };
 
         static GameObject()
@@ -44,16 +45,17 @@ namespace Little_Choice_Based_RPG.Resources.Entities.Conceptual
             DeclareNewPropertyTypes(optionalProperties);
         }
 
-        private protected GameObject(PropertyHandler? derivedProperties = null)
-            : base(SetLocalProperties(derivedProperties ??= new PropertyHandler()))
+        private protected GameObject(Dictionary<string, object>? derivedProperties = null)
+            : base(SetLocalProperties(derivedProperties ??= new Dictionary<string, object>()))
         {
             //Set the type property to reflect the classes type.
-            entityProperties.UpsertProperty("Type", this.GetType());
+            entityProperties.UpsertProperty("Type", this.GetType().ToString());
 
             //Validate required properties have been set on entityProperties
             ValidateRequiredProperties(requiredProperties);
         }
-        private static PropertyHandler SetLocalProperties(PropertyHandler derivedProperties)
+
+        private static Dictionary<string, object> SetLocalProperties(Dictionary<string, object> derivedProperties)
         {
             //Apply default properties for this class to the current list of derivedProperties
             ApplyDefaultProperties(derivedProperties, defaultProperties);
