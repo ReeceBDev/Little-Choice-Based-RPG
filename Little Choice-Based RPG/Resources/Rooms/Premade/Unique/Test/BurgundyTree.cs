@@ -1,7 +1,10 @@
 ﻿using Little_Choice_Based_RPG.Resources.Entities.Conceptual;
-using Little_Choice_Based_RPG.Resources.Entities.Physical.Equippables.Armour.Helmets;
 using Little_Choice_Based_RPG.Resources.Entities.Physical.Furniture;
 using Little_Choice_Based_RPG.Resources.Entities.Physical.Plants;
+using Little_Choice_Based_RPG.Resources.Systems.Damage.Break;
+using Little_Choice_Based_RPG.Resources.Systems.Damage.Flammability;
+using Little_Choice_Based_RPG.Resources.Systems.Damage.Repair;
+using Little_Choice_Based_RPG.Resources.Systems.Gear;
 using Little_Choice_Based_RPG.Types.EntityProperties;
 using System;
 using System.Collections.Generic;
@@ -38,32 +41,51 @@ Dependent on Tree = Burnt, Chair being Untouched
             Name = setName;
             defaultDescriptor = setDefaultDescriptor;
 
-            Chair burgundyWoodChair = new Chair("Burgundy Chair", "You are looking at a cool chair", "A chair sits here.");
-            Tree burgundyWoodTree = new Tree("Burgundy Tree", "That's a burgundy-leaved tree.", "A tree is here. It's cool. And burgundy.");
+            //Create test object to initialise the current systems:
+            new RepairSystem(new GameObject());
+            new FlammabilitySystem(new GameObject());
+            new BreakSystem(new GameObject());
+            new GearSystem();
+
+            //Create new chair
+            Dictionary<string, object> newBurgundyWoodChair = new Dictionary<string, object>();
+            newBurgundyWoodChair.Add("Name", "Burgundy-Wood Chair");
+            newBurgundyWoodChair.Add("Descriptor.Generic.Default", "A chair sits here.");
+            newBurgundyWoodChair.Add("Descriptor.Inspect.Default", "You are looking at a cool chair.");
+
+            Chair burgundyWoodChair = new Chair(newBurgundyWoodChair);
+
+            //Create new tree
+            Dictionary<string, object> newBurgundyTree = new Dictionary<string, object>();
+            newBurgundyTree.Add("Name", "Burgundy Tree");
+            newBurgundyTree.Add("Descriptor.Generic.Default", "A tree is here. It's cool. And burgundy.");
+            newBurgundyTree.Add("Descriptor.Inspect.Default", "That's a burgundy-leaved tree.");
+
+            Tree burgundyTree = new Tree(newBurgundyTree);
 
             roomEntities.Add(burgundyWoodChair);
-            roomEntities.Add(burgundyWoodTree);
+            roomEntities.Add(burgundyTree);
 
             List<uint> conditionIDs = new();
             List<EntityState> conditionsList = new();
 
-            conditionsList.Add(new EntityState(burgundyWoodTree.ID, null));
+            conditionsList.Add(new EntityState((uint) burgundyTree.entityProperties.GetPropertyValue("ID"), null));
             ConditionalDescriptor descriptorCondition = new ConditionalDescriptor("Caramel and burgundy leaves rustle in the shallow breeze across the arid plains, the wind gently whipping around your ankles.", conditionsList);
             localConditionalDescriptors.Add(descriptorCondition);
 
             List<EntityState> conditionsList2 = new();
 
-            conditionsList2.Add(new EntityState(burgundyWoodChair.ID, null));
-            conditionsList2.Add(new EntityState(burgundyWoodTree.ID, null));
+            conditionsList2.Add(new EntityState((uint)burgundyWoodChair.entityProperties.GetPropertyValue("ID"), null));
+            conditionsList2.Add(new EntityState((uint)burgundyTree.entityProperties.GetPropertyValue("ID"), null));
             descriptorCondition = new ConditionalDescriptor("Gently falling from their branches, the occasional leaf drifts as a feather to rest upon a chair that sits beside the tree, carved from the same oakwood as the trunk it rests against.", conditionsList2);
             localConditionalDescriptors.Add(descriptorCondition);
 
             List<EntityState> conditionsList3 = new();
 
             var treeProperties = new List<EntityProperty>();
-            treeProperties.Add(new EntityProperty("IsBurnt", true));
+            treeProperties.Add(new EntityProperty("Flammability.IsBurnt", true));
 
-            conditionsList3.Add(new EntityState(burgundyWoodTree.ID, treeProperties));
+            conditionsList3.Add(new EntityState((uint)burgundyTree.entityProperties.GetPropertyValue("ID"), treeProperties));
             descriptorCondition = new ConditionalDescriptor("Burgundy leaves drift in the wind around a burnt husk, the trunk of a charred and forgotten tree holding up a singed chair. Perhaps this was a nice spot to sit and read, once.", conditionsList3, 1);
             localConditionalDescriptors.Add(descriptorCondition);
 
