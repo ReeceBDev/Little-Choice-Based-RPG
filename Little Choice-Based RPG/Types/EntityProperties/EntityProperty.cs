@@ -19,11 +19,11 @@ namespace Little_Choice_Based_RPG.Types.EntityProperties
         public void SetPropertyValue(object setPropertyValue)
         {
             if (!PropertyValidation.IsValidPropertyType(setPropertyValue))
-                throw new ArgumentException("PropertyType not valid. Tried to set a value for an EntityProperty that doesn't match a valid PropertyType!");
+                throw new ArgumentException($"PropertyType of {setPropertyValue.GetType()} on {setPropertyValue} not valid. Tried to set a value for an EntityProperty that doesn't match a valid PropertyType!");
 
             if (!PropertyValidation.IsValidPropertyValue(this.PropertyName, setPropertyValue))
-                throw new ArgumentException("PropertyType doesn't match this ValidProperty. Tried to set a value for an EntityProperty that doesn't match its required PropertyType!");
-                
+                throw new ArgumentException($"PropertyType {setPropertyValue.GetType()} on {setPropertyValue}, doesn't match the ValidProperty type assigned to {PropertyName}. Tried to set a value for an EntityProperty that doesn't match its required PropertyType!");
+
             if (ReadOnly)
                 throw new ArgumentException("This property is set to ReadOnly. Unable to set the property value!");
                     
@@ -39,7 +39,7 @@ namespace Little_Choice_Based_RPG.Types.EntityProperties
             if (PropertyValidation.IsValidPropertyName(setPropertyName))
                 PropertyName = setPropertyName;
             else
-                throw new ArgumentException("Name not valid. Tried to name an EntityProperty without a matching ValidProperty name!");
+                throw new ArgumentException($"Name {setPropertyName} not valid. Tried to name an EntityProperty without a matching ValidProperty name!");
         }
 
         public string PropertyName { get; private set; }
