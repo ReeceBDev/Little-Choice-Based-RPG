@@ -46,7 +46,7 @@ namespace Little_Choice_Based_RPG.Managers.Player_Manager.Frontend.UserInterface
             firstTimeSinceTransition = true;
 
             currentPlayer = player;
-            currentRoomID = player.Position;
+            currentRoomID = (uint) player.entityProperties.GetPropertyValue("Position");
             Room currentRoom = currentEnvironment.GetRoomByID(currentRoomID);
 
             systemChoices = InitialiseSystemChoices();
@@ -423,7 +423,7 @@ namespace Little_Choice_Based_RPG.Managers.Player_Manager.Frontend.UserInterface
             int choiceIndex = 0;
 
             while (choiceIndex < (listedObjects.Count))
-                formattedObjectList += ($"{choiceIndex++ + choiceIndexOffset}. {listedObjects.ElementAt(choiceIndex).Name} - {listedObjects.ElementAt(choiceIndex).ID}\n");
+                formattedObjectList += ($"{choiceIndex++ + choiceIndexOffset}. {listedObjects.ElementAt(choiceIndex).entityProperties.GetPropertyValue("Name")} - {listedObjects.ElementAt(choiceIndex).entityProperties.GetPropertyValue("ID")}\n");
 
             while (choiceIndex < (subMenuSystemChoices.Count))
                 formattedObjectList += ($"{choiceIndex++ + choiceIndexOffset}. {subMenuSystemChoices.ElementAt(choiceIndex).InteractionTitle}\n");
