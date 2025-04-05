@@ -35,13 +35,14 @@ namespace Little_Choice_Based_RPG.Resources
             DeclareNewPropertyTypes(optionalProperties);
         }
 
-        private protected PropertyContainer(PropertyHandler derivedProperties)
+        private protected PropertyContainer(Dictionary<string, object> derivedProperties)
         {
             //Apply default properties for this class to the current list of derivedProperties
             ApplyDefaultProperties(derivedProperties, defaultProperties);
 
             //Store the final list of properties
-            entityProperties = derivedProperties;
+            foreach (KeyValuePair<string, object> property in derivedProperties)
+                entityProperties.CreateProperty(property.Key, property.Value);
 
             //Validate required properties have been set on entityProperties
             ValidateRequiredProperties(requiredProperties);
@@ -54,11 +55,11 @@ namespace Little_Choice_Based_RPG.Resources
                 PropertyValidation.CreateValidProperty(property.Key, property.Value);
         }
 
-        private protected static void ApplyDefaultProperties(PropertyHandler derivedProperties, Dictionary<string, object> defaultProperties)
+        private protected static void ApplyDefaultProperties(Dictionary<string, object> derivedProperties, Dictionary<string, object> defaultProperties)
         {
             foreach (KeyValuePair<string, object> property in defaultProperties)
-                if (!derivedProperties.HasExistingPropertyName(property.Key))
-                    derivedProperties.UpsertProperty(property.Key, property.Value);
+                if (!derivedProperties.ContainsKey(property.Key))
+                    derivedProperties.Add(property.Key, property.Value);
         }
 
         private protected void ValidateRequiredProperties(Dictionary<string, PropertyType> testRequiredProperties)
