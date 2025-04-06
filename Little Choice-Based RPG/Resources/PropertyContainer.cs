@@ -1,6 +1,7 @@
 ﻿using Little_Choice_Based_RPG.Types.EntityProperties;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -8,9 +9,8 @@ using System.Threading.Tasks;
 
 namespace Little_Choice_Based_RPG.Resources
 {
-    public abstract class PropertyContainer
+    public abstract class PropertyContainer : IPropertyContainer
     {
-        public PropertyHandler entityProperties = new PropertyHandler();
         protected static uint globalCounter;
 
         private readonly static Dictionary<string, PropertyType> requiredProperties = new Dictionary<string, PropertyType>()
@@ -42,7 +42,7 @@ namespace Little_Choice_Based_RPG.Resources
 
             //Store the final list of properties
             foreach (KeyValuePair<string, object> property in derivedProperties)
-                entityProperties.CreateProperty(property.Key, property.Value);
+                Properties.CreateProperty(property.Key, property.Value);
 
             //Validate required properties have been set on entityProperties
             ValidateRequiredProperties(requiredProperties);
@@ -65,8 +65,19 @@ namespace Little_Choice_Based_RPG.Resources
         private protected void ValidateRequiredProperties(Dictionary<string, PropertyType> testRequiredProperties)
         {
             foreach (var property in testRequiredProperties)
-                if (!entityProperties.HasExistingPropertyName(property.Key))
-                    throw new Exception($"A required property has not been defined in {entityProperties}. Property name: {property.Key}");
+                if (!Properties.HasExistingPropertyName(property.Key))
+                    throw new Exception($"A required property has not been defined in {Properties}. Property name: {property.Key}");
         }
+
+        public event EventHandler<PropertyHandler> PropertiesChanged;
+
+        public PropertyHandler Properties
+        { 
+            get; 
+            set
+            {
+                field = value;
+                PropertiesChanged?.Invoke(this, Properties);
+            }
     }
 }
