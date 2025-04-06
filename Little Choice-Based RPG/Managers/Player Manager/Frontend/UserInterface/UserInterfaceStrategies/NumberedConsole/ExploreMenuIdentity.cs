@@ -13,6 +13,10 @@ namespace Little_Choice_Based_RPG.Managers.Player_Manager.Frontend.UserInterface
         TransitionalAction,
         CurrentDescription,
         HistoryLog,
-        AvailableChoices
+        AvailableChoices,
+
+        //Submenu
+        SubMenuTitle,
+        SubMenuOptions,
     }
 }
