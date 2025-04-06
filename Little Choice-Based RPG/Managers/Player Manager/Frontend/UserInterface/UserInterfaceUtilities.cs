@@ -15,8 +15,10 @@ namespace Little_Choice_Based_RPG.Managers.Player_Manager.Frontend.UserInterface
             Console.ReadKey();
         }
 
-        public static string WriteDialogue(string inputText, int textDelayInMs = 40)
+        public static string WriteDialogue(string inputText, uint setTextDelayInMs = 40)
         {
+            int textDelayInMs = (int) setTextDelayInMs;
+
             for (int i = 0; i < inputText.Length; i++)
             {
                 if (Console.KeyAvailable) textDelayInMs = 1;
