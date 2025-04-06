@@ -19,9 +19,8 @@ using static Little_Choice_Based_RPG.Types.Interactions.InteractDelegate.Interac
 
 namespace Little_Choice_Based_RPG.Managers.Player_Manager.Frontend.UserInterface.UserInterfaceStyles
 {
-       public class ExploreMenu : IUserInterface
+    public class ExploreMenu : IUserInterface
     {
-
         private protected uint currentRoomID;
         private protected Room currentRoom;
         private protected Player currentPlayer;
@@ -30,24 +29,28 @@ namespace Little_Choice_Based_RPG.Managers.Player_Manager.Frontend.UserInterface
         private List<IInvokableInteraction> subMenuSystemChoices;
 
         private bool exitExploreMenu;
-        private bool firstTimeSinceTransition;
-        private ExploreMenuTextEntry[] textEntries;
-        private Stack<string> historyLog;
+        private bool subMenuActive = false;
+
+        private ExploreMenuTextComponent[] mainBodyText;
+        private ExploreMenuTextComponent[] subMenuText;
+
+        private Stack<string> historyLog = new Stack<string>();
         private uint historyDisplayLength = 20;
         private string transitionalAction = "";
         private readonly string defaultTransitionalAction;
-        private int choiceIndexOffset = 1;
         private List<IInvokableInteraction> relevantInteractions = new List<IInvokableInteraction>();
+
+        private int choiceIndexOffset = 1;
+
 
         private protected ChangeInterfaceStyleCallback changeInterfaceStyleCallback;
         public ExploreMenu(ChangeInterfaceStyleCallback changeInterfaceStyle, Player player, GameEnvironment currentEnvironment)
         {
             exitExploreMenu = false;
-            firstTimeSinceTransition = true;
 
             currentPlayer = player;
-            currentRoomID = (uint) player.entityProperties.GetPropertyValue("Position");
-            Room currentRoom = currentEnvironment.GetRoomByID(currentRoomID);
+            currentRoomID = (uint)player.Properties.GetPropertyValue("Position");
+            currentRoom = currentEnvironment.GetRoomByID(currentRoomID);
 
             systemChoices = InitialiseSystemChoices();
             subMenuSystemChoices = InitialiseSubMenuSystemChoices();
@@ -81,15 +84,28 @@ namespace Little_Choice_Based_RPG.Managers.Player_Manager.Frontend.UserInterface
             {
                 List<IInvokableInteraction> listedInteractions = GetExploreMenuInteractions();
 
-                if (firstTimeSinceTransition)
-                    InitialiseMainTextEntries(listedInteractions);
+                //If its the first time this menu has been initialised, then intialise, otherwise update the main body.
+                if (mainBodyText == null)
+                    InitialiseMainTextEntries();
+                else
+                    UpdateMainTextEntries();
 
-                Console.Clear();
-                WriteToUserInterface(textEntries);
+                DrawUserInterface();
 
                 int userInput = AwaitUserInput(listedInteractions.Count);
                 InvokeInteraction(userInput, listedInteractions);
             }
+        }
+
+        /// <summary> Draw the User Interface. This writes all assigned text entries to the interface </summary>
+        private void DrawUserInterface()
+        {
+            Console.Clear();
+
+            if (subMenuActive)
+                WriteToUserInterface(subMenuText);
+            else
+                WriteToUserInterface(mainBodyText);
         }
 
         /// <summary> Generates a Sub-Menu asking the player to choose an object from the room, which optionally matches property filters. </summary>
@@ -100,11 +116,29 @@ namespace Little_Choice_Based_RPG.Managers.Player_Manager.Frontend.UserInterface
 
             subMenuSystemChoices.Add(abortInteraction);
 
-            //Write the Sub-Menu to the user interface.
-            ExploreMenuTextEntry[] listToWrite = InitialiseSubMenuTextEntries(textEntries, requirementDescription, listedObjects);
+            //Update the submenu text cache, or initiliase it if its not yet been set.
+            if (subMenuText == null)
+            {
+                ExploreMenuTextComponent[] listToWrite = InitialiseSubMenuTextEntries(mainBodyText, requirementDescription, listedObjects);
+                this.subMenuText = listToWrite;
+            }
+            else
+            {
+               //Update the cached output with the new content.
+                ExploreMenuTextComponent targetComponent = GetTextEntryByIdentifier(ExploreMenuIdentity.SubMenuTitle);
+                int targetIndex = Array.IndexOf(this.subMenuText, targetComponent);
 
-            Console.Clear();
-            WriteToUserInterface(listToWrite);
+                this.subMenuText[targetIndex].Content = SetSubMenuHeader(requirementDescription);
+
+                targetComponent = GetTextEntryByIdentifier(ExploreMenuIdentity.SubMenuOptions);
+                targetIndex = Array.IndexOf(this.subMenuText, targetComponent);
+
+                this.subMenuText[targetIndex].Content = FormatSubMenuChoices(listedObjects);
+            }
+
+            //Draw the SubMenu
+            this.subMenuActive = true;
+            DrawUserInterface();
 
             //Await the user's answer.
             int userInput = AwaitUserInput(listedObjects.Count + subMenuSystemChoices.Count);
@@ -114,22 +148,23 @@ namespace Little_Choice_Based_RPG.Managers.Player_Manager.Frontend.UserInterface
                 GameObject chosenObject = listedObjects.ElementAt(userInput - choiceIndexOffset);
 
                 sender.GiveRequiredParameter(chosenObject, this);
-
+                
                 //Reset the additional SubMenu choice
                 subMenuSystemChoices.Remove(abortInteraction);
             }
             
             if (userInput > (choiceIndexOffset + (listedObjects.Count - 1)))
             {
+
                 subMenuSystemChoices.ElementAt(userInput - (listedObjects.Count + choiceIndexOffset));
                 abortInteraction.AttemptInvoke(this);
 
                 //Reset the additional SubMenu choice
                 subMenuSystemChoices.Remove(abortInteraction);
             }
-            
 
-            throw new Exception("userInput didn't land into either if statements. That means it hit neither the system options, nor the object options.");
+            //Deactivate the SubMenu
+            this.subMenuActive = false;
         }
 
         private List<IInvokableInteraction> GetExploreMenuInteractions()
@@ -146,7 +181,9 @@ namespace Little_Choice_Based_RPG.Managers.Player_Manager.Frontend.UserInterface
         private int AwaitUserInput(int numberOfInteractions)
         {
             string? userInput = null;
+            string errorMessage = "Unknown error.";
             bool isInputValid = false;
+            bool sendErrorMessage = false;
             int userSelection = -1;
 
             int minimumInputValue = choiceIndexOffset;
@@ -155,16 +192,65 @@ namespace Little_Choice_Based_RPG.Managers.Player_Manager.Frontend.UserInterface
             //Loop until a choice is selected.
             while (isInputValid == false)
             {
+                //Send error message or write normal input.
+                if (sendErrorMessage == false)
+                    WriteUserEntry();
+                else
+                    WriteUserError(errorMessage);
+                
+                //Reset error message flag.
+                sendErrorMessage = false;
+
+                //Await user input
                 userInput = Console.ReadLine();
+
+                //Validate user input
+                if (userInput == "") //input must not be empty
+                {
+                    sendErrorMessage = true;
+                    errorMessage = "Please enter the number of your choice. Pressing enter will do nothing on its own!";
+                    continue;
+                }
 
                 if (userInput.All(Char.IsDigit)) //input must be a number
                     userSelection = Convert.ToInt32(userInput);
+                else
+                {
+                    sendErrorMessage = true;
+                    errorMessage = "Please enter a number and nothing else. Trying to enter other things won't have any use!";
+                    continue;
+                }
 
                 if (minimumInputValue <= userSelection && userSelection <= maximumInputValue) //input must match the range of choices.
                     isInputValid = true; //Break
+                else
+                {
+                    sendErrorMessage = true;
+                    errorMessage = "Please choose a number from the available choices. Trying a number not listed will have nothing to do!";
+                }
+
             }
 
             return userSelection;
+        }
+
+        private void WriteUserEntry()
+        {
+            UserInterfaceUtilities.WriteDialogue("\n ║\n ║\n ╚", 160);
+            UserInterfaceUtilities.WriteDialogue("═>> Choose an option: > ", 5);
+        }
+
+        private void WriteUserError(string message)
+        {
+            Console.Clear();
+            DrawUserInterface();
+
+            UserInterfaceUtilities.WriteDialogue("\n ╠", 160);
+            UserInterfaceUtilities.WriteDialogue(" Hang on: ", 0);
+            UserInterfaceUtilities.WriteDialogue("\n ╠", 160);
+            UserInterfaceUtilities.WriteDialogue($" {message}", 4);
+            UserInterfaceUtilities.WriteDialogue("\n ╚", 160);
+            UserInterfaceUtilities.WriteDialogue("═>> Choose an option: > ", 5);
         }
 
         private void InvokeInteraction(int userInput, List<IInvokableInteraction> listedInteractions)
@@ -172,12 +258,12 @@ namespace Little_Choice_Based_RPG.Managers.Player_Manager.Frontend.UserInterface
             IInvokableInteraction selectedInteraction = listedInteractions.ElementAt(userInput - choiceIndexOffset);
 
             //Record the action in the log.
-            AddNewHistoryLog(selectedInteraction.InteractDescriptor.Value);
+            AddNewHistoryLog(selectedInteraction.InteractDescriptor);
 
             //Record the action in the TransitionalAction if the location around the player changed.
             if ((selectedInteraction.InteractionContext == InteractionRole.Navigation))
             {
-                transitionalAction = selectedInteraction.InteractDescriptor.Value;
+                transitionalAction = selectedInteraction.InteractDescriptor;
                 UpdateTransitionalAction();
             }
 
@@ -188,69 +274,96 @@ namespace Little_Choice_Based_RPG.Managers.Player_Manager.Frontend.UserInterface
         //Record the action in the TransitionalAction if the location around the player changed.
         private void OnEventRoomDescriptorChanged(Interaction trigger)
         {
-            transitionalAction = trigger.InteractDescriptor.Value;
+            transitionalAction = trigger.InteractDescriptor;
             UpdateTransitionalAction();
         }
 
-        public void InitialiseMainTextEntries(List<IInvokableInteraction> listedInteractions)
+        public void InitialiseMainTextEntries()
         {
-            textEntries = [];
+            mainBodyText = [];
 
-            List<ExploreMenuTextEntry> exploreMenu = new List<ExploreMenuTextEntry>
+            List<ExploreMenuTextComponent> exploreMenu = new List<ExploreMenuTextComponent>
             {
-            new ExploreMenuTextEntry(ExploreMenuIdentity.TopStatusBar, GetTopStatusBar(), 0),
-            new ExploreMenuTextEntry(ExploreMenuIdentity.None, GetStyleLine(1), 0),
-            new ExploreMenuTextEntry(ExploreMenuIdentity.TransitionalAction, transitionalAction, 0),
-            new ExploreMenuTextEntry(ExploreMenuIdentity.CurrentDescription, GetCurrentDescription(), 0),
-            new ExploreMenuTextEntry(ExploreMenuIdentity.None, GetStyleLine(2), 0),
-            new ExploreMenuTextEntry(ExploreMenuIdentity.HistoryLog, GetHistoryLog(), 0),
-            new ExploreMenuTextEntry(ExploreMenuIdentity.None, GetStyleLine(3), 0),
-            new ExploreMenuTextEntry(ExploreMenuIdentity.AvailableChoices, FormatChoices(listedInteractions), 0),
-            new ExploreMenuTextEntry(ExploreMenuIdentity.None, GetStyleLine(4), 0),
-            new ExploreMenuTextEntry(ExploreMenuIdentity.None, GetStyleLine(5), 0)
+            new ExploreMenuTextComponent(ExploreMenuIdentity.TopStatusBar, GetTopStatusBar(), 0),
+            new ExploreMenuTextComponent(ExploreMenuIdentity.None, GetStyleLine(1), 0),
+            new ExploreMenuTextComponent(ExploreMenuIdentity.TransitionalAction, transitionalAction, 0),
+            new ExploreMenuTextComponent(ExploreMenuIdentity.CurrentDescription, GetCurrentDescription(), 0),
+            new ExploreMenuTextComponent(ExploreMenuIdentity.None, GetStyleLine(2), 0),
+            new ExploreMenuTextComponent(ExploreMenuIdentity.HistoryLog, GetHistoryLog(), 0),
+            new ExploreMenuTextComponent(ExploreMenuIdentity.None, GetStyleLine(3), 0),
+            new ExploreMenuTextComponent(ExploreMenuIdentity.AvailableChoices, FormatChoices(GetExploreMenuInteractions()), 0),
+            new ExploreMenuTextComponent(ExploreMenuIdentity.None, GetStyleLine(4), 0),
+            new ExploreMenuTextComponent(ExploreMenuIdentity.None, GetStyleLine(5), 0)
             };
 
-            textEntries = exploreMenu.ToArray();
+            mainBodyText = exploreMenu.ToArray();
         }
 
-        private ExploreMenuTextEntry[] InitialiseSubMenuTextEntries(ExploreMenuTextEntry[] overwrittenInterfaceEntries, string requirementDescription, List<GameObject> listedObjects)
+        //Update the cached output with the new content.
+        public void UpdateMainTextEntries()
         {
+            ExploreMenuTextComponent targetEntry = GetTextEntryByIdentifier(ExploreMenuIdentity.TopStatusBar);
+            int targetIndex = Array.IndexOf(mainBodyText, targetEntry);
+            this.mainBodyText[targetIndex].Content = GetTopStatusBar();
 
+            targetEntry = GetTextEntryByIdentifier(ExploreMenuIdentity.TransitionalAction);
+            targetIndex = Array.IndexOf(mainBodyText, targetEntry);
+            this.mainBodyText[targetIndex].Content = transitionalAction;
+
+            targetEntry = GetTextEntryByIdentifier(ExploreMenuIdentity.CurrentDescription);
+            targetIndex = Array.IndexOf(mainBodyText, targetEntry);
+            this.mainBodyText[targetIndex].Content = GetCurrentDescription();
+
+            targetEntry = GetTextEntryByIdentifier(ExploreMenuIdentity.HistoryLog);
+            targetIndex = Array.IndexOf(mainBodyText, targetEntry);
+            this.mainBodyText[targetIndex].Content = GetHistoryLog();
+
+            targetEntry = GetTextEntryByIdentifier(ExploreMenuIdentity.AvailableChoices);
+            targetIndex = Array.IndexOf(mainBodyText, targetEntry);
+            this.mainBodyText[targetIndex].Content = FormatChoices(GetExploreMenuInteractions());
+        }
+
+        private ExploreMenuTextComponent[] InitialiseSubMenuTextEntries(ExploreMenuTextComponent[] overwrittenInterfaceEntries, string requirementDescription, List<GameObject> listedObjects)
+        {
             if (!(overwrittenInterfaceEntries.Length < 1))
                 throw new Exception($"The required list of overwrittenInterfaceEntries does not contain enough lines to be used here. It might not have been initialised. There must be an existing user interface to put the sub-menu over the top of!");
 
-            IEnumerable<ExploreMenuTextEntry> subMenu = overwrittenInterfaceEntries.SkipLast(3);
+            IEnumerable<ExploreMenuTextComponent> subMenu = overwrittenInterfaceEntries.SkipLast(3);
 
-            string subMenuFormatPart1 = $"  == +] ======][========][======= MAKE A SELECTION =======][======][=======. =- = - -[ =   - .";
-            string subMenuFormatPart2 = $"  . - = -- - - ===========-===========================--======-=---=-. ---=== =-----. -  - .";
-            string subMenuFormatPart3 = $"                          {requirementDescription}";
+            subMenu.Append(new ExploreMenuTextComponent(ExploreMenuIdentity.SubMenuTitle, SetSubMenuHeader(requirementDescription), 0));
+            subMenu.Append(new ExploreMenuTextComponent(ExploreMenuIdentity.SubMenuOptions, FormatSubMenuChoices(listedObjects), 0));
+            subMenu.Append(new ExploreMenuTextComponent(ExploreMenuIdentity.None, FormatChoices(subMenuSystemChoices), 0));
 
-            subMenu.Append(new ExploreMenuTextEntry(ExploreMenuIdentity.None, subMenuFormatPart1, 0));
-            subMenu.Append(new ExploreMenuTextEntry(ExploreMenuIdentity.None, subMenuFormatPart2, 0));
-            subMenu.Append(new ExploreMenuTextEntry(ExploreMenuIdentity.None, subMenuFormatPart3, 0));
-            subMenu.Append(new ExploreMenuTextEntry(ExploreMenuIdentity.None, subMenuFormatPart2, 0));
-
-            subMenu.Append(new ExploreMenuTextEntry(ExploreMenuIdentity.None, FormatSubMenuChoices(listedObjects), 0));
-            subMenu.Append(new ExploreMenuTextEntry(ExploreMenuIdentity.None, FormatChoices(subMenuSystemChoices), 0));
-
-            subMenu.Append(new ExploreMenuTextEntry(ExploreMenuIdentity.None, GetStyleLine(4), 0));
-            subMenu.Append(new ExploreMenuTextEntry(ExploreMenuIdentity.None, GetStyleLine(5), 0));
+            subMenu.Append(new ExploreMenuTextComponent(ExploreMenuIdentity.None, GetStyleLine(4), 0));
+            subMenu.Append(new ExploreMenuTextComponent(ExploreMenuIdentity.None, GetStyleLine(5), 0));
 
             return subMenu.ToArray();
         }
 
-        private ExploreMenuTextEntry GetTextEntryByIdentifier(ExploreMenuIdentity targetIdentifier)
+        private string SetSubMenuHeader(string title)
         {
-            ExploreMenuTextEntry? targetEntry = null;
+            string subMenuHeader = "";
 
-            foreach (ExploreMenuTextEntry entry in textEntries)
+            subMenuHeader += $"\n == +] ======][========][======= MAKE A SELECTION =======][======][=======. =- = - -[ =  - .";
+            subMenuHeader += $"\n  . - = -- - - ===========-===========================--======-=---=-. ---=== =-----. -  - .";
+            subMenuHeader += $"\n                          {title}";
+            subMenuHeader += $"\n  .- =  --  - =-==--==--  --==--  --===-==- -=====-=-  -======-=---=-. ---=== =--=--. -  - .";
+
+            return subMenuHeader;
+        }
+
+        private ExploreMenuTextComponent GetTextEntryByIdentifier(ExploreMenuIdentity targetIdentifier)
+        {
+            ExploreMenuTextComponent? targetEntry = null;
+
+            foreach (ExploreMenuTextComponent entry in mainBodyText)
             {
                 if (entry.UniqueIdentity == targetIdentifier)
                     return entry;
             }
 
             if (targetEntry == null)
-                throw new ArgumentException($"The TopStatusBar didnt seem to exist. No UserInterfaceTextEntry within {textEntries} had the identifier {ExploreMenuIdentity.TopStatusBar}!");
+                throw new ArgumentException($"The TopStatusBar didnt seem to exist. No UserInterfaceTextEntry within {mainBodyText} had the identifier {ExploreMenuIdentity.TopStatusBar}!");
 
             throw new Exception($"Critical failure! This method didn't complete! This shouldn't have happened. It looks like this method somehow didn't complete any other path, but it should have!");
         }
@@ -260,36 +373,9 @@ namespace Little_Choice_Based_RPG.Managers.Player_Manager.Frontend.UserInterface
             return $"{currentRoom.Name}\t -=-\t Potsun Burran\t -=-\t Relative, {currentRoomID}\t -=-\t {DateTime.UtcNow.AddYears(641)}";
         }
 
-        private void UpdateTopStatusBar()
-        {
-            ExploreMenuTextEntry targetEntry = GetTextEntryByIdentifier(ExploreMenuIdentity.TopStatusBar);
-            int targetIndex = Array.IndexOf(textEntries, targetEntry);
-
-            textEntries[targetIndex] = new ExploreMenuTextEntry(ExploreMenuIdentity.TopStatusBar, GetTopStatusBar(), 40);
-            WriteToUserInterface(textEntries);
-        }
-
-        private void UpdateTransitionalAction()
-        {
-            ExploreMenuTextEntry targetEntry = GetTextEntryByIdentifier(ExploreMenuIdentity.TransitionalAction);
-            int targetIndex = Array.IndexOf(textEntries, targetEntry);
-
-            textEntries[targetIndex] = new ExploreMenuTextEntry(ExploreMenuIdentity.TransitionalAction, transitionalAction, 40);
-            WriteToUserInterface(textEntries);
-        }
-
         private string GetCurrentDescription()
         {
             return ConcatenateDescriptors(currentRoom.GetRoomDescriptors());
-        }
-
-        private void UpdateCurrentDescription()
-        {
-            ExploreMenuTextEntry targetEntry = GetTextEntryByIdentifier(ExploreMenuIdentity.CurrentDescription);
-            int targetIndex = Array.IndexOf(textEntries, targetEntry);
-
-            textEntries[targetIndex] = new ExploreMenuTextEntry(ExploreMenuIdentity.CurrentDescription, GetCurrentDescription(), 40);
-            WriteToUserInterface(textEntries);
         }
 
         private string GetHistoryLog() //Should display bottom to top :)
@@ -319,13 +405,81 @@ namespace Little_Choice_Based_RPG.Managers.Player_Manager.Frontend.UserInterface
             return concatenatedLog;
         }
 
+        private void UpdateTopStatusBar()
+        {
+            ExploreMenuTextComponent targetEntry = GetTextEntryByIdentifier(ExploreMenuIdentity.TopStatusBar);
+            int targetIndex = Array.IndexOf(mainBodyText, targetEntry);
+
+            //Update the cached output with the new content, at a slow write speed.
+            this.mainBodyText[targetIndex].Content = GetTopStatusBar();
+            this.mainBodyText[targetIndex].WriteSpeed = 40;
+
+            //Write to the interface
+            DrawUserInterface();
+
+            //Reset text write speed to instant
+            this.mainBodyText[targetIndex].WriteSpeed = 0;
+        }
+
+        private void UpdateCurrentDescription()
+        {
+            ExploreMenuTextComponent targetEntry = GetTextEntryByIdentifier(ExploreMenuIdentity.CurrentDescription);
+            int targetIndex = Array.IndexOf(mainBodyText, targetEntry);
+
+            //Update the cached output with the new content, at a slow write speed.
+            this.mainBodyText[targetIndex].Content = GetCurrentDescription();
+            this.mainBodyText[targetIndex].WriteSpeed = 40;
+
+            //Write to the interface
+            DrawUserInterface();
+
+            //Reset text write speed to instant
+            this.mainBodyText[targetIndex].WriteSpeed = 0;
+        }
+
+        private void UpdateTransitionalAction()
+        {
+            ExploreMenuTextComponent targetEntry = GetTextEntryByIdentifier(ExploreMenuIdentity.TransitionalAction);
+            int targetIndex = Array.IndexOf(mainBodyText, targetEntry);
+
+            //Update the cached output with the new content, at a slow write speed.
+            this.mainBodyText[targetIndex].Content = transitionalAction;
+            this.mainBodyText[targetIndex].WriteSpeed = 40;
+
+            //Write to the interface
+            DrawUserInterface();
+
+            //Reset text write speed to instant
+            this.mainBodyText[targetIndex].WriteSpeed = 0;
+        }
+
         private void UpdateHistoryLog()
         {
-            ExploreMenuTextEntry targetEntry = GetTextEntryByIdentifier(ExploreMenuIdentity.HistoryLog);
-            int targetIndex = Array.IndexOf(textEntries, targetEntry);
+            ExploreMenuTextComponent targetComponent = GetTextEntryByIdentifier(ExploreMenuIdentity.HistoryLog);
+            int targetIndex = Array.IndexOf(this.mainBodyText, targetComponent);
 
-            textEntries[targetIndex] = new ExploreMenuTextEntry(ExploreMenuIdentity.HistoryLog, GetHistoryLog(), 40);
-            WriteToUserInterface(textEntries);
+            //Update the cached output with the new content, at a slow write speed.
+            this.mainBodyText[targetIndex].Content = GetHistoryLog();
+            this.mainBodyText[targetIndex].WriteSpeed = 40;
+
+            //Write to the interface
+            DrawUserInterface();
+
+            //Reset text write speed to instant
+            this.mainBodyText[targetIndex].WriteSpeed = 0;
+        }
+        private void UpdateAvailableChoices() //THIS WONT WORK, because choices come in different types and so on. This should probably just add new choices and remove old choices upon event call (of what?)
+        {
+            /*
+            ExploreMenuTextComponent targetEntry = GetTextEntryByIdentifier(ExploreMenuIdentity.AvailableChoices);
+            int targetIndex = Array.IndexOf(mainBodyText, targetEntry);
+
+            mainBodyText[targetIndex] = new ExploreMenuTextComponent(ExploreMenuIdentity.AvailableChoices, GetAvailableChoices(), 40);
+
+            DrawUserInterface();
+            
+            this.mainBodyText[targetIndex].WriteSpeed = 0;
+            */
         }
 
         private void AddNewHistoryLog(string newHistoryLog)
@@ -352,17 +506,6 @@ namespace Little_Choice_Based_RPG.Managers.Player_Manager.Frontend.UserInterface
                 allCurrentChoices = InteractionController.GetInteractions(ofInteractionRole, currentRoom);
 
             return allCurrentChoices;
-        }
-
-        private void UpdateAvailableChoices() //THIS WONT WORK, because choices come in different types and so on. This should probably just add new choices and remove old choices upon event call (of what?)
-        {
-            /*
-            ExploreMenuTextEntry targetEntry = GetTextEntryByIdentifier(ExploreMenuIdentity.AvailableChoices);
-            int targetIndex = Array.IndexOf(textEntries, targetEntry);
-
-            textEntries[targetIndex] = new ExploreMenuTextEntry(ExploreMenuIdentity.AvailableChoices, GetAvailableChoices(), 40);
-            WriteToUserInterface(textEntries);
-            */
         }
 
         private string GetStyleLine(uint style)
@@ -394,14 +537,11 @@ namespace Little_Choice_Based_RPG.Managers.Player_Manager.Frontend.UserInterface
             return createdRoomDescription;
         }
 
-        private void WriteToUserInterface(ExploreMenuTextEntry[] listToWrite)
+        private void WriteToUserInterface(ExploreMenuTextComponent[] listToWrite)
         {
-            foreach (ExploreMenuTextEntry entryToWrite in listToWrite)
+            foreach (ExploreMenuTextComponent entryToWrite in listToWrite)
             {
-                if (entryToWrite.WriteSpeed == 0)
-                    UserInterfaceUtilities.WriteDialogue(entryToWrite.Content, 0);
-                else if (entryToWrite.WriteSpeed == 40)
-                    UserInterfaceUtilities.WriteDialogue(entryToWrite.Content, 40);
+                UserInterfaceUtilities.WriteDialogue(entryToWrite.Content, entryToWrite.WriteSpeed);
             }
         }
 
@@ -410,8 +550,18 @@ namespace Little_Choice_Based_RPG.Managers.Player_Manager.Frontend.UserInterface
             string createdChoiceList = "";
             int choiceIndex = 0;
 
-            while(choiceIndex < (possibleInteractions.Count))
-                createdChoiceList += ($"{choiceIndex++ + choiceIndexOffset}. {possibleInteractions.ElementAt(choiceIndex).InteractionTitle}\n");
+            //Prefix
+            createdChoiceList += ("\n ╔═════════════════════════════════════════════════════════════════════════════════ ============ == --= . =.");
+
+            //Main choice list
+            while (choiceIndex < (possibleInteractions.Count))
+            {
+                createdChoiceList += ($"\n ╠ {choiceIndex + choiceIndexOffset} » {possibleInteractions.ElementAt(choiceIndex).InteractionTitle}");
+                choiceIndex++;
+            }
+
+            //Suffix
+            createdChoiceList += ("\n ╠═════════════════════════════════════════════════════════════════════════════════");
 
             return createdChoiceList;
         }
@@ -423,10 +573,10 @@ namespace Little_Choice_Based_RPG.Managers.Player_Manager.Frontend.UserInterface
             int choiceIndex = 0;
 
             while (choiceIndex < (listedObjects.Count))
-                formattedObjectList += ($"{choiceIndex++ + choiceIndexOffset}. {listedObjects.ElementAt(choiceIndex).entityProperties.GetPropertyValue("Name")} - {listedObjects.ElementAt(choiceIndex).entityProperties.GetPropertyValue("ID")}\n");
+                formattedObjectList += ($"\n ╠ {choiceIndex++ + choiceIndexOffset} » {listedObjects.ElementAt(choiceIndex).Properties.GetPropertyValue("Name")} - {listedObjects.ElementAt(choiceIndex).Properties.GetPropertyValue("ID")}\n");
 
             while (choiceIndex < (subMenuSystemChoices.Count))
-                formattedObjectList += ($"{choiceIndex++ + choiceIndexOffset}. {subMenuSystemChoices.ElementAt(choiceIndex).InteractionTitle}\n");
+                formattedObjectList += ($"\n ╠ {choiceIndex++ + choiceIndexOffset} » {subMenuSystemChoices.ElementAt(choiceIndex).InteractionTitle}\n");
 
             return formattedObjectList;
         }
