@@ -1,19 +1,17 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>net8.0</TargetFramework>
     <RootNamespace>Little_Choice_Based_RPG</RootNamespace>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <LangVersion>preview</LangVersion>
   </PropertyGroup>
-
   <ItemGroup>
     <Compile Remove="ArchivedCode\**" />
     <EmbeddedResource Remove="ArchivedCode\**" />
     <None Remove="ArchivedCode\**" />
   </ItemGroup>
-
   <ItemGroup>
     <Folder Include="Managers\Player Manager\Frontend\UserInterface\UserInterfaceStrategies\ParserConsole\" />
     <Folder Include="Managers\Player Manager\Frontend\UserInterface\UserInterfaceStrategies\NumberedMUD\" />
@@ -21,5 +19,4 @@
     <Folder Include="Managers\Player Manager\Frontend\UserInterface\UserInterfaceStrategies\ParserMUD\" />
     <Folder Include="Resources\Entities\Physical\Vehicles\" />
   </ItemGroup>
-
 </Project>
