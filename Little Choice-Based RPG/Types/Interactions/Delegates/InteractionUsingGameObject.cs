@@ -40,13 +40,15 @@ namespace Little_Choice_Based_RPG.Types.Interactions.InteractDelegate
         }
 
         /// <summary> Invokes the delegate, requesting further user input if necessary. </summary>
-        public override void AttemptInvoke(IUserInterface setInvocationMutexIdentity)
+        public override void AttemptInvoke(IUserInterface sourceInvocationMutexIdentity)
         {
-            if (invocationMutexIdentity != setInvocationMutexIdentity)
-                return; //The sender identity setInvocationMutexIdentity did not match the current invocationMutexIdentity holder! Invocation is already in-use.");
+            //Hold mutex if not already held
+            if (invocationMutexIdentity == null)
+                invocationMutexIdentity = sourceInvocationMutexIdentity; //Hold mutex
 
-            //Hold the mutex for attempting to invoke.
-            invocationMutexIdentity = setInvocationMutexIdentity;
+            //Check if a held mutex matches the current identity.
+            if (invocationMutexIdentity != sourceInvocationMutexIdentity)
+                return; //The sender identity sourceInvocationMutexIdentity did not match the current invocationMutexIdentity");
 
             //reset invocation parameters when first invoking.
             invocationParameter1 = null;
@@ -67,10 +69,10 @@ namespace Little_Choice_Based_RPG.Types.Interactions.InteractDelegate
 
         /// <summary> Adds each invocation parameter in through this method. Upon all parameters being set, it will invoke automatically.
         /// Requires the sender identity to match the invocation mutex. </summary>
-        public override void GiveRequiredParameter(object newParameter, IUserInterface setInvocationMutexIdentity)
+        public override void GiveRequiredParameter(object newParameter, IUserInterface sourceInvocationMutexIdentity)
         {
-            if (invocationMutexIdentity != setInvocationMutexIdentity)
-                return; //The sender identity setInvocationMutexIdentity did not match the current invocationMutexIdentity");
+            if (invocationMutexIdentity != sourceInvocationMutexIdentity)
+                return; //The sender identity sourceInvocationMutexIdentity did not match the current invocationMutexIdentity");
 
             if (newParameter == null)
                 throw new ArgumentException("newParameter was null!");
@@ -88,28 +90,28 @@ namespace Little_Choice_Based_RPG.Types.Interactions.InteractDelegate
             }
 
             //Once all parameters have been set, invoke and then reset the parameters back to unset.
-            Invoke(setInvocationMutexIdentity);
+            Invoke(sourceInvocationMutexIdentity);
         }
-        public override void CancelInteraction(IUserInterface setInvocationMutexIdentity)
+        public override void CancelInteraction(IUserInterface sourceInvocationMutexIdentity)
         {
-            if (invocationMutexIdentity != setInvocationMutexIdentity)
-                return; //The sender identity setInvocationMutexIdentity did not match the current invocationMutexIdentity");
+            if (invocationMutexIdentity != sourceInvocationMutexIdentity)
+                return; //The sender identity sourceInvocationMutexIdentity did not match the current invocationMutexIdentity");
 
             //Reset parameters back to unset
             invocationParameter1 = null;
             invocationMutexIdentity = null; //Release mutex.
         }
 
-        protected override void Invoke(IUserInterface setInvocationMutexIdentity)
+        protected override void Invoke(IUserInterface sourceInvocationMutexIdentity)
         {
-            if (invocationMutexIdentity != setInvocationMutexIdentity)
-                return; //The sender identity setInvocationMutexIdentity did not match the current invocationMutexIdentity");
+            if (invocationMutexIdentity != sourceInvocationMutexIdentity)
+                return; //The sender identity sourceInvocationMutexIdentity did not match the current invocationMutexIdentity");
 
             if (invocationParameter1 == null)
                 throw new Exception("Tried to invoke, but invocationParameter1 wasnt set.");
 
             // invoke
-            storedDelegate(setInvocationMutexIdentity, invocationParameter1);
+            storedDelegate(sourceInvocationMutexIdentity, invocationParameter1);
 
             //Reset parameters back to unset
             invocationParameter1 = null;

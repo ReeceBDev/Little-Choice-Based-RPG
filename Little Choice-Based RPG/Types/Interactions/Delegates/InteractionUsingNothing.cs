@@ -27,42 +27,48 @@ namespace Little_Choice_Based_RPG.Types.Interactions.InteractDelegate
         }
 
         /// <summary> Invokes the delegate if able. Requests required parameters if unable. </summary>
-        public override void AttemptInvoke(IUserInterface setInvocationMutexIdentity)
+        public override void AttemptInvoke(IUserInterface sourceInvocationMutexIdentity)
         {
-            if (invocationMutexIdentity != setInvocationMutexIdentity)
-                return; //The sender identity setInvocationMutexIdentity did not match the current invocationMutexIdentity");
+            //Hold mutex if not already held
+            if (invocationMutexIdentity == null)
+                invocationMutexIdentity = sourceInvocationMutexIdentity; //Hold mutex
 
-            invocationMutexIdentity = setInvocationMutexIdentity; //Hold mutex
+            //Check if a held mutex matches the current identity.
+            if (invocationMutexIdentity != sourceInvocationMutexIdentity)
+                return; //The sender identity sourceInvocationMutexIdentity did not match the current invocationMutexIdentity");
 
-            Invoke(setInvocationMutexIdentity);
+            Invoke(sourceInvocationMutexIdentity);
         }
 
-        public override void GiveRequiredParameter(object newParameter, IUserInterface setInvocationMutexIdentity)
+        public override void GiveRequiredParameter(object newParameter, IUserInterface sourceInvocationMutexIdentity)
         {
             // Not needed here since there are no parameters.
             // It is still required for the interface to support the Interactions with parameters.
         }
 
-        protected override void Invoke(IUserInterface setInvocationMutexIdentity)
+        protected override void Invoke(IUserInterface sourceInvocationMutexIdentity)
         {
-            if (invocationMutexIdentity != setInvocationMutexIdentity)
-                return; //The sender identity setInvocationMutexIdentity did not match the current invocationMutexIdentity");
+            if (invocationMutexIdentity == null)
+                throw new Exception("The invocationMutexIdentity on this interaction has not been set. There is nothing to compare the sourceInvocationMutexIdentity to!");
 
-            storedDelegate.Invoke(setInvocationMutexIdentity);
+            if (invocationMutexIdentity != sourceInvocationMutexIdentity)
+                return; //The sender identity sourceInvocationMutexIdentity did not match the current invocationMutexIdentity");
+
+            storedDelegate.Invoke(sourceInvocationMutexIdentity);
 
             invocationMutexIdentity = null; //Release mutex
         }
 
-        public override void CancelInteraction(IUserInterface setInvocationMutexIdentity)
+        public override void CancelInteraction(IUserInterface sourceInvocationMutexIdentity)
         {
-            if (invocationMutexIdentity != setInvocationMutexIdentity)
-                return; //The sender identity setInvocationMutexIdentity did not match the current invocationMutexIdentity");
+            if (invocationMutexIdentity != sourceInvocationMutexIdentity)
+                return; //The sender identity sourceInvocationMutexIdentity did not match the current invocationMutexIdentity");
 
             //Reset parameters back to unset
             invocationMutexIdentity = null; //Release mutex.
         }
 
         /// <summary> Create a delegate which uses no additional parameters. </summary>
-        public delegate void InteractionUsingNothingDelegate(IUserInterface invocationMutexIdentity);
+        public delegate void InteractionUsingNothingDelegate(IUserInterface newInvocationMutexIdentity);
     }
 }
