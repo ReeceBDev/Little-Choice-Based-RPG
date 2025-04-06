@@ -8,11 +8,15 @@ using System.Threading.Tasks;
 
 namespace Little_Choice_Based_RPG.Resources.Systems.Damage.Flammability
 {
-    public class FlammabilitySystem
+    public class FlammabilitySystem : ComponentSystem
     {
         private GameObject parentObject;
         static FlammabilitySystem()
         {
+            //Component
+            PropertyValidation.CreateValidProperty("Component.Flammable", PropertyType.Boolean);
+
+            //Logic
             PropertyValidation.CreateValidProperty("IsFlammable", PropertyType.Boolean);
             PropertyValidation.CreateValidProperty("Flammability.IsBurning", PropertyType.Boolean);
             PropertyValidation.CreateValidProperty("Flammability.IsBurnt", PropertyType.Boolean);

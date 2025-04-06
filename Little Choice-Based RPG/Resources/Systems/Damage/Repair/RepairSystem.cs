@@ -10,11 +10,14 @@ using System.Threading.Tasks;
 
 namespace Little_Choice_Based_RPG.Resources.Systems.Damage.Repair
 {
-    public class RepairSystem : IRepairable
+    public class RepairSystem : ComponentSystem
     {
         private GameObject parentObject;
         static RepairSystem()
         {
+            //RepairSystem component
+            PropertyValidation.CreateValidProperty("Component.Repair", PropertyType.Boolean);
+
             //RepairSystem logic
             PropertyValidation.CreateValidProperty("Repair.IsRepairable", PropertyType.Boolean); //Activates all this class and all of these properties when true :)
             PropertyValidation.CreateValidProperty("Repair.IsRepairableByChoice", PropertyType.Boolean); //Lets players choose to repair it by choice.
@@ -31,12 +34,6 @@ namespace Little_Choice_Based_RPG.Resources.Systems.Damage.Repair
         /// <summary> Allows repairs to occur on this object. Requires DamageCommon. </summary>
         public RepairSystem(GameObject instantiatingObject)
         {
-            /*
-            //Enforces IRepairable on the instantiating class
-            if (!(instantiatingObject is IRepairable)) 
-                throw new Exception($"{instantiatingObject.GetType()} does not implement IRepairable!");
-            */
-
             DamageCommon damageCommonInstantisation = DamageCommon.Instance;
 
             parentObject = instantiatingObject;
@@ -46,14 +43,14 @@ namespace Little_Choice_Based_RPG.Resources.Systems.Damage.Repair
         public void Repair(IUserInterface mutexHolder, GameObject? repairTool = null)
         {
             //Guard clauses for the values in use.
-            if (!parentObject.entityProperties.HasProperty("IsRepairable", true))
+            if (!parentObject.Properties.HasProperty("IsRepairable", true))
                 throw new Exception("This object is not repairable! Tried to repair an object where there is no EntityProperty of IsRepairable = true.");
 
-            if (!parentObject.entityProperties.HasExistingPropertyName("Descriptor.Repairing"))
+            if (!parentObject.Properties.HasExistingPropertyName("Descriptor.Repairing"))
                 throw new Exception("This object has no repairing description! Tried to repair an object where there is no EntityProperty of Descriptor.Repairing.");
 
             //Check if a repair tool is required.
-            if (!parentObject.entityProperties.HasProperty("Repair.MustRequireTool", true))
+            if (!parentObject.Properties.HasProperty("Repair.MustRequireTool", true))
             {
                 //When no repair tool is required, initate repair.
                 InitiateRepair();
@@ -65,7 +62,7 @@ namespace Little_Choice_Based_RPG.Resources.Systems.Damage.Repair
                 return; // Error, can't repair without a tool!
 
             //If repair tool doesn't match
-            if (!repairTool.entityProperties.HasProperty("Repair.RepairToolType", parentObject.entityProperties.GetPropertyValue("Repair.RequiredRepairToolType")))
+            if (!repairTool.Properties.HasProperty("Repair.RepairToolType", parentObject.Properties.GetPropertyValue("Repair.RequiredRepairToolType")))
                 return; //Error, repairtooltype doesn't match the requiredrepairtool on this object
 
             //Repair if repair tool is correct :)
@@ -75,11 +72,11 @@ namespace Little_Choice_Based_RPG.Resources.Systems.Damage.Repair
         private void InitiateRepair()
         {
             //Main repairing logic
-            parentObject.entityProperties.UpsertProperty("IsBroken", false); //Property found in DamageCommon
+            parentObject.Properties.UpsertProperty("IsBroken", false); //Property found in DamageCommon
 
             //Set the generic and inspect descriptors back to default.
-            parentObject.entityProperties.UpdateProperty("Descriptor.Generic.Current", parentObject.entityProperties.GetPropertyValue("Descriptor.Generic.Default"));
-            parentObject.entityProperties.UpdateProperty("Descriptor.Inspect.Current", parentObject.entityProperties.GetPropertyValue("Descriptor.Generic.Default"));
+            parentObject.Properties.UpdateProperty("Descriptor.Generic.Current", parentObject.Properties.GetPropertyValue("Descriptor.Generic.Default"));
+            parentObject.Properties.UpdateProperty("Descriptor.Inspect.Current", parentObject.Properties.GetPropertyValue("Descriptor.Generic.Default"));
         }
     }
 }

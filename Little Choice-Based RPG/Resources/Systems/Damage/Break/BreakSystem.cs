@@ -11,12 +11,15 @@ using System.Threading.Tasks;
 
 namespace Little_Choice_Based_RPG.Resources.Systems.Damage.Break
 {
-    public class BreakSystem : IBreakable
+    public class BreakSystem : ComponentSystem, IBreakable
     {
         private GameObject parentObject;
 
         static BreakSystem()
         {
+            //Component
+            PropertyValidation.CreateValidProperty("Component.Breakable", PropertyType.Boolean);
+
             //BreakSystem logic
             PropertyValidation.CreateValidProperty("IsBreakable", PropertyType.Boolean); //Activates all this class and all of these properties when true :)
             PropertyValidation.CreateValidProperty("IsBreakableByChoice", PropertyType.Boolean); //Lets players choose to break it by choice. 
@@ -48,26 +51,26 @@ namespace Little_Choice_Based_RPG.Resources.Systems.Damage.Break
         public void Break(IUserInterface mutexHolder)
         {
             //Guard clauses for the values in use.
-            if (!parentObject.entityProperties.HasProperty("IsBreakable", true))
+            if (!parentObject.Properties.HasProperty("IsBreakable", true))
                 throw new Exception("This object is not breakable! Tried to break an object where there is no EntityProperty of IsBreakable = true.");
 
-            if (!parentObject.entityProperties.HasExistingPropertyName("Descriptor.Breaking"))
+            if (!parentObject.Properties.HasExistingPropertyName("Descriptor.Breaking"))
                 throw new Exception("This object has no break description! Tried to break an object where there is no EntityProperty of Descriptor.Breaking.");
 
-            if (!parentObject.entityProperties.HasExistingPropertyName("Descriptor.Generic.Broken"))
+            if (!parentObject.Properties.HasExistingPropertyName("Descriptor.Generic.Broken"))
                 throw new Exception("This object has no broken description! Tried to break an object where there is no EntityProperty of Descriptor.Generic.Broken.");
 
             //Main breaking logic.
-            parentObject.entityProperties.UpsertProperty("IsBroken", true); //Property found in DamageCommon
+            parentObject.Properties.UpsertProperty("IsBroken", true); //Property found in DamageCommon
 
             //Set generic descriptor.
-            parentObject.entityProperties.UpdateProperty("Descriptor.Generic.Current", parentObject.entityProperties.GetPropertyValue("Descriptor.Generic.Broken"));
+            parentObject.Properties.UpdateProperty("Descriptor.Generic.Current", parentObject.Properties.GetPropertyValue("Descriptor.Generic.Broken"));
 
             //Set inspect descriptor or default to generic.
-            if (!parentObject.entityProperties.HasExistingPropertyName("Descriptor.Inspect.Broken"))
-                parentObject.entityProperties.UpdateProperty("Descriptor.Inspect.Current", parentObject.entityProperties.GetPropertyValue("Descriptor.Inspect.Broken"));
+            if (!parentObject.Properties.HasExistingPropertyName("Descriptor.Inspect.Broken"))
+                parentObject.Properties.UpdateProperty("Descriptor.Inspect.Current", parentObject.Properties.GetPropertyValue("Descriptor.Inspect.Broken"));
             else
-                parentObject.entityProperties.UpdateProperty("Descriptor.Inspect.Current", parentObject.entityProperties.GetPropertyValue("Descriptor.Generic.Broken"));
+                parentObject.Properties.UpdateProperty("Descriptor.Inspect.Current", parentObject.Properties.GetPropertyValue("Descriptor.Generic.Broken"));
         }
     }
 }

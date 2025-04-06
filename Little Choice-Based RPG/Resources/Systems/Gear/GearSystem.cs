@@ -12,6 +12,9 @@ namespace Little_Choice_Based_RPG.Resources.Systems.Gear
     {
         static GearSystem()
         {
+            //Component
+            PropertyValidation.CreateValidProperty("Component.GearSlots", PropertyType.Boolean);
+
             PropertyValidation.CreateValidProperty("HasGearSlots", PropertyType.Boolean);
             PropertyValidation.CreateValidProperty("Gear.Slot.Helmet.ID", PropertyType.UInt32);
         }
