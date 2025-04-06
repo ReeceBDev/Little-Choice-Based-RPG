@@ -50,34 +50,34 @@ namespace Little_Choice_Based_RPG.Resources.Entities.Conceptual.Weightbearing_De
         }
         public void Carry(GameObject target)
         {
-            if (!entityProperties.HasProperty("IsWeightBearing", true))
+            if (!Properties.HasProperty("IsWeightBearing", true))
                 throw new Exception($"{this} is unable to hold any weight itself!");
 
-            if (!entityProperties.HasExistingPropertyName("TotalWeightHeldInKG"))
-                entityProperties.CreateProperty("TotalWeightHeldInKG", 0);
+            if (!Properties.HasExistingPropertyName("TotalWeightHeldInKG"))
+                Properties.CreateProperty("TotalWeightHeldInKG", 0);
 
-            uint totalStrength = (uint)entityProperties.GetPropertyValue("StrengthInKG");
-            uint weightHeld = (uint)entityProperties.GetPropertyValue("TotalWeightHeldInKG");
+            uint totalStrength = (uint)Properties.GetPropertyValue("StrengthInKG");
+            uint weightHeld = (uint)Properties.GetPropertyValue("TotalWeightHeldInKG");
 
-            uint targetWeight = (uint)target.entityProperties.GetPropertyValue("WeightInKG");
+            uint targetWeight = (uint)target.Properties.GetPropertyValue("WeightInKG");
 
             if (totalStrength < (weightHeld + targetWeight))
                 throw new Exception("the object is too heavy to be picked up by this"); // This should just be an error, really.
 
             Attach(target);
-            entityProperties.UpdateProperty("TotalWeightHeldInKG", weightHeld + targetWeight);
+            Properties.UpdateProperty("TotalWeightHeldInKG", weightHeld + targetWeight);
         }
 
         public void Drop(GameObject target)
         {
-            uint targetWeight = (uint)target.entityProperties.GetPropertyValue("WeightInKG");
-            uint weightHeld = (uint)entityProperties.GetPropertyValue("TotalWeightHeldInKG");
+            uint targetWeight = (uint)target.Properties.GetPropertyValue("WeightInKG");
+            uint weightHeld = (uint)Properties.GetPropertyValue("TotalWeightHeldInKG");
 
             if (0 > (weightHeld - targetWeight))
                 throw new Exception($"{this} went below 0kg weight held when it tried to drop the {target}. That shouldn't happen!");
 
             Unattach(target);
-            entityProperties.UpdateProperty("TotalWeightHeldInKG", weightHeld - targetWeight);
+            Properties.UpdateProperty("TotalWeightHeldInKG", weightHeld - targetWeight);
         }
 
     }

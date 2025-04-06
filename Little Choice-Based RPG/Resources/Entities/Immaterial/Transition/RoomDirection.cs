@@ -43,8 +43,8 @@ namespace Little_Choice_Based_RPG.Resources.Entities.Immaterial.Transition
         {
             // When the direction is associated with an object, make it invisible by default.
             // This forces the implementing object to reveal the direction when accessible, i.e. a Door being open.
-            if (entityProperties.HasExistingPropertyName("Direction.AssociatedObjectID"))
-                entityProperties.UpsertProperty("Direction.IsVisible", false);
+            if (Properties.HasExistingPropertyName("Direction.AssociatedObjectID"))
+                Properties.UpsertProperty("Direction.IsVisible", false);
 
             //Validate required properties have been set on entityProperties
             ValidateRequiredProperties(requiredProperties);
@@ -62,14 +62,14 @@ namespace Little_Choice_Based_RPG.Resources.Entities.Immaterial.Transition
         public uint GetDestinationID(uint? associatedObjectID = null) // associatedObjectID should be the calling object. Throws an exception if the associatedObjectID does not match the one stored on this direction in entityProperties.
         {
             //If no associated object is required, return 
-            if (!entityProperties.HasExistingPropertyName("Direction.AssociatedObjectID"))
-                return (uint) entityProperties.GetPropertyValue("Direction.DestinationRoomID");
+            if (!Properties.HasExistingPropertyName("Direction.AssociatedObjectID"))
+                return (uint) Properties.GetPropertyValue("Direction.DestinationRoomID");
 
             //Check that the associated object matches the one stored in entityProperties
-            if (associatedObjectID != (uint)entityProperties.GetPropertyValue("Direction.AssociatedObjectID"))
+            if (associatedObjectID != (uint)Properties.GetPropertyValue("Direction.AssociatedObjectID"))
                 throw new Exception("The associated object ID did not match the one stored in entityProperties!");
 
-            return (uint)entityProperties.GetPropertyValue("Direction.DestinationRoomID");
+            return (uint)Properties.GetPropertyValue("Direction.DestinationRoomID");
         }
     }
 }

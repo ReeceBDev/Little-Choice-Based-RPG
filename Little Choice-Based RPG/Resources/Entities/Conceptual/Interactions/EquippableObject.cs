@@ -68,11 +68,11 @@ namespace Little_Choice_Based_RPG.Resources.Entities.Conceptual.Interactions
 
         public void Equip()
         {
-            Console.WriteLine(entityProperties.GetPropertyValue("Descriptor.Equip"));
+            Console.WriteLine(Properties.GetPropertyValue("Descriptor.Equip"));
         }
         public void Unequip()
         {
-            Console.WriteLine(entityProperties.GetPropertyValue("Descriptor.Unequip"));
+            Console.WriteLine(Properties.GetPropertyValue("Descriptor.Unequip"));
         }
     }
 }

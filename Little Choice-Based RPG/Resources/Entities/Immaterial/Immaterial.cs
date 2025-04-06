@@ -36,7 +36,7 @@ namespace Little_Choice_Based_RPG.Resources.Entities.Immaterial
             : base(SetLocalProperties(derivedProperties ??= new Dictionary<string, object>()))
         {
             //Freeze IsImmaterial property.
-            entityProperties.FreezeProperty("IsImmaterial");
+            Properties.FreezeProperty("IsImmaterial");
 
             //Validate required properties have been set on entityProperties
             ValidateRequiredProperties(requiredProperties);

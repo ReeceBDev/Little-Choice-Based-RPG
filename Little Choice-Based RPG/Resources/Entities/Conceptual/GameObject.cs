@@ -49,7 +49,7 @@ namespace Little_Choice_Based_RPG.Resources.Entities.Conceptual
             : base(SetLocalProperties(derivedProperties ??= new Dictionary<string, object>()))
         {
             //Set the type property to reflect the classes type.
-            entityProperties.UpsertProperty("Type", this.GetType().ToString());
+            Properties.UpsertProperty("Type", this.GetType().ToString());
 
             //Validate required properties have been set on entityProperties
             ValidateRequiredProperties(requiredProperties);

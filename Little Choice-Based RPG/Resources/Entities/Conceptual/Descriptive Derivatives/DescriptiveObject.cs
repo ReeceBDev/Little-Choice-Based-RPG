@@ -46,12 +46,12 @@ namespace Little_Choice_Based_RPG.Resources.Entities.Conceptual.Descriptive_Deri
             : base(SetLocalProperties(derivedProperties ??= new Dictionary<string, object>()))
         {
             //Freeze default descriptors.
-            entityProperties.FreezeProperty("Descriptor.Generic.Default");
-            entityProperties.FreezeProperty("Descriptor.Inspect.Default");
+            Properties.FreezeProperty("Descriptor.Generic.Default");
+            Properties.FreezeProperty("Descriptor.Inspect.Default");
 
             //Set current descriptors to defaults.
-            entityProperties.UpsertProperty("Descriptor.Generic.Current", entityProperties.GetPropertyValue("Descriptor.Generic.Default"));
-            entityProperties.UpsertProperty("Descriptor.Inspect.Current", entityProperties.GetPropertyValue("Descriptor.Inspect.Default"));
+            Properties.UpsertProperty("Descriptor.Generic.Current", Properties.GetPropertyValue("Descriptor.Generic.Default"));
+            Properties.UpsertProperty("Descriptor.Inspect.Current", Properties.GetPropertyValue("Descriptor.Inspect.Default"));
 
             //Validate required properties have been set on entityProperties
             ValidateRequiredProperties(requiredProperties);
@@ -65,9 +65,9 @@ namespace Little_Choice_Based_RPG.Resources.Entities.Conceptual.Descriptive_Deri
             return derivedProperties; //Return is required to give (base) the derived list.
         }
 
-        public void SetGenericDescriptor(string newGenericDescriptor) => entityProperties.UpsertProperty("Descriptor.Generic.Current", newGenericDescriptor);
-        public void SetInspectDescriptor(string newInspectDescriptor) => entityProperties.UpsertProperty("Descriptor.Inspect.Current", newInspectDescriptor);
-        public string InspectDescriptor => (string) entityProperties.GetPropertyValue("Descriptor.Inspect.Current");
-        public string GenericDescriptor => (string) entityProperties.GetPropertyValue("Descriptor.Generic.Current");
+        public void SetGenericDescriptor(string newGenericDescriptor) => Properties.UpsertProperty("Descriptor.Generic.Current", newGenericDescriptor);
+        public void SetInspectDescriptor(string newInspectDescriptor) => Properties.UpsertProperty("Descriptor.Inspect.Current", newInspectDescriptor);
+        public string InspectDescriptor => (string) Properties.GetPropertyValue("Descriptor.Inspect.Current");
+        public string GenericDescriptor => (string) Properties.GetPropertyValue("Descriptor.Generic.Current");
     }
 }
