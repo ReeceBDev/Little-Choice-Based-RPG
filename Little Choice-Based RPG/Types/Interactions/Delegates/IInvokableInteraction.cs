@@ -11,15 +11,15 @@ namespace Little_Choice_Based_RPG.Types.Interactions.InteractDelegate
     public interface IInvokableInteraction
     {
         /// <summary> Invokes the delegate using its required parameters. </summary>
-        public void AttemptInvoke(IUserInterface setInvocationMutexIdentity);
-        public void CancelInteraction(IUserInterface setInvocationMutexIdentity);
-        public void GiveRequiredParameter(object newParameter, IUserInterface setInvocationMutexIdentity);
+        public void AttemptInvoke(IUserInterface sourceInvocationMutexIdentity);
+        public void CancelInteraction(IUserInterface sourceInvocationMutexIdentity);
+        public void GiveRequiredParameter(object newParameter, IUserInterface sourceInvocationMutexIdentity);
 
         /// <summary> The title shown when a player gets listed their choice options. </summary>
-        public SanitizedString InteractionTitle { get; init; }
+        public string InteractionTitle { get; init; }
 
         /// <summary> The descriptor shown after a player selected their choice. </summary>
-        public SanitizedString InteractDescriptor { get; init; }
+        public string InteractDescriptor { get; init; }
 
         /// <summary> Describes how an Interaction should be presented by the User Interface, for example, if it belongs to a context-menu. </summary>
         public InteractionRole InteractionContext { get; init; }
