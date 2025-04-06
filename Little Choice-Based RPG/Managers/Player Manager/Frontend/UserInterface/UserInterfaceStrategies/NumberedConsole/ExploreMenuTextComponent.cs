@@ -7,10 +7,10 @@ using System.Threading.Tasks;
 
 namespace Little_Choice_Based_RPG.Managers.Player_Manager.Frontend.UserInterface.UserInterfaceStrategies.NumberedConsole
 {
-    public struct ExploreMenuTextEntry
+    public struct ExploreMenuTextComponent
     {
         static List<ExploreMenuIdentity> usedIdentifiers = new List<ExploreMenuIdentity>();
-        public ExploreMenuTextEntry(ExploreMenuIdentity setIdentifier, string setContent, uint setWriteSpeed)
+        public ExploreMenuTextComponent(ExploreMenuIdentity setIdentifier, string setContent, uint setWriteSpeed)
         {
             AddIdentifier(setIdentifier);
             Content = setContent;
@@ -19,15 +19,16 @@ namespace Little_Choice_Based_RPG.Managers.Player_Manager.Frontend.UserInterface
 
         private void AddIdentifier(ExploreMenuIdentity prospectiveIdentifier)
         {
-            if (usedIdentifiers.Contains(prospectiveIdentifier))
-                throw new ArgumentException($"This ExploreMenuIdentifier of {prospectiveIdentifier} is already in use! Only one of each unique Identifier is allowed, except None. Try setting to {ExploreMenuIdentity.None}, since they are unlimited.");
+            if (!(prospectiveIdentifier == ExploreMenuIdentity.None))
+                if (usedIdentifiers.Contains(prospectiveIdentifier))
+                    throw new ArgumentException($"This ExploreMenuIdentifier of {prospectiveIdentifier} is already in use! Only one of each unique Identifier is allowed, except None. Try setting to {ExploreMenuIdentity.None}, since they are unlimited.");
 
             usedIdentifiers.Add(prospectiveIdentifier);
             UniqueIdentity = prospectiveIdentifier;
         }
 
         public ExploreMenuIdentity UniqueIdentity { get; private set; } // Can only use one of each, across all instances UserInterfaceTextEntry, except None, which can be used forever.
-        public string Content { get; init; }
-        public uint WriteSpeed { get; init; }
+        public string Content { get; set; }
+        public uint WriteSpeed { get; set; }
     }
 }
