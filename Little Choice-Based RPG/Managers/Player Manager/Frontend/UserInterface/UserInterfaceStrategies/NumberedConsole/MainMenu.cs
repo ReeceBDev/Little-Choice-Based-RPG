@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Little_Choice_Based_RPG.Types.Interactions.InteractDelegate;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,12 +11,21 @@ namespace Little_Choice_Based_RPG.Managers.Player_Manager.Frontend.UserInterface
     {
         public void RunMenu()
         {
-            Console.WriteLine(string.Join("\n",
-                          $" ===========-===== WELCOME TO THE GAME ===== ----========-========-= --..-- .",
-                          @"{1. Start G\name\n\n\\\\\\\\\\\n\n\n\n }",
-                          $" ====-===- =--=-=--_-----_--= =- -_ ._",
-                          $" ===========",
-                          $">>> "));
+            Console.WriteLine("Main Menu.");
+            UserInterfaceUtilities.Pause();
+
+            /*
+            while (!exitMainMenu)
+            {
+                if (firstTimeSinceTransition)
+                    InitialiseMainTextEntries(listedInteractions);
+
+                DrawUserInterface();
+
+                int userInput = AwaitUserInput(listedInteractions.Count);
+                InvokeInteraction(userInput, listedInteractions);
+            }
+            */
         }
     }
 }
