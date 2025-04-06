@@ -16,6 +16,7 @@ namespace Little_Choice_Based_RPG.Types.Interactions.InteractDelegate
     {
         protected IUserInterface? invocationMutexIdentity;
 
+
         static Interaction()
         {
             AddSelfIntoDelegateValidation();
@@ -25,8 +26,8 @@ namespace Little_Choice_Based_RPG.Types.Interactions.InteractDelegate
         public Interaction(string setInteractTitle, string setInteractDescriptor, InteractionRole setInteractRole = InteractionRole.Explore)
         {
             InteractionContext = setInteractRole;
-            InteractionTitle.Value = setInteractTitle;
-            InteractDescriptor.Value = setInteractDescriptor;
+            InteractionTitle = setInteractTitle;
+            InteractDescriptor = setInteractDescriptor;
         }
 
         private static void AddSelfIntoDelegateValidation()
@@ -42,16 +43,16 @@ namespace Little_Choice_Based_RPG.Types.Interactions.InteractDelegate
             */
         }
         /// <summary> Invokes the delegate if able. Requests required parameters if unable. </summary>
-        public abstract void AttemptInvoke(IUserInterface setInvocationMutexIdentity);
-        public abstract void CancelInteraction(IUserInterface setInvocationMutexIdentity);
-        public abstract void GiveRequiredParameter(object newParameter, IUserInterface setInvocationMutexIdentity);
-        protected abstract void Invoke(IUserInterface setInvocationMutexIdentity);
+        public abstract void AttemptInvoke(IUserInterface sourceInvocationMutexIdentity);
+        public abstract void CancelInteraction(IUserInterface sourceInvocationMutexIdentity);
+        public abstract void GiveRequiredParameter(object newParameter, IUserInterface sourceInvocationMutexIdentity);
+        protected abstract void Invoke(IUserInterface sourceInvocationMutexIdentity);
 
         /// <summary> The title shown when a player gets listed their choice options. </summary>
-        public SanitizedString InteractionTitle { get; init; } = new SanitizedString(string.Empty);
+        public string InteractionTitle { get; init; }
 
         /// <summary> The descriptor shown after a player selected their choice. </summary>
-        public SanitizedString InteractDescriptor { get; init; } = new SanitizedString(string.Empty);
+        public string InteractDescriptor { get; init; }
 
         /// <summary> Describes how an Interaction should be presented by the User Interface, for example, if it belongs to a context-menu. </summary>
         public InteractionRole InteractionContext { get; init; }
