@@ -15,35 +15,50 @@ using System.Threading.Tasks;
 namespace Little_Choice_Based_RPG.Managers.World
 {
     /// <summary> Manufactures GameObjects of any type based on its properties. Gets allocated an outline of each object from JSONs. </summary>
-    internal class GameObjectFactory
+    public class GameObjectFactory
     {
-        public IPropertyContainer NewGameObject(Dictionary<string, object> properties)
+        SystemSubscriptionEventBus systemSubscriptionEventBus;
+
+        public GameObjectFactory(SystemSubscriptionEventBus setSystemSubscriptionEventBus)
+        {
+            systemSubscriptionEventBus = setSystemSubscriptionEventBus;
+        }
+
+        public GameObject NewGameObject(Dictionary<string, object> properties)
+        {
+            GameObject newGameObject = GenerateObjectFromTypeProperty(properties);
+            SubscribeToComponents(newGameObject, properties);
+
+            return newGameObject;
+        }
+
+        private GameObject GenerateObjectFromTypeProperty(Dictionary<string, object> properties)
         {
             if (!properties.ContainsKey("Type"))
                 throw new ArgumentException("The properties of the new object did not include the Type property! Properties: {properties}");
 
             Type objectType = Type.GetType(properties["Type"].ToString());
+            object newGameObject = Activator.CreateInstance(objectType, properties);
+            GameObject castedGameObject = (GameObject)newGameObject;
 
-            object newGameObject = Activator.CreateInstance(objectType);
+            return castedGameObject;
+        }
 
-            IPropertyContainer castedGameObject = (IPropertyContainer)newGameObject;
-
-            //Add components
-            foreach (EntityProperty property in castedGameObject.Properties.EntityProperties)
+        private void SubscribeToComponents(GameObject targetGameObject, Dictionary<string, object> properties)
+        {
+            foreach (EntityProperty property in targetGameObject.Properties.EntityProperties)
             {
                 if (!(property.PropertyName.StartsWith("Component.")))
                     continue;
 
                 if (!(property.PropertyValue.Equals(true)))
-                    continue; 
+                    continue;
 
                 Regex grabComponentName = new Regex("(?<=Component.)[A-Za-z]*");
                 string systemReferenceName = grabComponentName.Match(property.PropertyName).Value;
 
-                SystemSubscriptionEventBus.Subscribe(castedGameObject, systemReferenceName);
-            }    
-
-            return castedGameObject;
+                systemSubscriptionEventBus.Subscribe(targetGameObject, systemReferenceName);
+            }
         }
     }
 }
