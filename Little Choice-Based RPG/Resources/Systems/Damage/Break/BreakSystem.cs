@@ -1,6 +1,7 @@
 ﻿using Little_Choice_Based_RPG.Managers.Player_Manager.Frontend.UserInterface;
 using Little_Choice_Based_RPG.Resources.Entities.Conceptual;
 using Little_Choice_Based_RPG.Resources.Systems.Damage.Repair;
+using Little_Choice_Based_RPG.Resources.Systems.SystemEventBus;
 using Little_Choice_Based_RPG.Types.EntityProperties;
 using System;
 using System.Collections.Generic;
@@ -17,9 +18,6 @@ namespace Little_Choice_Based_RPG.Resources.Systems.Damage.Break
 
         static BreakSystem()
         {
-            //Component
-            PropertyValidation.CreateValidProperty("Component.Breakable", PropertyType.Boolean);
-
             //BreakSystem logic
             PropertyValidation.CreateValidProperty("IsBreakable", PropertyType.Boolean); //Activates all this class and all of these properties when true :)
             PropertyValidation.CreateValidProperty("IsBreakableByChoice", PropertyType.Boolean); //Lets players choose to break it by choice. 
@@ -33,7 +31,7 @@ namespace Little_Choice_Based_RPG.Resources.Systems.Damage.Break
         }
 
         /// <summary> Allows objects to break. Requires DamageCommon. </summary>
-        public BreakSystem(GameObject instantiatingObject)
+        public BreakSystem(GameObject instantiatingObject, SystemSubscriptionEventBus systemSubscriptionEventBusReference) : base(systemSubscriptionEventBusReference)
         {
             /*
             //Enforces IRepairable on the instantiating class

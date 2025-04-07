@@ -1,4 +1,5 @@
 ﻿using Little_Choice_Based_RPG.Resources.Entities.Conceptual;
+using Little_Choice_Based_RPG.Resources.Systems.SystemEventBus;
 using Little_Choice_Based_RPG.Types.EntityProperties;
 using System;
 using System.Collections.Generic;
@@ -12,11 +13,13 @@ namespace Little_Choice_Based_RPG.Resources.Systems.Gear
     {
         static GearSystem()
         {
-            //Component
-            PropertyValidation.CreateValidProperty("Component.GearSlots", PropertyType.Boolean);
-
             PropertyValidation.CreateValidProperty("HasGearSlots", PropertyType.Boolean);
             PropertyValidation.CreateValidProperty("Gear.Slot.Helmet.ID", PropertyType.UInt32);
+        }
+
+        public GearSystem(SystemSubscriptionEventBus systemSubscriptionEventBusReference) : base(systemSubscriptionEventBusReference)
+        {
+
         }
     }
 }

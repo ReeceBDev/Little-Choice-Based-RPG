@@ -1,5 +1,6 @@
 ﻿using Little_Choice_Based_RPG.Resources.Entities.Conceptual;
 using Little_Choice_Based_RPG.Resources.Systems.Damage.Repair;
+using Little_Choice_Based_RPG.Resources.Systems.SystemEventBus;
 using Little_Choice_Based_RPG.Types.EntityProperties;
 using System;
 using System.Collections.Generic;
@@ -14,16 +15,13 @@ namespace Little_Choice_Based_RPG.Resources.Systems.Damage.Flammability
         private GameObject parentObject;
         static FlammabilitySystem()
         {
-            //Component
-            PropertyValidation.CreateValidProperty("Component.Flammable", PropertyType.Boolean);
-            RepairSystem bean = new RepairSystem();
             //Logic
             PropertyValidation.CreateValidProperty("IsFlammable", PropertyType.Boolean);
             PropertyValidation.CreateValidProperty("Flammability.IsBurning", PropertyType.Boolean);
             PropertyValidation.CreateValidProperty("Flammability.IsBurnt", PropertyType.Boolean);
         }
 
-        public FlammabilitySystem(GameObject instantiatingObject)
+        public FlammabilitySystem(GameObject instantiatingObject, SystemSubscriptionEventBus systemSubscriptionEventBusReference) : base(systemSubscriptionEventBusReference)
         {
             parentObject = instantiatingObject;
         }

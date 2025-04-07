@@ -1,6 +1,7 @@
 ﻿using Little_Choice_Based_RPG.Managers.Player_Manager.Frontend.UserInterface;
 using Little_Choice_Based_RPG.Resources.Entities.Conceptual;
 using Little_Choice_Based_RPG.Resources.Systems.Damage.Repair;
+using Little_Choice_Based_RPG.Resources.Systems.SystemEventBus;
 using Little_Choice_Based_RPG.Types.EntityProperties;
 using System;
 using System.Collections.Generic;
@@ -15,9 +16,6 @@ namespace Little_Choice_Based_RPG.Resources.Systems.Damage.Repair
         private GameObject parentObject;
         static RepairSystem()
         {
-            //RepairSystem component
-            PropertyValidation.CreateValidProperty("Component.Repair", PropertyType.Boolean);
-
             //RepairSystem logic
             PropertyValidation.CreateValidProperty("Repair.IsRepairable", PropertyType.Boolean); //Activates all this class and all of these properties when true :)
             PropertyValidation.CreateValidProperty("Repair.IsRepairableByChoice", PropertyType.Boolean); //Lets players choose to repair it by choice.
@@ -32,7 +30,7 @@ namespace Little_Choice_Based_RPG.Resources.Systems.Damage.Repair
         }
 
         /// <summary> Allows repairs to occur on this object. Requires DamageCommon. </summary>
-        public RepairSystem(GameObject instantiatingObject)
+        public RepairSystem(GameObject instantiatingObject, SystemSubscriptionEventBus systemSubscriptionEventBusReference) : base(systemSubscriptionEventBusReference)
         {
             DamageCommon damageCommonInstantisation = DamageCommon.Instance;
 
