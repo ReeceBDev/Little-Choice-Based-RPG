@@ -22,7 +22,7 @@ namespace Little_Choice_Based_RPG.Resources.Entities.Physical.Plants
 
         };
 
-        private Dictionary<string, object> defaultProperties = new Dictionary<string, object>()
+        private readonly static Dictionary<string, object> defaultProperties = new Dictionary<string, object>()
         {
 
         };

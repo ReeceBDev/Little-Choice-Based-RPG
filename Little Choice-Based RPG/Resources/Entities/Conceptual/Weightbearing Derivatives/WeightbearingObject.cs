@@ -22,7 +22,7 @@ namespace Little_Choice_Based_RPG.Resources.Entities.Conceptual.Weightbearing_De
             {"TotalWeightHeldInKG", PropertyType.Decimal}, //current weight held
         };
 
-        private Dictionary<string, object> defaultProperties = new Dictionary<string, object>()
+        private readonly static Dictionary<string, object> defaultProperties = new Dictionary<string, object>()
         {
             {"IsWeightBearing", true }
         };

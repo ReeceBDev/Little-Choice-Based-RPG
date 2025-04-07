@@ -25,7 +25,7 @@ namespace Little_Choice_Based_RPG.Resources.Entities.Immaterial.Transition
             {"Direction.AssociatedObjectID", PropertyType.UInt32},
         };
 
-        private Dictionary<string, object> defaultProperties = new Dictionary<string, object>()
+        private readonly static Dictionary<string, object> defaultProperties = new Dictionary<string, object>()
         {
             {"Direction.IsVisible", true},
             {"Descriptor.Direction.Travelling", "Feet scraping flecks of shrubbery drowned in dust scrambling from cracked sandstone, you forge your way further across the desolation."}

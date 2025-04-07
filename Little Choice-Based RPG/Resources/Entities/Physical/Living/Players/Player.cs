@@ -29,7 +29,7 @@ namespace Little_Choice_Based_RPG.Resources.Entities.Physical.Living.Players
 
         };
 
-        private Dictionary<string, object> defaultProperties = new Dictionary<string, object>()
+        private readonly static Dictionary<string, object> defaultProperties = new Dictionary<string, object>()
         {
             {"HasGearSlots", true },
             {"Player.CanHear", true},

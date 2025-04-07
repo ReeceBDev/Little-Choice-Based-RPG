@@ -27,7 +27,7 @@ namespace Little_Choice_Based_RPG.Resources.Entities.Conceptual.Interactions
 
         };
 
-        private Dictionary<string, object> defaultProperties = new Dictionary<string, object>()
+        private readonly static Dictionary<string, object> defaultProperties = new Dictionary<string, object>()
         {
             {"Descriptor.IsEquipped", false},
             {"Descriptor.Equip", "You equip this and feel much better prepared for the Potsun Burran and its challenges." },

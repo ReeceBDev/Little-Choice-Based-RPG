@@ -29,7 +29,7 @@ namespace Little_Choice_Based_RPG.Resources.Entities.Conceptual.Descriptive_Deri
 
         };
 
-        private Dictionary<string, object> defaultProperties = new Dictionary<string, object>()
+        private readonly static Dictionary<string, object> defaultProperties = new Dictionary<string, object>()
         {
             {"Descriptor.Generic.Default", "[ERROR] - There's something here but you don't know what it is?"},
             {"Descriptor.Inspect.Default", $"You inspect this further. Albeit, for all the wisdom you gather, it is still just an [ERROR] to the limits of your knowledge."}
