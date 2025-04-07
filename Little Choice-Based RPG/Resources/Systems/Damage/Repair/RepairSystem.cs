@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Little_Choice_Based_RPG.Resources.Systems.Damage.Repair
 {
-    public class RepairSystem : ComponentSystem
+    public class RepairSystem : PropertyLogic
     {
         private GameObject parentObject;
         static RepairSystem()

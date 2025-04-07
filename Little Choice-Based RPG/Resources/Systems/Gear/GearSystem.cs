@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Little_Choice_Based_RPG.Resources.Systems.Gear
 {
-    internal class GearSystem
+    internal class GearSystem : PropertyLogic
     {
         static GearSystem()
         {

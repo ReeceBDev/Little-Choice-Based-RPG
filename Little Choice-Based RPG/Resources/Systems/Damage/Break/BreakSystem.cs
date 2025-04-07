@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Little_Choice_Based_RPG.Resources.Systems.Damage.Break
 {
-    public class BreakSystem : ComponentSystem, IBreakable
+    public class BreakSystem : PropertyLogic
     {
         private GameObject parentObject;
 

@@ -1,4 +1,5 @@
 ﻿using Little_Choice_Based_RPG.Resources.Entities.Conceptual;
+using Little_Choice_Based_RPG.Resources.Systems.Damage.Repair;
 using Little_Choice_Based_RPG.Types.EntityProperties;
 using System;
 using System.Collections.Generic;
@@ -8,14 +9,14 @@ using System.Threading.Tasks;
 
 namespace Little_Choice_Based_RPG.Resources.Systems.Damage.Flammability
 {
-    public class FlammabilitySystem : ComponentSystem
+    public class FlammabilitySystem : PropertyLogic
     {
         private GameObject parentObject;
         static FlammabilitySystem()
         {
             //Component
             PropertyValidation.CreateValidProperty("Component.Flammable", PropertyType.Boolean);
-
+            RepairSystem bean = new RepairSystem();
             //Logic
             PropertyValidation.CreateValidProperty("IsFlammable", PropertyType.Boolean);
             PropertyValidation.CreateValidProperty("Flammability.IsBurning", PropertyType.Boolean);
