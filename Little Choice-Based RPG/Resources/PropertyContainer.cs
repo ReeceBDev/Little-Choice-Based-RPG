@@ -69,15 +69,6 @@ namespace Little_Choice_Based_RPG.Resources
                     throw new Exception($"A required property has not been defined in {Properties}. Property name: {property.Key}");
         }
 
-        public event EventHandler<PropertyHandler> PropertiesChanged;
-
-        public PropertyHandler Properties
-        { 
-            get; 
-            set
-            {
-                field = value;
-                PropertiesChanged?.Invoke(this, Properties);
-            }
+        public PropertyHandler Properties { get; set; } = new PropertyHandler();
     }
 }
