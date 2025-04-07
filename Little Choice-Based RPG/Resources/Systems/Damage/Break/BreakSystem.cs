@@ -39,7 +39,7 @@ namespace Little_Choice_Based_RPG.Resources.Systems.Damage.Break
                 throw new Exception($"{instantiatingObject.GetType()} does not implement IBreakable!");
             */
 
-            DamageCommon damageCommonInstantisation = DamageCommon.Instance;
+            DamageCommon damageCommonInstantiation = DamageCommon.Instance;
 
             //Stores instantiating object for accessing its PropertyHandler.
             parentObject = instantiatingObject;

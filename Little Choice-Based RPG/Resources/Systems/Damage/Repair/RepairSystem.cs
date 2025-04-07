@@ -32,7 +32,7 @@ namespace Little_Choice_Based_RPG.Resources.Systems.Damage.Repair
         /// <summary> Allows repairs to occur on this object. Requires DamageCommon. </summary>
         public RepairSystem(GameObject instantiatingObject, SystemSubscriptionEventBus systemSubscriptionEventBusReference) : base(systemSubscriptionEventBusReference)
         {
-            DamageCommon damageCommonInstantisation = DamageCommon.Instance;
+            DamageCommon damageCommonInstantiation = DamageCommon.Instance;
 
             parentObject = instantiatingObject;
         }
