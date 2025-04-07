@@ -32,7 +32,7 @@ namespace Little_Choice_Based_RPG.Resources.Entities.Conceptual
 
         };
 
-        private readonly static Dictionary<string, object> defaultProperties = new Dictionary<string, object>()
+        private Dictionary<string, object> defaultProperties = new Dictionary<string, object>()
         {
             {"Name", "Default Generic GameObject Name Test"},
             {"WeightInKG", 1.0m},

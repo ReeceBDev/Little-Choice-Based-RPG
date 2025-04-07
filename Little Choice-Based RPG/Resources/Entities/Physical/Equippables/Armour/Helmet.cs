@@ -21,7 +21,7 @@ namespace Little_Choice_Based_RPG.Resources.Entities.Physical.Equippables.Armour
 
         };
 
-        private readonly static Dictionary<string, object> defaultProperties = new Dictionary<string, object>()
+        private Dictionary<string, object> defaultProperties = new Dictionary<string, object>()
         {
             {"WeightInKG", 2.3m},
             {"Descriptor.Generic.Default", "Folorn, a mudcaked helmet rots here in its own scrap, long since abandoned." }

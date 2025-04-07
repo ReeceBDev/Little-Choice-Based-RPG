@@ -24,7 +24,7 @@ namespace Little_Choice_Based_RPG.Resources.Entities.Physical.Furniture
 
         };
 
-        private readonly static Dictionary<string, object> defaultProperties = new Dictionary<string, object>()
+        private Dictionary<string, object> defaultProperties = new Dictionary<string, object>()
         {
             { "Component.FlammabilitySystem", true },
             { "IsFlammable", true }

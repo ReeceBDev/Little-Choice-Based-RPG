@@ -20,7 +20,7 @@ namespace Little_Choice_Based_RPG.Resources.Entities.Immaterial
 
         };
 
-        private readonly static Dictionary<string, object> defaultProperties = new Dictionary<string, object>()
+        private Dictionary<string, object> defaultProperties = new Dictionary<string, object>()
         {
             { "IsImmaterial", true }
         };
