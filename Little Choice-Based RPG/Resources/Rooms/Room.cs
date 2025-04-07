@@ -136,6 +136,9 @@ namespace Little_Choice_Based_RPG.Resources.Rooms
                 }
             }
 
+            if (validEntityStates.Count > condition.RequiredEntityStates.Count)
+                throw new Exception("Critical error during Room Descriptor assessment: There were more valid entity states than the maximum possible number of required states. Something went seriously wrong! The objects might have misconfigured IDs, check if the IDs are unique!");
+
             //if all the objects in a condition are valid, return true
             return validEntityStates.Count == condition.RequiredEntityStates.Count;
         }
