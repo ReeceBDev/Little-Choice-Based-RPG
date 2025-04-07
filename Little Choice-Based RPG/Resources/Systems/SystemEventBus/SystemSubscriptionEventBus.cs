@@ -7,17 +7,14 @@ using System.Threading.Tasks;
 
 namespace Little_Choice_Based_RPG.Resources.Systems.SystemEventBus
 {
-    public struct SystemSubscriptionRequestEventArgs(object targetObject, string systemReferenceName);
+    public record struct SystemSubscriptionRequestEventArgs(PropertyContainer targetPropertyHandler, string systemReferenceName);
     public class SystemSubscriptionEventBus
     {
         private static readonly SystemSubscriptionEventBus singletonInstance = new SystemSubscriptionEventBus();
 
         public event EventHandler<SystemSubscriptionRequestEventArgs> SystemSubcriptionRequest;
 
-        public void Subscribe(object targetObject, string systemReferenceName) =>
-            OnSystemSubscriptionRequest(targetObject, systemReferenceName);
-
-        private protected void OnSystemSubscriptionRequest(object targetObject, string systemReferenceName) =>
+        public void Subscribe(PropertyContainer targetObject, string systemReferenceName) =>
             SystemSubcriptionRequest?.Invoke(this, new SystemSubscriptionRequestEventArgs(targetObject, systemReferenceName));
 
         public static SystemSubscriptionEventBus Instance
