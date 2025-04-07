@@ -33,10 +33,10 @@ internal class TextBasedRPG
         GameObjectFactory currentGameObjectFactory = new GameObjectFactory(newSystemSubscription);
 
         //Create test object to initialise the current systems:
-        new FlammabilitySystem(new TestGameObject());
-        new RepairSystem(new TestGameObject());
-        new BreakSystem(new TestGameObject());
-        new GearSystem();
+        new FlammabilitySystem(new TestGameObject(), newSystemSubscription);
+        new RepairSystem(new TestGameObject(), newSystemSubscription);
+        new BreakSystem(new TestGameObject(), newSystemSubscription);
+        new GearSystem(newSystemSubscription);
 
         //Main
         var mainWorld = new GameEnvironment();
@@ -57,13 +57,13 @@ internal class TextBasedRPG
         davodianMk1Helmet.Add("Descriptor.Equip", "Dusty residue coats your hands as you heave the thick, heavy metal above you and press your forehead in.\r\nInterlocking clicks engage behind your neck, a gentle buzz as the metal comes online.");
         davodianMk1Helmet.Add("Descriptor.Unequip", "Engaging the clasp at the rear, the locks reluctantly scrape their disengaging clicks and the full weight of the visor bears down on your head.\r\nSandpaper lining scratches the sides of your face when you tilt your head forwards and force the faceplate off.");
 
-        davodianMk1Helmet.Add("Component.Repair", true);
+        davodianMk1Helmet.Add("Component.RepairSystem", true);
         davodianMk1Helmet.Add("Repair.IsRepairable", true);
         davodianMk1Helmet.Add("Repair.IsRepairableByChoice", true);
         davodianMk1Helmet.Add("Descriptor.Repair.Choice.Interact", "Repair - Re - calibrate the helmets longitudinal wave sensor - array.");
         davodianMk1Helmet.Add("Descriptor.Repair.Choice.Repairing", "You fixed the helmet, yayy!");
 
-        davodianMk1Helmet.Add("Component.Breakable", true);
+        davodianMk1Helmet.Add("Component.BreakSystem", true);
         davodianMk1Helmet.Add("IsBreakable", true);
         davodianMk1Helmet.Add("IsBreakableByChoice", true);
         davodianMk1Helmet.Add("Descriptor.Choice.Break.Interact", "Damage - Intentionally misalign the helmets longitudinal wave sensor-array");
