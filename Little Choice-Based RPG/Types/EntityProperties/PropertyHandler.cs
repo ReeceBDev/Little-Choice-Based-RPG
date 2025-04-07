@@ -20,7 +20,7 @@ namespace Little_Choice_Based_RPG.Types.EntityProperties
         {
             if (!IsPropertyReadOnly(propertyName))
             {
-                UpdateProperty(propertyName, setPropertyValue);
+                GetEntityProperty(propertyName).SetPropertyValue(setPropertyValue);
 
                 if (isReadOnly)
                     FreezeProperty(propertyName);
@@ -114,8 +114,8 @@ namespace Little_Choice_Based_RPG.Types.EntityProperties
             throw new ArgumentException("No such EntityProperty exists inside this objects list of EntityProperties.");
         }
 
-        public event EventHandler<EntityProperty> PropertyUpdate;
-        protected private void OnPropertyChanged(EntityProperty updatedProperty) => PropertyUpdate?.Invoke(this, updatedProperty);
+        public event EventHandler<EntityProperty> PropertyChanged;
+        protected private void OnPropertyChanged(EntityProperty updatedProperty) => PropertyChanged?.Invoke(this, updatedProperty);
         public List<EntityProperty> EntityProperties { get; private set; } = new List<EntityProperty>();
     }
 }
