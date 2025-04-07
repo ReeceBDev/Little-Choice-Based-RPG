@@ -21,6 +21,7 @@ using Little_Choice_Based_RPG.Resources.Systems.Damage.Break;
 using Little_Choice_Based_RPG.Resources.Systems.Damage.Flammability;
 using Little_Choice_Based_RPG.Resources.Systems.Damage.Repair;
 using Little_Choice_Based_RPG.Resources.Systems.Gear;
+using Little_Choice_Based_RPG.Resources.Systems.SystemEventBus;
 using Little_Choice_Based_RPG.Types;
 using Little_Choice_Based_RPG.Types.EntityProperties;
 
@@ -28,12 +29,15 @@ internal class TextBasedRPG
 {
     private static void Main(string[] args)
     {
+        SystemSubscriptionEventBus newSystemSubscription = new SystemSubscriptionEventBus();
+        GameObjectFactory currentGameObjectFactory = new GameObjectFactory(newSystemSubscription);
+
         //Create test object to initialise the current systems:
         new FlammabilitySystem(new TestGameObject());
         new RepairSystem(new TestGameObject());
         new BreakSystem(new TestGameObject());
         new GearSystem();
-        
+
         //Main
         var mainWorld = new GameEnvironment();
         mainWorld.GenerateAllRooms();
@@ -47,6 +51,7 @@ internal class TextBasedRPG
         //Create a helmet
         Dictionary<string, object> davodianMk1Helmet = new Dictionary<string, object>();
         davodianMk1Helmet.Add("Name", "Davodian MkI Covered Faceplate");
+        davodianMk1Helmet.Add("Type", "Little_Choice_Based_RPG.Resources.Entities.Physical.Equippables.Armour.Helmet");
         davodianMk1Helmet.Add("Descriptor.Generic.Default", "Discarded aside here is your original Davodian MkI, its dented gunmetal grey faceplate long lustreless.");
         davodianMk1Helmet.Add("Descriptor.Inspect.Default", "Disfigured and mottled from years of abuse, the gunmetal grey protective sensors relay a live feed, protecting your vision and perceptible hearing.\r\nThe units bodywork has been long since reworked in patchwork copper shielding - under the seams near-charred components made up of scrapped debris poke through residual sand.");
         davodianMk1Helmet.Add("Descriptor.Equip", "Dusty residue coats your hands as you heave the thick, heavy metal above you and press your forehead in.\r\nInterlocking clicks engage behind your neck, a gentle buzz as the metal comes online.");
@@ -58,16 +63,15 @@ internal class TextBasedRPG
         davodianMk1Helmet.Add("Descriptor.Repair.Choice.Interact", "Repair - Re - calibrate the helmets longitudinal wave sensor - array.");
         davodianMk1Helmet.Add("Descriptor.Repair.Choice.Repairing", "You fixed the helmet, yayy!");
 
-        davodianMk1Helmet.Add("Component.Break", "BreakSystem");
+        davodianMk1Helmet.Add("Component.Breakable", true);
         davodianMk1Helmet.Add("IsBreakable", true);
         davodianMk1Helmet.Add("IsBreakableByChoice", true);
         davodianMk1Helmet.Add("Descriptor.Choice.Break.Interact", "Damage - Intentionally misalign the helmets longitudinal wave sensor-array");
         davodianMk1Helmet.Add("Descriptor.Choice.Breaking", "You broke the helmet oh nooo!");
-        Helmet testDavodian = new Helmet(davodianMk1Helmet);
+        GameObject testDavodian = currentGameObjectFactory.NewGameObject(davodianMk1Helmet);
 
         //Give the player a helmet
         playerProperties.Add("Gear.Slot.Helmet.ID", testDavodian.Properties.GetPropertyValue("ID"));
-        testDavodian.Equip();
 
         //Main cont.
         var currentPlayer = new Player(playerProperties);
@@ -78,22 +82,4 @@ internal class TextBasedRPG
             currentUserInterfaceHandler.GenerateOutput();
         }
     }
-    /*
-    currentPlayer = player1.
-        GenerateUserInterface(player1);
-        int index = 0;
-        bool isExitingProgram = false; // cant do this because index logic is being through instead. Need a better way of doing index.
-
-        while (!isExitingProgram)
-        {
-            Console.Clear();
-            GetChoice(index++);
-            if (!Little_Choice_Based_RPG.Choice.Logic.HandleChoice())
-                index--;
-        }
-
-        Console.WriteLine("Exiting Program...");
-        PlayerInterface.Pause();
-    }
-    */
 }
