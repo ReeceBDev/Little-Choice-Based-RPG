@@ -23,7 +23,7 @@ namespace Little_Choice_Based_RPG.Resources
 
         };
 
-        private readonly static Dictionary<string, object> defaultProperties = new Dictionary<string, object>()
+        private Dictionary<string, object> defaultProperties = new Dictionary<string, object>()
         {
             {"ID", ++globalCounter},
         };
