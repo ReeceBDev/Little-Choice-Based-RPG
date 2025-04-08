@@ -29,14 +29,11 @@ internal class TextBasedRPG
 {
     private static void Main(string[] args)
     {
-        SystemSubscriptionEventBus newSystemSubscription = new SystemSubscriptionEventBus();
-        GameObjectFactory currentGameObjectFactory = new GameObjectFactory(newSystemSubscription);
-
-        //Create test object to initialise the current systems:
-        new FlammabilitySystem(new TestGameObject(), newSystemSubscription);
-        new RepairSystem(new TestGameObject(), newSystemSubscription);
-        new BreakSystem(new TestGameObject(), newSystemSubscription);
-        new GearSystem(newSystemSubscription);
+        //Initialise the current systems:
+        new FlammabilitySystem();
+        new RepairSystem();
+        new BreakSystem();
+        new GearSystem();
 
         //Main
         var mainWorld = new GameEnvironment();
@@ -58,17 +55,15 @@ internal class TextBasedRPG
         davodianMk1Helmet.Add("Descriptor.Unequip", "Engaging the clasp at the rear, the locks reluctantly scrape their disengaging clicks and the full weight of the visor bears down on your head.\r\nSandpaper lining scratches the sides of your face when you tilt your head forwards and force the faceplate off.");
 
         davodianMk1Helmet.Add("Component.RepairSystem", true);
-        davodianMk1Helmet.Add("Repair.IsRepairable", true);
-        davodianMk1Helmet.Add("Repair.IsRepairableByChoice", true);
-        davodianMk1Helmet.Add("Descriptor.Repair.Choice.Interact", "Repair - Re - calibrate the helmets longitudinal wave sensor - array.");
-        davodianMk1Helmet.Add("Descriptor.Repair.Choice.Repairing", "You fixed the helmet, yayy!");
+        davodianMk1Helmet.Add("Repairable.ByChoice", true);
+        davodianMk1Helmet.Add("Descriptor.Repair.Interaction.Title", "Repair - Re - calibrate the helmets longitudinal wave sensor - array.");
+        davodianMk1Helmet.Add("Descriptor.Repair.Interaction.Invoking", "You fixed the helmet, yayy!");
 
         davodianMk1Helmet.Add("Component.BreakSystem", true);
-        davodianMk1Helmet.Add("IsBreakable", true);
-        davodianMk1Helmet.Add("IsBreakableByChoice", true);
-        davodianMk1Helmet.Add("Descriptor.Choice.Break.Interact", "Damage - Intentionally misalign the helmets longitudinal wave sensor-array");
-        davodianMk1Helmet.Add("Descriptor.Choice.Breaking", "You broke the helmet oh nooo!");
-        GameObject testDavodian = currentGameObjectFactory.NewGameObject(davodianMk1Helmet);
+        davodianMk1Helmet.Add("Breakable.ByChoice", true);
+        davodianMk1Helmet.Add("Descriptor.Breakable.Interaction.Title", "Damage - Intentionally misalign the helmets longitudinal wave sensor-array");
+        davodianMk1Helmet.Add("Descriptor.Breakable.Interaction.Invoking", "You broke the helmet oh nooo!");
+        GameObject testDavodian = GameObjectFactory.NewGameObject(davodianMk1Helmet);
 
         //Give the player a helmet
         playerProperties.Add("Gear.Slot.Helmet.ID", testDavodian.Properties.GetPropertyValue("ID"));
