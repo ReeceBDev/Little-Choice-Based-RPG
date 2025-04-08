@@ -1,4 +1,6 @@
 ﻿using Little_Choice_Based_RPG.Managers.Player_Manager.Frontend.UserInterface;
+using Little_Choice_Based_RPG.Resources;
+using Little_Choice_Based_RPG.Types.EntityProperties;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,8 +14,11 @@ namespace Little_Choice_Based_RPG.Types.Interactions.InteractDelegate
     {
         /// <summary> Invokes the delegate using its required parameters. </summary>
         public void AttemptInvoke(IUserInterface sourceInvocationMutexIdentity);
-        public void CancelInteraction(IUserInterface sourceInvocationMutexIdentity);
+        public abstract void CancelInteraction(IUserInterface sourceInvocationMutexIdentity, PropertyContainer sourceContainer);
         public void GiveRequiredParameter(object newParameter, IUserInterface sourceInvocationMutexIdentity);
+
+        /// <summary> The originating PropertyContainer </summary>
+        public PropertyContainer SourceContainer { get; init; }
 
         /// <summary> The title shown when a player gets listed their choice options. </summary>
         public string InteractionTitle { get; init; }
