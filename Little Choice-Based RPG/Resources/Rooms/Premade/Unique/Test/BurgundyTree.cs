@@ -1,4 +1,5 @@
-﻿using Little_Choice_Based_RPG.Resources.Entities.Conceptual;
+﻿using Little_Choice_Based_RPG.Managers.World;
+using Little_Choice_Based_RPG.Resources.Entities.Conceptual;
 using Little_Choice_Based_RPG.Resources.Entities.Physical.Furniture;
 using Little_Choice_Based_RPG.Resources.Entities.Physical.Plants;
 using Little_Choice_Based_RPG.Resources.Systems.Damage.Break;
@@ -91,7 +92,27 @@ Dependent on Tree = Burnt, Chair being Untouched
             localConditionalDescriptors.Add(descriptorCondition);
 
 
+            //Make a lightbulb
+            Dictionary<string, object> zalolintLightbulb48w230vHP = new Dictionary<string, object>();
+            zalolintLightbulb48w230vHP.Add("Name", "ZaloLint 48w 230v Lightstrip");
+            zalolintLightbulb48w230vHP.Add("Type", "Little_Choice_Based_RPG.Resources.Entities.Physical.Furniture.Lightbulb");
+            zalolintLightbulb48w230vHP.Add("Descriptor.Generic.Default", "Faint buzzing stings off the walls as a zalolint lightstrip flickers a harshly cold glow, the chemical smell of residual burnt zalolintene wisps for an instant.");
+            zalolintLightbulb48w230vHP.Add("Descriptor.Inspect.Default", "Aluminium scratched lightly at either end and boldy emitting its artificial gaze, the zalolint drones a thousand fizzes, emanating a contiguous noise. \nIts white light unrelenting and brazen in its boldness, the artificiality capable of maybe keeping awake even an insomniac.\nRolling it over in its socket with a squeak, your finger brushes over a bold font decree in small, white capitals, which reads \"48W 230V - HP 24INCH ZALOLINT HIGHSPEC PHOTON EMITTER PROPERTY - CONTAINS ZALOLINTENE - PROPERTY OF FITZLO CO.\"");
 
+            zalolintLightbulb48w230vHP.Add("Component.RepairSystem", true);
+            zalolintLightbulb48w230vHP.Add("Repairable.ByChoice", true);
+            zalolintLightbulb48w230vHP.Add("Descriptor.Repair.Interaction.Title", "Repair - Scrap out the broken remains with your functioning 48w 230v lightstrip.");
+            zalolintLightbulb48w230vHP.Add("Descriptor.Repair.Interaction.Invoking", "With a scraping squeak you negotiate twisting out each side of the sharp shattered glass from its linear socket. \nPlacing your functional lightstrip into the quickrelease, a switch faintly clicks and you forcefully scrape in the opposite side. \nUpon both sides touching their contacts, the lightstrip naps and crackles to life immediately, a gentle 48 watts of power rippling dramatically through the filament, igniting the recombustible zalolintene.");
+            zalolintLightbulb48w230vHP.Add("Damage.Broken", true);
+
+            zalolintLightbulb48w230vHP.Add("Component.BreakSystem", true);
+            zalolintLightbulb48w230vHP.Add("Breakable.ByChoice", true);
+            zalolintLightbulb48w230vHP.Add("Descriptor.Breakable.Interaction.Title", "Break - Shatter along the side of the zalolint lightstrip until it leaks or the filament bends.");
+            zalolintLightbulb48w230vHP.Add("Descriptor.Breakable.Interaction.Invoking", "Relentlessly smashing the centre of the zalolint's tubular trunk, a loud crack splits glass into energetic shards which skate the air with viciousness, whispering off the floor.");
+            zalolintLightbulb48w230vHP.Add("Descriptor.Generic.Broken", "Above hangs pieces of a shattered zalolint lightstrip. Underfoot crunches glass shards, the sharp citric of leaked zalolintene permeates your smell. Its souless husk clings by its decrepit filament to its socket, its home turned graveyard.");
+            zalolintLightbulb48w230vHP.Add("Descriptor.Inspect.Broken", "Charred and crisp, the gashed and razor edges of aluminium that once housed the zalolint lightstrip are now warped and twisted, bearing their metallic teeth to the world.\n Rubbing your thumb over one side, rubbing away some soot, you find grey capitals which announce meekly, \"48W 230V - HP 24INCH ZA...INT HIG...\" \nThe rest of the text is obscured by a long blackened scorch-mark that runs from its tip electric blue into a strand of bold copper, the burn widening rapidly into charcoal grey up until the very end of the casing where the burn looks to have originated.");
+            GameObject testLightBulb = GameObjectFactory.NewGameObject(zalolintLightbulb48w230vHP);
+            roomEntities.Add(testLightBulb);
         }
     }
 }
