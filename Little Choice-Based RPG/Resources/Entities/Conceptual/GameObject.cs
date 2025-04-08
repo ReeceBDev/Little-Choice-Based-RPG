@@ -18,8 +18,6 @@ namespace Little_Choice_Based_RPG.Resources.Entities.Conceptual
     //public record struct EntityProperty(string Key, object Value);
     public abstract class GameObject : PropertyContainer
     {
-        public List<IInvokableInteraction> InteractionChoices = new List<IInvokableInteraction>();
-
         private readonly static Dictionary<string, PropertyType> requiredProperties = new Dictionary<string, PropertyType>()
         {
             {"Name", PropertyType.String},

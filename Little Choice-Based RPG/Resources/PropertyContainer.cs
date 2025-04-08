@@ -1,4 +1,5 @@
 ﻿using Little_Choice_Based_RPG.Types.EntityProperties;
+using Little_Choice_Based_RPG.Types.Interactions.InteractDelegate;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -12,6 +13,8 @@ namespace Little_Choice_Based_RPG.Resources
     public abstract class PropertyContainer : IPropertyContainer
     {
         protected static uint globalCounter;
+
+        public List<IInvokableInteraction> Interactions = new List<IInvokableInteraction>();
 
         private readonly static Dictionary<string, PropertyType> requiredProperties = new Dictionary<string, PropertyType>()
         {
@@ -39,6 +42,9 @@ namespace Little_Choice_Based_RPG.Resources
         {
             //Apply default properties for this class to the current list of derivedProperties
             ApplyDefaultProperties(derivedProperties, defaultProperties);
+
+            //Create a new property list on Properties.
+            Properties = new PropertyHandler(this);
 
             //Store the final list of properties
             foreach (KeyValuePair<string, object> property in derivedProperties)
@@ -69,6 +75,6 @@ namespace Little_Choice_Based_RPG.Resources
                     throw new Exception($"A required property has not been defined in {Properties}. Property name: {property.Key}");
         }
 
-        public PropertyHandler Properties { get; set; } = new PropertyHandler();
+        public PropertyHandler Properties { get; set; }
     }
 }
