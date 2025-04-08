@@ -12,7 +12,6 @@ namespace Little_Choice_Based_RPG.Resources.Systems.Damage.Flammability
 {
     public class FlammabilitySystem : PropertyLogic
     {
-        private GameObject parentObject;
         static FlammabilitySystem()
         {
             //Logic
@@ -21,9 +20,16 @@ namespace Little_Choice_Based_RPG.Resources.Systems.Damage.Flammability
             PropertyValidation.CreateValidProperty("Flammability.IsBurnt", PropertyType.Boolean);
         }
 
-        public FlammabilitySystem(GameObject instantiatingObject, SystemSubscriptionEventBus systemSubscriptionEventBusReference) : base(systemSubscriptionEventBusReference)
+        /// <summary> Provide logic for co-ordinating property changes with their relevant methods. </summary>
+        protected override void OnPropertyChanged(object sender, PropertyChangedEventArgs propertyChangedData)
         {
-            parentObject = instantiatingObject;
+
+        }
+
+        /// <summary> Provide an initiale </summary>
+        protected override void GiveInitialInteractions(PropertyContainer sourceContainer, PropertyHandler sourceProperties)
+        {
+
         }
 
         public void SetAflame()
@@ -34,5 +40,7 @@ namespace Little_Choice_Based_RPG.Resources.Systems.Damage.Flammability
         {
 
         }
+
+
     }
 }
