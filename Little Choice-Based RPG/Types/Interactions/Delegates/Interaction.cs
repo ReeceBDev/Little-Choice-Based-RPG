@@ -1,4 +1,5 @@
 ﻿using Little_Choice_Based_RPG.Managers.Player_Manager.Frontend.UserInterface;
+using Little_Choice_Based_RPG.Resources;
 using Little_Choice_Based_RPG.Resources.Entities.Conceptual;
 using Little_Choice_Based_RPG.Types.EntityProperties;
 using System;
@@ -16,15 +17,15 @@ namespace Little_Choice_Based_RPG.Types.Interactions.InteractDelegate
     {
         protected IUserInterface? invocationMutexIdentity;
 
-
         static Interaction()
         {
             AddSelfIntoDelegateValidation();
         }
 
         /// <summary> Creates a new interaction for players to be presented with in ChoiceHandler. </summary>
-        public Interaction(string setInteractTitle, string setInteractDescriptor, InteractionRole setInteractRole = InteractionRole.Explore)
+        public Interaction(PropertyContainer setSourceContainer, string setInteractTitle, string setInteractDescriptor, InteractionRole setInteractRole = InteractionRole.Explore)
         {
+            SourceContainer = setSourceContainer;
             InteractionContext = setInteractRole;
             InteractionTitle = setInteractTitle;
             InteractDescriptor = setInteractDescriptor;
@@ -44,9 +45,12 @@ namespace Little_Choice_Based_RPG.Types.Interactions.InteractDelegate
         }
         /// <summary> Invokes the delegate if able. Requests required parameters if unable. </summary>
         public abstract void AttemptInvoke(IUserInterface sourceInvocationMutexIdentity);
-        public abstract void CancelInteraction(IUserInterface sourceInvocationMutexIdentity);
+        public abstract void CancelInteraction(IUserInterface sourceInvocationMutexIdentity, PropertyContainer sourceContainer);
         public abstract void GiveRequiredParameter(object newParameter, IUserInterface sourceInvocationMutexIdentity);
         protected abstract void Invoke(IUserInterface sourceInvocationMutexIdentity);
+
+        /// <summary> The originating PropertyContainer </summary>
+        public PropertyContainer SourceContainer { get; init; }
 
         /// <summary> The title shown when a player gets listed their choice options. </summary>
         public string InteractionTitle { get; init; }
