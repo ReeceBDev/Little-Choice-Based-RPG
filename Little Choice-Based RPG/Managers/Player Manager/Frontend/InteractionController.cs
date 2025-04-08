@@ -25,7 +25,7 @@ namespace Little_Choice_Based_RPG.Types.Interaction
 
             foreach (GameObject target in targetObjects)
             {
-                foreach (IInvokableInteraction interaction in target.InteractionChoices)
+                foreach (IInvokableInteraction interaction in target.Interactions)
                 {
                     if (interaction.InteractionContext == ofContext)
                         relevantInteractions.Add(interaction);
@@ -44,7 +44,7 @@ namespace Little_Choice_Based_RPG.Types.Interaction
             if (!currentRoom.RoomContainsObject(ofGameObject))
                 throw new ArgumentException($"The requested GameObject does not exist in this room! There is no local GameObject matching {ofGameObject} in room {currentRoom}.");
 
-            foreach (IInvokableInteraction newInteraction in ofGameObject.InteractionChoices)
+            foreach (IInvokableInteraction newInteraction in ofGameObject.Interactions)
             {
                 relevantInteractions.Add(newInteraction);
             }
