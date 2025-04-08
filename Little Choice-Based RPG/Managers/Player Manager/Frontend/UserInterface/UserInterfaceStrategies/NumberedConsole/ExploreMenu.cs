@@ -1,6 +1,8 @@
 ﻿using Little_Choice_Based_RPG.Managers.Player_Manager.Frontend.UserInterface.UserInterfaceStrategies.NumberedConsole;
 using Little_Choice_Based_RPG.Managers.World;
+using Little_Choice_Based_RPG.Resources;
 using Little_Choice_Based_RPG.Resources.Entities.Conceptual;
+using Little_Choice_Based_RPG.Resources.Entities.Immaterial.System;
 using Little_Choice_Based_RPG.Resources.Entities.Physical.Living.Players;
 using Little_Choice_Based_RPG.Resources.Rooms;
 using Little_Choice_Based_RPG.Types.EntityProperties;
@@ -63,8 +65,11 @@ namespace Little_Choice_Based_RPG.Managers.Player_Manager.Frontend.UserInterface
         {
             List<IInvokableInteraction> allCurrentChoices = new List<IInvokableInteraction>();
 
+            //Initialise a System PropertyContainer for filling out the delegate to make it compatible with the Interaction system.
+            PropertyContainer emptySystemContainer = new UserInterfaceContainer();
+
             InteractionUsingNothingDelegate returnToMainMenu = new InteractionUsingNothingDelegate(ReturnToMainMenu);
-            allCurrentChoices.Add(new InteractionUsingNothing(returnToMainMenu, "Go back to main menu.", "Returning to main menu...", InteractionRole.System));
+            allCurrentChoices.Add(new InteractionUsingNothing(returnToMainMenu, emptySystemContainer, "Go back to main menu.", "Returning to main menu...", InteractionRole.System));
 
             return allCurrentChoices;
         }
@@ -257,6 +262,9 @@ namespace Little_Choice_Based_RPG.Managers.Player_Manager.Frontend.UserInterface
         {
             IInvokableInteraction selectedInteraction = listedInteractions.ElementAt(userInput - choiceIndexOffset);
 
+            //Invoke!
+            selectedInteraction.AttemptInvoke(this);
+
             //Record the action in the log.
             AddNewHistoryLog(selectedInteraction.InteractDescriptor);
 
@@ -266,9 +274,6 @@ namespace Little_Choice_Based_RPG.Managers.Player_Manager.Frontend.UserInterface
                 transitionalAction = selectedInteraction.InteractDescriptor;
                 UpdateTransitionalAction();
             }
-
-            //Invoke!
-            selectedInteraction.AttemptInvoke(this);
         }
 
         //Record the action in the TransitionalAction if the location around the player changed.
@@ -581,7 +586,7 @@ namespace Little_Choice_Based_RPG.Managers.Player_Manager.Frontend.UserInterface
             return formattedObjectList;
         }
 
-        private void ReturnToMainMenu(IUserInterface currentInterface)
+        private void ReturnToMainMenu(IUserInterface currentInterface, PropertyContainer sourceContainer)
         {
             changeInterfaceStyleCallback(new MainMenu());
             exitExploreMenu = true;
