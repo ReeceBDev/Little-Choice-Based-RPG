@@ -15,16 +15,9 @@ using System.Threading.Tasks;
 namespace Little_Choice_Based_RPG.Managers.World
 {
     /// <summary> Manufactures GameObjects of any type based on its properties. Gets allocated an outline of each object from JSONs. </summary>
-    public class GameObjectFactory
+    public static class GameObjectFactory
     {
-        SystemSubscriptionEventBus systemSubscriptionEventBus;
-
-        public GameObjectFactory(SystemSubscriptionEventBus setSystemSubscriptionEventBus)
-        {
-            systemSubscriptionEventBus = setSystemSubscriptionEventBus;
-        }
-
-        public GameObject NewGameObject(Dictionary<string, object> properties)
+        public static GameObject NewGameObject(Dictionary<string, object> properties)
         {
             GameObject newGameObject = GenerateObjectFromTypeProperty(properties);
             SubscribeToComponents(newGameObject, properties);
@@ -32,7 +25,7 @@ namespace Little_Choice_Based_RPG.Managers.World
             return newGameObject;
         }
 
-        private GameObject GenerateObjectFromTypeProperty(Dictionary<string, object> properties)
+        private static GameObject GenerateObjectFromTypeProperty(Dictionary<string, object> properties)
         {
             if (!properties.ContainsKey("Type"))
                 throw new ArgumentException("The properties of the new object did not include the Type property! Properties: {properties}");
@@ -44,7 +37,7 @@ namespace Little_Choice_Based_RPG.Managers.World
             return castedGameObject;
         }
 
-        private void SubscribeToComponents(GameObject targetGameObject, Dictionary<string, object> properties)
+        private static void SubscribeToComponents(GameObject targetGameObject, Dictionary<string, object> properties)
         {
             foreach (EntityProperty property in targetGameObject.Properties.EntityProperties)
             {
@@ -57,7 +50,7 @@ namespace Little_Choice_Based_RPG.Managers.World
                 Regex grabComponentName = new Regex("(?<=Component.)[A-Za-z]*");
                 string systemReferenceName = grabComponentName.Match(property.PropertyName).Value;
 
-                systemSubscriptionEventBus.Subscribe(targetGameObject, systemReferenceName);
+                SystemSubscriptionEventBus.Subscribe(targetGameObject, systemReferenceName);
             }
         }
     }
