@@ -65,7 +65,7 @@ namespace Little_Choice_Based_RPG.Resources.Entities.Conceptual.Weightbearing_De
                 throw new Exception("the object is too heavy to be picked up by this"); // This should just be an error, really.
 
             Attach(target);
-            Properties.UpdateProperty("TotalWeightHeldInKG", weightHeld + targetWeight);
+            Properties.ReplaceProperty("TotalWeightHeldInKG", weightHeld + targetWeight);
         }
 
         public void Drop(GameObject target)
@@ -77,7 +77,7 @@ namespace Little_Choice_Based_RPG.Resources.Entities.Conceptual.Weightbearing_De
                 throw new Exception($"{this} went below 0kg weight held when it tried to drop the {target}. That shouldn't happen!");
 
             Unattach(target);
-            Properties.UpdateProperty("TotalWeightHeldInKG", weightHeld - targetWeight);
+            Properties.ReplaceProperty("TotalWeightHeldInKG", weightHeld - targetWeight);
         }
 
     }
