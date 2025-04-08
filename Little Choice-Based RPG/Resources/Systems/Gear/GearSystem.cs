@@ -17,7 +17,14 @@ namespace Little_Choice_Based_RPG.Resources.Systems.Gear
             PropertyValidation.CreateValidProperty("Gear.Slot.Helmet.ID", PropertyType.UInt32);
         }
 
-        public GearSystem(SystemSubscriptionEventBus systemSubscriptionEventBusReference) : base(systemSubscriptionEventBusReference)
+        /// <summary> Provide logic for co-ordinating property changes with their relevant methods. </summary>
+        protected override void OnPropertyChanged(object sender, PropertyChangedEventArgs propertyChangedData)
+        {
+
+        }
+
+        /// <summary> Provide an initiale </summary>
+        protected override void GiveInitialInteractions(PropertyContainer sourceContainer, PropertyHandler sourceProperties)
         {
 
         }
