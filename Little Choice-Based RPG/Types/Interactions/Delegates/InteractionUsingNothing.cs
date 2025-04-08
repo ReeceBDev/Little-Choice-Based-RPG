@@ -1,5 +1,7 @@
 ﻿using Little_Choice_Based_RPG.Managers.Player_Manager.Frontend.UserInterface;
+using Little_Choice_Based_RPG.Resources;
 using Little_Choice_Based_RPG.Resources.Entities.Conceptual;
+using Little_Choice_Based_RPG.Types.EntityProperties;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,8 +22,8 @@ namespace Little_Choice_Based_RPG.Types.Interactions.InteractDelegate
         }
 
         /// <summary> Creates a new interaction for players to be presented with in ChoiceHandler. </summary>
-        public InteractionUsingNothing(InteractionUsingNothingDelegate setDelegate, string setInteractTitle, string setInteractDescriptor, InteractionRole setInteractRole = InteractionRole.Explore)
-            : base(setInteractTitle, setInteractDescriptor, setInteractRole)
+        public InteractionUsingNothing(InteractionUsingNothingDelegate setDelegate, PropertyContainer setSourceContainer, string setInteractTitle, string setInteractDescriptor, InteractionRole setInteractRole = InteractionRole.Explore)
+            : base(setSourceContainer, setInteractTitle, setInteractDescriptor, setInteractRole)
         {
             storedDelegate = setDelegate;
         }
@@ -54,12 +56,13 @@ namespace Little_Choice_Based_RPG.Types.Interactions.InteractDelegate
             if (invocationMutexIdentity != sourceInvocationMutexIdentity)
                 return; //The sender identity sourceInvocationMutexIdentity did not match the current invocationMutexIdentity");
 
-            storedDelegate.Invoke(sourceInvocationMutexIdentity);
+            storedDelegate.Invoke(sourceInvocationMutexIdentity, SourceContainer);
 
+            SourceContainer.Interactions.Remove(this); //Remove self
             invocationMutexIdentity = null; //Release mutex
         }
 
-        public override void CancelInteraction(IUserInterface sourceInvocationMutexIdentity)
+        public override void CancelInteraction(IUserInterface sourceInvocationMutexIdentity, PropertyContainer sourceContainer)
         {
             if (invocationMutexIdentity != sourceInvocationMutexIdentity)
                 return; //The sender identity sourceInvocationMutexIdentity did not match the current invocationMutexIdentity");
@@ -69,6 +72,6 @@ namespace Little_Choice_Based_RPG.Types.Interactions.InteractDelegate
         }
 
         /// <summary> Create a delegate which uses no additional parameters. </summary>
-        public delegate void InteractionUsingNothingDelegate(IUserInterface newInvocationMutexIdentity);
+        public delegate void InteractionUsingNothingDelegate(IUserInterface newInvocationMutexIdentity, PropertyContainer sourceContainer);
     }
 }
