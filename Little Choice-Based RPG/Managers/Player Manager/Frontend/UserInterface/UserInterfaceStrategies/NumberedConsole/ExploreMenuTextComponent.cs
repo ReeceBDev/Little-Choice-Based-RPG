@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Little_Choice_Based_RPG.Managers.Player_Manager.Frontend.UserInterface.UserInterfaceStrategies.NumberedConsole
 {
-    public struct ExploreMenuTextComponent
+    public class ExploreMenuTextComponent
     {
         static List<ExploreMenuIdentity> usedIdentifiers = new List<ExploreMenuIdentity>();
         public ExploreMenuTextComponent(ExploreMenuIdentity setIdentifier, string setContent, uint setWriteSpeed)
