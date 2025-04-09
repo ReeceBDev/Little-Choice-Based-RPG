@@ -33,11 +33,11 @@ namespace Little_Choice_Based_RPG.Managers.Player_Manager.Frontend.UserInterface
         private bool exitExploreMenu;
         private bool subMenuActive = false;
 
-        private ExploreMenuTextComponent[] mainBodyText;
-        private ExploreMenuTextComponent[] subMenuText;
+        private List<ExploreMenuTextComponent> mainBodyText = new List<ExploreMenuTextComponent>();
+        private List<ExploreMenuTextComponent> subMenuText = new List<ExploreMenuTextComponent>();
 
         private Stack<string> historyLog = new Stack<string>();
-        private const int historyDisplayLength = 20;
+        private int historyLineMaxCount = 20;
         private string transitionalAction = "";
         private readonly string defaultTransitionalAction;
         private List<IInvokableInteraction> relevantInteractions = new List<IInvokableInteraction>();
@@ -90,7 +90,7 @@ namespace Little_Choice_Based_RPG.Managers.Player_Manager.Frontend.UserInterface
                 List<IInvokableInteraction> listedInteractions = GetExploreMenuInteractions();
 
                 //If its the first time this menu has been initialised, then intialise, otherwise update the main body.
-                if (mainBodyText == null)
+                if (mainBodyText.Count == 0)
                     InitialiseMainTextEntries();
                 else
                     UpdateMainTextEntries();
@@ -122,21 +122,21 @@ namespace Little_Choice_Based_RPG.Managers.Player_Manager.Frontend.UserInterface
             subMenuSystemChoices.Add(abortInteraction);
 
             //Update the submenu text cache, or initiliase it if its not yet been set.
-            if (subMenuText == null)
+            if (subMenuText.Count() == 0)
             {
-                ExploreMenuTextComponent[] listToWrite = InitialiseSubMenuTextEntries(mainBodyText, requirementDescription, listedObjects);
+                List<ExploreMenuTextComponent> listToWrite = InitialiseSubMenuTextEntries(mainBodyText, requirementDescription, listedObjects);
                 this.subMenuText = listToWrite;
             }
             else
             {
                //Update the cached output with the new content.
                 ExploreMenuTextComponent targetComponent = GetTextEntryByIdentifier(ExploreMenuIdentity.SubMenuTitle);
-                int targetIndex = Array.IndexOf(this.subMenuText, targetComponent);
+                int targetIndex = subMenuText.IndexOf(targetComponent);
 
                 this.subMenuText[targetIndex].Content = SetSubMenuHeader(requirementDescription);
 
                 targetComponent = GetTextEntryByIdentifier(ExploreMenuIdentity.SubMenuOptions);
-                targetIndex = Array.IndexOf(this.subMenuText, targetComponent);
+                targetIndex = subMenuText.IndexOf(targetComponent);
 
                 this.subMenuText[targetIndex].Content = FormatSubMenuChoices(listedObjects);
             }
@@ -285,8 +285,6 @@ namespace Little_Choice_Based_RPG.Managers.Player_Manager.Frontend.UserInterface
 
         public void InitialiseMainTextEntries()
         {
-            mainBodyText = [];
-
             List<ExploreMenuTextComponent> exploreMenu = new List<ExploreMenuTextComponent>
             {
             new ExploreMenuTextComponent(ExploreMenuIdentity.TopStatusBar, GetTopStatusBar(), 0),
@@ -298,39 +296,39 @@ namespace Little_Choice_Based_RPG.Managers.Player_Manager.Frontend.UserInterface
             new ExploreMenuTextComponent(ExploreMenuIdentity.None, GetStyleLine(4), 0),
             };
 
-            mainBodyText = exploreMenu.ToArray();
+            mainBodyText = exploreMenu;
         }
 
         //Update the cached output with the new content.
         public void UpdateMainTextEntries()
         {
             ExploreMenuTextComponent targetEntry = GetTextEntryByIdentifier(ExploreMenuIdentity.TopStatusBar);
-            int targetIndex = Array.IndexOf(mainBodyText, targetEntry);
+            int targetIndex = mainBodyText.IndexOf(targetEntry);
             this.mainBodyText[targetIndex].Content = GetTopStatusBar();
 
             targetEntry = GetTextEntryByIdentifier(ExploreMenuIdentity.TransitionalAction);
-            targetIndex = Array.IndexOf(mainBodyText, targetEntry);
+            targetIndex = mainBodyText.IndexOf(targetEntry);
             this.mainBodyText[targetIndex].Content = transitionalAction;
 
             targetEntry = GetTextEntryByIdentifier(ExploreMenuIdentity.CurrentDescription);
-            targetIndex = Array.IndexOf(mainBodyText, targetEntry);
+            targetIndex = mainBodyText.IndexOf(targetEntry);
             this.mainBodyText[targetIndex].Content = GetCurrentDescription();
 
             targetEntry = GetTextEntryByIdentifier(ExploreMenuIdentity.HistoryLog);
-            targetIndex = Array.IndexOf(mainBodyText, targetEntry);
+            targetIndex = mainBodyText.IndexOf(targetEntry);
             this.mainBodyText[targetIndex].Content = GetHistoryLog();
 
             targetEntry = GetTextEntryByIdentifier(ExploreMenuIdentity.AvailableChoices);
-            targetIndex = Array.IndexOf(mainBodyText, targetEntry);
+            targetIndex = mainBodyText.IndexOf(targetEntry);
             this.mainBodyText[targetIndex].Content = FormatChoices(GetExploreMenuInteractions());
         }
 
-        private ExploreMenuTextComponent[] InitialiseSubMenuTextEntries(ExploreMenuTextComponent[] overwrittenInterfaceEntries, string requirementDescription, List<GameObject> listedObjects)
+        private List<ExploreMenuTextComponent> InitialiseSubMenuTextEntries(List<ExploreMenuTextComponent> overwrittenInterfaceEntries, string requirementDescription, List<GameObject> listedObjects)
         {
-            if (!(overwrittenInterfaceEntries.Length < 1))
+            if (!(overwrittenInterfaceEntries.Count < 1))
                 throw new Exception($"The required list of overwrittenInterfaceEntries does not contain enough lines to be used here. It might not have been initialised. There must be an existing user interface to put the sub-menu over the top of!");
 
-            IEnumerable<ExploreMenuTextComponent> subMenu = overwrittenInterfaceEntries.SkipLast(3);
+            List<ExploreMenuTextComponent> subMenu = new List<ExploreMenuTextComponent>(overwrittenInterfaceEntries.SkipLast(3));
 
             subMenu.Append(new ExploreMenuTextComponent(ExploreMenuIdentity.SubMenuTitle, SetSubMenuHeader(requirementDescription), 0));
             subMenu.Append(new ExploreMenuTextComponent(ExploreMenuIdentity.SubMenuOptions, FormatSubMenuChoices(listedObjects), 0));
@@ -339,7 +337,7 @@ namespace Little_Choice_Based_RPG.Managers.Player_Manager.Frontend.UserInterface
             subMenu.Append(new ExploreMenuTextComponent(ExploreMenuIdentity.None, GetStyleLine(4), 0));
             subMenu.Append(new ExploreMenuTextComponent(ExploreMenuIdentity.None, GetStyleLine(5), 0));
 
-            return subMenu.ToArray();
+            return subMenu;
         }
 
         private string SetSubMenuHeader(string title)
@@ -388,62 +386,111 @@ namespace Little_Choice_Based_RPG.Managers.Player_Manager.Frontend.UserInterface
 
         private string GetHistoryLog() //Should display bottom to top :)
         {
-            string concatenatedLog = "";
+            int logAgeIndex = historyLog.Count(); //Older is higher
+
+            string historyLogOutput = "";
+
+            string entryPrefix = "\n ╓ ";
+            string entryInfix = "\n ║ ";
+            string entrySuffix = "\n ╙ ";
+
+            List<string> historyLogLines = new List<string>();
+            List<string> orderedLogLines = new List<string>();
+            List<KeyValuePair<int, string>> savedLogLines = new List<KeyValuePair<int, string>>();
+            List<KeyValuePair<int, string>> splitLogLines = new List<KeyValuePair<int, string>>();
             Stack<string> holdingStack = new Stack<string>();
 
             uint iteration = 0;
 
+            //Create prefix title
+            historyLogLines.Add("\n ╔══════════════════╤═══════════════════════════════════════════════════════════════ " + "-=══-=-=--=-=--. -.");
+            historyLogLines.Add("\n ║  Historical Log  │ ");
+            historyLogLines.Add("\n ╙──────────────────┘ ");
+
             //Grabs entries and puts them at the bottom of a new stack.
-            while (historyLog.Count > 0 && historyDisplayLength > iteration)
+            while (historyLog.Count > 0 && historyLineMaxCount > iteration)
                 holdingStack.Push(historyLog.Pop());
 
             // Returns entries back to their stack.
             while (holdingStack.Count > 0)
             {
                 string poppedLog = holdingStack.Pop();
+
+                var newSplitLines = UserInterfaceUtilities.SplitIntoLines(poppedLog, entryPrefix, entryInfix, entrySuffix);
+
+                foreach ( string line in newSplitLines )
+                    splitLogLines.Add(new KeyValuePair<int, string>(logAgeIndex, line));
+
+                // Add a blank space between entries
+                if (holdingStack.Count != 0) //If not the last historyLog
+                    splitLogLines.Add(new KeyValuePair<int, string>(logAgeIndex, entryInfix));
+
                 historyLog.Push(poppedLog);
-
-                concatenatedLog += $"\n <>-< {DateTime.UtcNow.AddYears(641)} >-< {poppedLog} >-<>";
+                logAgeIndex--; //Reduce the age for each iteration, as each additional iteration is younger
             }
 
-            int entryCount = holdingStack.Count();
-
-            // Insert whitespace to pad up until the maximum history length.
-            while (historyDisplayLength > entryCount++)
+            //Ascend the logIndex and retain groups of entries until the max line count is reached.
+            for (logAgeIndex = 1; logAgeIndex <= historyLog.Count(); logAgeIndex++)
             {
-                concatenatedLog += "\n ║";
+                List<string> newLines = new List<string>();
+
+                //Grab the entries for the current index
+                foreach(var entry in splitLogLines)
+                {
+                    if (entry.Key == logAgeIndex)
+                        newLines.Add(entry.Value);
+                }
+
+                //If the additional lines don't exceed the line limit, add them.
+                if ((savedLogLines.Count() + newLines.Count()) <= historyLineMaxCount)
+                    foreach (var line in newLines)
+                        savedLogLines.Add(new KeyValuePair<int, string>(logAgeIndex, line));
+                else
+                    break; //Once it will exceed, stop
             }
- 
-            return
-                (
-                    "\n ╔══════════════════╤═══════════════════════════════════════════════════════════════ " + "-=══-=-=--=-=--. -." +
-                    "\n ║  Historical Log  │ " +
-                    "\n ╙──────────────────┘ " +
-                    concatenatedLog
-                );
+
+            //Put the groups of logs in reverse order
+            for (logAgeIndex-- ; logAgeIndex > 0; logAgeIndex--) //Revert logAgeIndex to the index of the final saved entry
+            {
+                //Add the entries for the current index
+                foreach (var entry in splitLogLines)
+                {
+                    if (entry.Key == logAgeIndex)
+                        orderedLogLines.Add(entry.Value);
+                }
+            }
+
+            // Insert whitespace to pad the number of line up until the maximum history line count.
+            while ((historyLogLines.Count() + orderedLogLines.Count()) < historyLineMaxCount)
+                historyLogLines.Add(entryInfix);
+
+            //Add the ordered lines to the padded history lsog
+            historyLogLines.AddRange(orderedLogLines);
+
+            //Concatenate into a string
+            foreach (string line in historyLogLines)
+                historyLogOutput += line;
+
+            return historyLogOutput;
 
         }
 
         private void UpdateHistoryLog()
         {
             ExploreMenuTextComponent targetComponent = GetTextEntryByIdentifier(ExploreMenuIdentity.HistoryLog);
-            int targetIndex = Array.IndexOf(this.mainBodyText, targetComponent);
+            int targetIndex = mainBodyText.IndexOf(targetComponent);
 
             //Update the cached output with the new content, at a slow write speed.
             this.mainBodyText[targetIndex].Content = GetHistoryLog();
-            this.mainBodyText[targetIndex].WriteSpeed = 40;
 
             //Write to the interface
             DrawUserInterface();
-
-            //Reset text write speed to instant
-            this.mainBodyText[targetIndex].WriteSpeed = 0;
         }
 
         private void UpdateTopStatusBar()
         {
             ExploreMenuTextComponent targetEntry = GetTextEntryByIdentifier(ExploreMenuIdentity.TopStatusBar);
-            int targetIndex = Array.IndexOf(mainBodyText, targetEntry);
+            int targetIndex = mainBodyText.IndexOf(targetEntry);
 
             //Update the cached output with the new content, at a slow write speed.
             this.mainBodyText[targetIndex].Content = GetTopStatusBar();
@@ -459,7 +506,7 @@ namespace Little_Choice_Based_RPG.Managers.Player_Manager.Frontend.UserInterface
         private void UpdateCurrentDescription()
         {
             ExploreMenuTextComponent targetEntry = GetTextEntryByIdentifier(ExploreMenuIdentity.CurrentDescription);
-            int targetIndex = Array.IndexOf(mainBodyText, targetEntry);
+            int targetIndex = mainBodyText.IndexOf(targetEntry);
 
             //Update the cached output with the new content, at a slow write speed.
             this.mainBodyText[targetIndex].Content = GetCurrentDescription();
@@ -475,7 +522,7 @@ namespace Little_Choice_Based_RPG.Managers.Player_Manager.Frontend.UserInterface
         private void UpdateTransitionalAction()
         {
             ExploreMenuTextComponent targetEntry = GetTextEntryByIdentifier(ExploreMenuIdentity.TransitionalAction);
-            int targetIndex = Array.IndexOf(mainBodyText, targetEntry);
+            int targetIndex = mainBodyText.IndexOf(targetEntry);
 
             //Update the cached output with the new content, at a slow write speed.
             this.mainBodyText[targetIndex].Content = transitionalAction;
@@ -502,10 +549,41 @@ namespace Little_Choice_Based_RPG.Managers.Player_Manager.Frontend.UserInterface
             */
         }
 
-        private void AddNewHistoryLog(string newHistoryLog)
+        private void AddNewHistoryLog(string newHistoryEntry)
         {
-            historyLog.Push(newHistoryLog);
-            UpdateHistoryLog();
+            var logTime = DateTime.UtcNow.AddYears(641);
+
+            string entryPrefix = "\n ╓ ";
+            string entryInfix = "\n ║ ";
+            string entrySuffix = "\n ╙ ";
+
+            string logPrefix = $"<>-<>-< {logTime} >-<>-<> \n";
+            string newInformationalHistoryEntry = logPrefix + newHistoryEntry;
+            string newLogConcatenated = entryInfix; //Leaves space before new value
+
+            ExploreMenuTextComponent targetComponent = GetTextEntryByIdentifier(ExploreMenuIdentity.HistoryLog);
+            int targetIndex = mainBodyText.IndexOf(targetComponent);
+
+            List<string> newLogLines = UserInterfaceUtilities.SplitIntoLines(newInformationalHistoryEntry, entryPrefix, entryInfix, entrySuffix);
+
+            //Update the old content
+            historyLineMaxCount -= newLogLines.Count + 1;
+            mainBodyText.ElementAt(targetIndex).Content = GetHistoryLog();
+            historyLineMaxCount += newLogLines.Count + 1;
+
+            //Turn the new lines into a concatenated string
+            foreach (string line in newLogLines)
+                newLogConcatenated += line;
+
+            //Slowly write the new content
+            this.mainBodyText.Insert(targetIndex + 1, new ExploreMenuTextComponent(ExploreMenuIdentity.None, newLogConcatenated, 40));
+
+            //Draw the userinterface
+            DrawUserInterface();
+
+            //Return the mainBodyText to normal
+            this.historyLog.Push(newInformationalHistoryEntry); // Add new content to the history log.
+            this.mainBodyText.RemoveAt(targetIndex + 1); //Remove the extra mainBodyEntry
         }
 
         private void ClearHistoryLog()
@@ -568,7 +646,7 @@ namespace Little_Choice_Based_RPG.Managers.Player_Manager.Frontend.UserInterface
             return createdRoomDescription;
         }
 
-        private void WriteToUserInterface(ExploreMenuTextComponent[] listToWrite)
+        private void WriteToUserInterface(List<ExploreMenuTextComponent> listToWrite)
         {
             foreach (ExploreMenuTextComponent entryToWrite in listToWrite)
             {
