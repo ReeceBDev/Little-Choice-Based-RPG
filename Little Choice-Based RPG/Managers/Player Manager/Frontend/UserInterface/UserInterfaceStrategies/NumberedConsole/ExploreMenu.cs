@@ -37,7 +37,7 @@ namespace Little_Choice_Based_RPG.Managers.Player_Manager.Frontend.UserInterface
         private ExploreMenuTextComponent[] subMenuText;
 
         private Stack<string> historyLog = new Stack<string>();
-        private uint historyDisplayLength = 20;
+        private const int historyDisplayLength = 20;
         private string transitionalAction = "";
         private readonly string defaultTransitionalAction;
         private List<IInvokableInteraction> relevantInteractions = new List<IInvokableInteraction>();
@@ -57,7 +57,7 @@ namespace Little_Choice_Based_RPG.Managers.Player_Manager.Frontend.UserInterface
             systemChoices = InitialiseSystemChoices();
             subMenuSystemChoices = InitialiseSubMenuSystemChoices();
 
-            defaultTransitionalAction = $"Welcome to the game {currentPlayer}!";
+            defaultTransitionalAction = $"Welcome to the game Default Player!";
             transitionalAction = defaultTransitionalAction;
         }
 
@@ -291,14 +291,11 @@ namespace Little_Choice_Based_RPG.Managers.Player_Manager.Frontend.UserInterface
             {
             new ExploreMenuTextComponent(ExploreMenuIdentity.TopStatusBar, GetTopStatusBar(), 0),
             new ExploreMenuTextComponent(ExploreMenuIdentity.None, GetStyleLine(1), 0),
-            new ExploreMenuTextComponent(ExploreMenuIdentity.TransitionalAction, transitionalAction, 0),
+            new ExploreMenuTextComponent(ExploreMenuIdentity.TransitionalAction, GetTransitionalAction(), 0),
             new ExploreMenuTextComponent(ExploreMenuIdentity.CurrentDescription, GetCurrentDescription(), 0),
-            new ExploreMenuTextComponent(ExploreMenuIdentity.None, GetStyleLine(2), 0),
             new ExploreMenuTextComponent(ExploreMenuIdentity.HistoryLog, GetHistoryLog(), 0),
-            new ExploreMenuTextComponent(ExploreMenuIdentity.None, GetStyleLine(3), 0),
             new ExploreMenuTextComponent(ExploreMenuIdentity.AvailableChoices, FormatChoices(GetExploreMenuInteractions()), 0),
             new ExploreMenuTextComponent(ExploreMenuIdentity.None, GetStyleLine(4), 0),
-            new ExploreMenuTextComponent(ExploreMenuIdentity.None, GetStyleLine(5), 0)
             };
 
             mainBodyText = exploreMenu.ToArray();
@@ -380,7 +377,13 @@ namespace Little_Choice_Based_RPG.Managers.Player_Manager.Frontend.UserInterface
 
         private string GetCurrentDescription()
         {
-            return ConcatenateDescriptors(currentRoom.GetRoomDescriptors());
+            return
+                (
+                    "\n╠══════════════════╤═══════════════════════════════════════════════════════════════ " + "== --= . =." +
+                    "\n║ Room Description │ " +
+                    "\n╙──────────────────┘ " +
+                    "\n" + ConcatenateDescriptors(currentRoom.GetRoomDescriptors())
+                );
         }
 
         private string GetHistoryLog() //Should display bottom to top :)
@@ -392,22 +395,49 @@ namespace Little_Choice_Based_RPG.Managers.Player_Manager.Frontend.UserInterface
 
             //Grabs entries and puts them at the bottom of a new stack.
             while (historyLog.Count > 0 && historyDisplayLength > iteration)
-            {
-                string poppedLog = historyLog.Pop();
-                holdingStack.Push(poppedLog);
-
-                concatenatedLog += $"\n<>-< {DateTime.UtcNow.AddYears(641)} >-< {poppedLog} >-<>";
-            }
+                holdingStack.Push(historyLog.Pop());
 
             // Returns entries back to their stack.
             while (holdingStack.Count > 0)
-                historyLog.Push(holdingStack.Pop());
+            {
+                string poppedLog = holdingStack.Pop();
+                historyLog.Push(poppedLog);
+
+                concatenatedLog += $"\n <>-< {DateTime.UtcNow.AddYears(641)} >-< {poppedLog} >-<>";
+            }
+
+            int entryCount = holdingStack.Count();
 
             // Insert whitespace to pad up until the maximum history length.
-            while (historyDisplayLength > concatenatedLog.Length)
-                concatenatedLog += "\n";
+            while (historyDisplayLength > entryCount++)
+            {
+                concatenatedLog += "\n ║";
+            }
+ 
+            return
+                (
+                    "\n ╔══════════════════╤═══════════════════════════════════════════════════════════════ " + "-=══-=-=--=-=--. -." +
+                    "\n ║  Historical Log  │ " +
+                    "\n ╙──────────────────┘ " +
+                    concatenatedLog
+                );
 
-            return concatenatedLog;
+        }
+
+        private void UpdateHistoryLog()
+        {
+            ExploreMenuTextComponent targetComponent = GetTextEntryByIdentifier(ExploreMenuIdentity.HistoryLog);
+            int targetIndex = Array.IndexOf(this.mainBodyText, targetComponent);
+
+            //Update the cached output with the new content, at a slow write speed.
+            this.mainBodyText[targetIndex].Content = GetHistoryLog();
+            this.mainBodyText[targetIndex].WriteSpeed = 40;
+
+            //Write to the interface
+            DrawUserInterface();
+
+            //Reset text write speed to instant
+            this.mainBodyText[targetIndex].WriteSpeed = 0;
         }
 
         private void UpdateTopStatusBar()
@@ -458,21 +488,6 @@ namespace Little_Choice_Based_RPG.Managers.Player_Manager.Frontend.UserInterface
             this.mainBodyText[targetIndex].WriteSpeed = 0;
         }
 
-        private void UpdateHistoryLog()
-        {
-            ExploreMenuTextComponent targetComponent = GetTextEntryByIdentifier(ExploreMenuIdentity.HistoryLog);
-            int targetIndex = Array.IndexOf(this.mainBodyText, targetComponent);
-
-            //Update the cached output with the new content, at a slow write speed.
-            this.mainBodyText[targetIndex].Content = GetHistoryLog();
-            this.mainBodyText[targetIndex].WriteSpeed = 40;
-
-            //Write to the interface
-            DrawUserInterface();
-
-            //Reset text write speed to instant
-            this.mainBodyText[targetIndex].WriteSpeed = 0;
-        }
         private void UpdateAvailableChoices() //THIS WONT WORK, because choices come in different types and so on. This should probably just add new choices and remove old choices upon event call (of what?)
         {
             /*
@@ -518,13 +533,15 @@ namespace Little_Choice_Based_RPG.Managers.Player_Manager.Frontend.UserInterface
             switch (style)
             {
                 case 1:
-                    return " ===========-========== ----========-========-= --..-- .";
+                    return
+                        ("\n╔══════════════════════════════════════════════════════════════════════════════════ " + "-"
+                        );
                 case 2:
-                    return " ====-====-===-=--=-=--_-----_--= =- -_ ._";
+                    return "\n╔═════════════════════════════════════════════════════════════════════════════════";
                 case 3:
-                    return " ===========";
+                    return " ══════===═══=";
                 case 4:
-                    return " ====-====-===-=--=-=-- - - -";
+                    return " ══════-=════-=═=-=--=-=-- - - -";
                 case 5:
                     return " >> > > ";
 
@@ -532,6 +549,15 @@ namespace Little_Choice_Based_RPG.Managers.Player_Manager.Frontend.UserInterface
                     throw new ArgumentException($"No switch case for the style matching {style}");
             }
         }
+
+        private string GetTransitionalAction()
+        {
+            return
+                (
+                    "\n║ " + transitionalAction
+                );
+        }
+
         private string ConcatenateDescriptors(List<string> roomDescriptors)
         {
             string createdRoomDescription = "";
