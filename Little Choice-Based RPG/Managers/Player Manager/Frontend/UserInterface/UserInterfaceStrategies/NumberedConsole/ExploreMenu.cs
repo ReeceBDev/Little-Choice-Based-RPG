@@ -557,7 +557,7 @@ namespace Little_Choice_Based_RPG.Managers.Player_Manager.Frontend.UserInterface
             string entryInfix = "\n ║ ";
             string entrySuffix = "\n ╙ ";
 
-            string logPrefix = $"<>-<>-< {logTime} >-<>-<> \n";
+            string logPrefix = $"<>-<>-< {logTime} >-<>-<>\n";
             string newInformationalHistoryEntry = logPrefix + newHistoryEntry;
             string newLogConcatenated = entryInfix; //Leaves space before new value
 
