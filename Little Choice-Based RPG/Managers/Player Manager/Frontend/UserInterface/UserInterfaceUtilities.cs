@@ -63,7 +63,7 @@ namespace Little_Choice_Based_RPG.Managers.Player_Manager.Frontend.UserInterface
             while (prospectiveCharacterIndex < newEntry.Length)
             {
                 //if a whitespace does not follow a word
-                if (newEntry[prospectiveCharacterIndex].Equals(" ") && currentWord.Length == 0)
+                if (Char.IsWhiteSpace(newEntry[prospectiveCharacterIndex]) && currentWord == "")
                 {
                     prospectiveCharacterIndex++; //skip the whitespace
                     continue;
