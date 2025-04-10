@@ -57,7 +57,7 @@ namespace Little_Choice_Based_RPG.Managers.Player_Manager.Frontend.UserInterface
             systemChoices = InitialiseSystemChoices();
             subMenuSystemChoices = InitialiseSubMenuSystemChoices();
 
-            defaultTransitionalAction = $"Weg!";
+            defaultTransitionalAction = $"A tsunami of a thousand glass-like reflections tear open reality with a roar. \nWhen they close, you are left standing in their place.";
             transitionalAction = defaultTransitionalAction;
         }
 
@@ -369,7 +369,7 @@ namespace Little_Choice_Based_RPG.Managers.Player_Manager.Frontend.UserInterface
 
         private string GetTopStatusBar()
         {
-            string topStatusPrefix = " ╔═════════════════════════════════════════════════════════════════════════════";
+            string topStatusPrefix = " ╔══════════════════════════════════════════════════════════════════════════════════" + "══════-=════-=═=-=--=-=-- - - -";
             string topStatusInfix = "\n ║ ";
             string topStatusBar = $"{currentRoom.Name}\t -=-\t Potsun Burran\t -=-\t Relative, {currentRoomID}\t -=-\t {DateTime.UtcNow.AddYears(641)}";
 
@@ -384,7 +384,6 @@ namespace Little_Choice_Based_RPG.Managers.Player_Manager.Frontend.UserInterface
             List<string> roomLines = UserInterfaceUtilities.SplitIntoLines(newDescriptionContent, "\n ╟ ", "\n ║ ", "\n ╟ ");
 
             string descriptionPrefix =
-                    " == --= . =." +
                     "\n ║ Room Description │ " +
                     "\n ╙──────────────────┘ ";
 
@@ -418,7 +417,7 @@ namespace Little_Choice_Based_RPG.Managers.Player_Manager.Frontend.UserInterface
             uint iteration = 0;
 
             //Create prefix title
-            historyLogLines.Add("\n ╔══════════════════╤═══════════════════════════════════════════════════════════════ " + "-=══-=-=--=-=--. -.");
+            historyLogLines.Add("\n ╔══════════════════╤════════════════════════════════════════════════════════════════" + "══════-=════-=═=-=--=-=-- - - -");
             historyLogLines.Add("\n ║  Historical Log  │ ");
             historyLogLines.Add("\n ╙──────────────────┘ ");
 
@@ -627,14 +626,14 @@ namespace Little_Choice_Based_RPG.Managers.Player_Manager.Frontend.UserInterface
             {
                 case 1:
                     return
-                        ("\n ╠═════════════════════════════════════════════════════════════════════════════ " + "-"
+                        ("\n ╠══════════════════════════════════════════════════════════════════════════════════ " + "-"
                         );
                 case 2:
                     return "\n ╟────────────────────────────────────────────────────────────────────────────────" + "-";
                 case 3:
                     return " ══════===═══=";
                 case 4:
-                    return " ══════-=════-=═=-=--=-=-- - - -";
+                    return "═══════-=════-=═=-=--=-=-- - - -";
                 case 5:
                     return " >> > > ";
                 case 6:
@@ -647,51 +646,128 @@ namespace Little_Choice_Based_RPG.Managers.Player_Manager.Frontend.UserInterface
 
         private string GetTransitionalAction()
         {
-            const int topPaddingInset = 2;
+            int longestLineCount = 0;
+
+            const int topPaddingInset = 1;
             const int bottomPaddingInset = 8;
-            const int bottomLength = 80;
+            const int bottomLength = 84;
 
-            string transitionalTopPrefix = "\n ╟──";
-            string transitionalTopInfix = " ";
-            string transitionalTopSuffix = "─┐";
+            string concatenatedTop = "";
+            string concatenatedMid = "";
+            string concatenatedBottom = "";
 
-            string transitionalMidPrefix = "\n ║ ";
+            string transitionalTopPrefix = "\n ╟";
+            string transitionalTopInfix = "─";
+            string transitionalTopSuffix = "╖";
+
+            string transitionalMidPrefix = "\n ╠├ ";
             string transitionalMidInfix = " ";
-            string transitionalMidSuffix = " │";
+            string transitionalMidSuffix = "┤╣";
 
             string transitionalBottomPrefix = "\n ╠══════════════════╤";
             string transitionalBottomInfix = "═";
-            string transitionalBottomMark = "╧";
+            string transitionalBottomMark = "╩";
             string transitionalBottomSuffix = "═";
 
             string topPadding = "";
             string middlePadding = "";
             string bottomPadding = "";
             string bottomEnding = "";
+            string bottomEndingSuffix = "══════-=════-=═=-=--=-=-- - - -";
 
-            //topPadding
-            for (int i = topPaddingInset; i <= transitionalAction.Count(); i++)
-                topPadding += transitionalTopInfix;
 
-            //middlePadding
-            for (int i = 6; i <= (transitionalBottomPrefix.Count() - transitionalAction.Count()); i++)
-                middlePadding += transitionalMidInfix;
+            List<string> transitionalActionLines = UserInterfaceUtilities.SplitIntoLines(transitionalAction, transitionalMidPrefix, transitionalMidPrefix, transitionalMidPrefix, 70);
 
-            //topPadding if too small for the middle
-            for (int i = 1; i <= middlePadding.Count(); i++)
-                topPadding += transitionalTopInfix;
-
+            foreach (string line in transitionalActionLines)
+            {
+                if (longestLineCount < line.Count())
+                    longestLineCount = line.Count() - transitionalMidPrefix.Count();
+            }
+            /*
             //bottomPadding
-            for (int i = -4; i <= (transitionalAction.Count() - transitionalBottomPrefix.Count()); i++)
+            for (int i = transitionalBottomPrefix.Count(); i <= (longestLineCount); i++)
                 bottomPadding += transitionalBottomInfix;
 
             //bottomEnding
             for (int i = 0; i <= (bottomLength - (transitionalBottomPrefix.Count() + bottomPadding.Count() + transitionalBottomMark.Count())); i++)
                 bottomEnding += transitionalBottomSuffix;
 
-            string concatenatedTop = transitionalTopPrefix + topPadding + transitionalTopSuffix;
-            string concatenatedMid = transitionalMidPrefix + transitionalAction + middlePadding + transitionalMidSuffix;
-            string concatenatedBottom = transitionalBottomPrefix + bottomPadding + transitionalBottomMark + bottomEnding;
+            foreach (string transitionalActionContent in transitionalActionLines)
+            {
+                middlePadding = "";
+
+                //middlePadding
+                for (int i = 1; i <= (longestLineCount) - (transitionalActionContent.Count()); i++)
+                    middlePadding += transitionalMidInfix;
+
+                if ((middlePadding.Count() + transitionalMidPrefix.Count()) < (transitionalBottomPrefix.Count() + bottomPadding.Count()))
+                    for (int i = middlePadding.Count(); i <= (transitionalBottomPrefix.Count() - transitionalActionContent.Count() - 2); i++)
+                        middlePadding += transitionalMidInfix;
+
+                if ((middlePadding.Count() == 0))
+                {
+                    topPadding += transitionalTopInfix;
+                    middlePadding += transitionalMidInfix;
+                    bottomPadding += transitionalBottomInfix;
+                }
+
+                concatenatedMid += transitionalActionContent + middlePadding + transitionalMidSuffix;
+            }
+
+            //topPadding
+            for (int i = (0); i <= (longestLineCount - (transitionalMidSuffix.Count()) - 1); i++)
+                topPadding += transitionalTopInfix;
+            */
+
+
+            //bottomPadding
+            for (int i = 0; i <= 9 + (longestLineCount - transitionalBottomPrefix.Count()); i++)
+                bottomPadding += transitionalBottomInfix;
+
+            //bottomEnding
+            for (int i = 0; i <= (bottomLength - (transitionalBottomPrefix.Count() + bottomPadding.Count() + transitionalBottomMark.Count())); i++)
+                bottomEnding += transitionalBottomSuffix;
+
+            foreach (string transitionalActionContent in transitionalActionLines)
+            {
+                middlePadding = "";
+
+
+                //middlePadding
+                while ((transitionalActionContent.Count() + middlePadding.Count()) < (bottomLength - transitionalBottomMark.Count() - bottomEnding.Count()))
+                    middlePadding += transitionalMidInfix;
+                //for (int i = 0; i <= (longestLineCount) - ((transitionalActionContent.Count()-transitionalMidPrefix.Count())); i++)
+                  //  middlePadding += transitionalMidInfix;
+
+                /*
+                if ((middlePadding.Count() + transitionalMidPrefix.Count()) < (transitionalBottomPrefix.Count() + bottomPadding.Count()))
+                    for (int i = middlePadding.Count(); i <= (transitionalBottomPrefix.Count() - transitionalActionContent.Count() - 2); i++)
+                        middlePadding += transitionalMidInfix;
+                */
+
+                /*
+                if ((middlePadding.Count() == 0))
+                {
+                    topPadding += transitionalTopInfix;
+                    middlePadding += transitionalMidInfix;
+                    bottomPadding += transitionalBottomInfix;
+                }
+                */
+
+                concatenatedMid += transitionalActionContent + middlePadding + transitionalMidSuffix;
+            }
+
+            //topPadding
+            while ((transitionalTopPrefix.Count() + topPadding.Count() - transitionalTopSuffix.Count()) < (bottomLength - transitionalBottomMark.Count() - bottomEnding.Count()))
+                topPadding += transitionalTopInfix;
+            /*
+            for (int i = 0; i <= 1 + (transitionalMidPrefix.Count() + longestLineCount); i++)
+                topPadding += transitionalTopInfix;*/
+
+
+
+            concatenatedTop = transitionalTopPrefix + topPadding + transitionalTopSuffix;
+            concatenatedBottom = transitionalBottomPrefix + bottomPadding + transitionalBottomMark + bottomEnding + bottomEndingSuffix;
 
             return concatenatedTop + concatenatedMid + concatenatedBottom;
         }
@@ -720,7 +796,7 @@ namespace Little_Choice_Based_RPG.Managers.Player_Manager.Frontend.UserInterface
             int choiceIndex = 0;
 
             //Prefix
-            createdChoiceList += ("\n ╔═════════════════════════════════════════════════════════════════════════════════ ============ == --= . =.");
+            createdChoiceList += ("\n ╔════════════════════════════════════════════════════════════════════════════════════════-=════-=═=-=--=-=-- - - -");
 
             //Main choice list
             while (choiceIndex < (possibleInteractions.Count))
