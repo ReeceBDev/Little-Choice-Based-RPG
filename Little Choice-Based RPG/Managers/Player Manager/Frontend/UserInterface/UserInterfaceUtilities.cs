@@ -62,8 +62,6 @@ namespace Little_Choice_Based_RPG.Managers.Player_Manager.Frontend.UserInterface
 
             while (prospectiveCharacterIndex < newEntry.Length)
             {
-                char prospectiveCharacter = newEntry[prospectiveCharacterIndex];
-
                 //if a whitespace does not follow a word
                 if (newEntry[prospectiveCharacterIndex].Equals(" ") && currentWord.Length == 0)
                 {
@@ -71,18 +69,28 @@ namespace Little_Choice_Based_RPG.Managers.Player_Manager.Frontend.UserInterface
                     continue;
                 }
 
-                //if (its a \n then handle it and maybe increase the new entry length by one because maybe this cuases the error?)
-                if (newEntry[prospectiveCharacterIndex].Equals('\n'))
-                {
-                    completedEntries.Add(currentLine);
-                    currentLine = entryInfix;
-                    prospectiveCharacterIndex++; //skip the new line character
-                    continue;
-                }
-
                 //While the current word contains at max only one whitespace (after itself)
                 while ((!currentWord.Contains(" ")) && prospectiveCharacterIndex < newEntry.Length)
+                {
+                    //if there's an \n then replace it with an infix)
+                    if (newEntry[prospectiveCharacterIndex].Equals('\n'))
+                    {
+                        //Replace with an infix if its not at the start of new entry
+                        if (!(completedEntries.Count == 0 && currentLine == entryPrefix))
+                        {
+                            currentLine += currentWord;
+                            currentWord = "";
+
+                            completedEntries.Add(currentLine);
+                            currentLine = entryInfix;
+                        }
+
+                        prospectiveCharacterIndex++; //skip the new line character
+                        continue;
+                    }
+
                     currentWord += newEntry[prospectiveCharacterIndex++];
+                }
 
                 //If the new total is too long, make a new line
                 if ((currentWord.Length + currentLine.Length) > maximumLineLength)
