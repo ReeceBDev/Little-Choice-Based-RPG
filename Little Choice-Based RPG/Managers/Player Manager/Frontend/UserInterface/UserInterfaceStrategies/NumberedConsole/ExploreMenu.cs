@@ -57,7 +57,7 @@ namespace Little_Choice_Based_RPG.Managers.Player_Manager.Frontend.UserInterface
             systemChoices = InitialiseSystemChoices();
             subMenuSystemChoices = InitialiseSubMenuSystemChoices();
 
-            defaultTransitionalAction = $"Welcome to the game Default Player!";
+            defaultTransitionalAction = $"Weg!";
             transitionalAction = defaultTransitionalAction;
         }
 
@@ -288,7 +288,6 @@ namespace Little_Choice_Based_RPG.Managers.Player_Manager.Frontend.UserInterface
             List<ExploreMenuTextComponent> exploreMenu = new List<ExploreMenuTextComponent>
             {
             new ExploreMenuTextComponent(ExploreMenuIdentity.TopStatusBar, GetTopStatusBar(), 0),
-            new ExploreMenuTextComponent(ExploreMenuIdentity.None, GetStyleLine(1), 0),
             new ExploreMenuTextComponent(ExploreMenuIdentity.TransitionalAction, GetTransitionalAction(), 0),
             new ExploreMenuTextComponent(ExploreMenuIdentity.CurrentDescription, GetCurrentDescription(), 0),
             new ExploreMenuTextComponent(ExploreMenuIdentity.HistoryLog, GetHistoryLog(), 0),
@@ -308,7 +307,7 @@ namespace Little_Choice_Based_RPG.Managers.Player_Manager.Frontend.UserInterface
 
             targetEntry = GetTextEntryByIdentifier(ExploreMenuIdentity.TransitionalAction);
             targetIndex = mainBodyText.IndexOf(targetEntry);
-            this.mainBodyText[targetIndex].Content = transitionalAction;
+            this.mainBodyText[targetIndex].Content = GetTransitionalAction();
 
             targetEntry = GetTextEntryByIdentifier(ExploreMenuIdentity.CurrentDescription);
             targetIndex = mainBodyText.IndexOf(targetEntry);
@@ -370,18 +369,34 @@ namespace Little_Choice_Based_RPG.Managers.Player_Manager.Frontend.UserInterface
 
         private string GetTopStatusBar()
         {
-            return $"{currentRoom.Name}\t -=-\t Potsun Burran\t -=-\t Relative, {currentRoomID}\t -=-\t {DateTime.UtcNow.AddYears(641)}";
+            string topStatusPrefix = " ╔═════════════════════════════════════════════════════════════════════════════";
+            string topStatusInfix = "\n ║ ";
+            string topStatusBar = $"{currentRoom.Name}\t -=-\t Potsun Burran\t -=-\t Relative, {currentRoomID}\t -=-\t {DateTime.UtcNow.AddYears(641)}";
+
+            string concatenatedStatusBar = topStatusPrefix + topStatusInfix + topStatusBar;
+
+            return concatenatedStatusBar;
         }
 
         private string GetCurrentDescription()
         {
-            return
-                (
-                    "\n╠══════════════════╤═══════════════════════════════════════════════════════════════ " + "== --= . =." +
-                    "\n║ Room Description │ " +
-                    "\n╙──────────────────┘ " +
-                    "\n" + ConcatenateDescriptors(currentRoom.GetRoomDescriptors())
-                );
+            string newDescriptionContent = ConcatenateDescriptors(currentRoom.GetRoomDescriptors());
+            List<string> roomLines = UserInterfaceUtilities.SplitIntoLines(newDescriptionContent, "\n ╟ ", "\n ║ ", "\n ╟ ");
+
+            string descriptionPrefix =
+                    " == --= . =." +
+                    "\n ║ Room Description │ " +
+                    "\n ╙──────────────────┘ ";
+
+            string finalRoomDescription = descriptionPrefix;
+
+            foreach (string line in roomLines)
+            {
+                finalRoomDescription += line;
+            }
+
+
+            return finalRoomDescription;
         }
 
         private string GetHistoryLog() //Should display bottom to top :)
@@ -612,16 +627,18 @@ namespace Little_Choice_Based_RPG.Managers.Player_Manager.Frontend.UserInterface
             {
                 case 1:
                     return
-                        ("\n╔══════════════════════════════════════════════════════════════════════════════════ " + "-"
+                        ("\n ╠═════════════════════════════════════════════════════════════════════════════ " + "-"
                         );
                 case 2:
-                    return "\n╔═════════════════════════════════════════════════════════════════════════════════";
+                    return "\n ╟────────────────────────────────────────────────────────────────────────────────" + "-";
                 case 3:
                     return " ══════===═══=";
                 case 4:
                     return " ══════-=════-=═=-=--=-=-- - - -";
                 case 5:
                     return " >> > > ";
+                case 6:
+                    return "\n ╟──";
 
                 default:
                     throw new ArgumentException($"No switch case for the style matching {style}");
@@ -630,10 +647,53 @@ namespace Little_Choice_Based_RPG.Managers.Player_Manager.Frontend.UserInterface
 
         private string GetTransitionalAction()
         {
-            return
-                (
-                    "\n║ " + transitionalAction
-                );
+            const int topPaddingInset = 2;
+            const int bottomPaddingInset = 8;
+            const int bottomLength = 80;
+
+            string transitionalTopPrefix = "\n ╟──";
+            string transitionalTopInfix = " ";
+            string transitionalTopSuffix = "─┐";
+
+            string transitionalMidPrefix = "\n ║ ";
+            string transitionalMidInfix = " ";
+            string transitionalMidSuffix = " │";
+
+            string transitionalBottomPrefix = "\n ╠══════════════════╤";
+            string transitionalBottomInfix = "═";
+            string transitionalBottomMark = "╧";
+            string transitionalBottomSuffix = "═";
+
+            string topPadding = "";
+            string middlePadding = "";
+            string bottomPadding = "";
+            string bottomEnding = "";
+
+            //topPadding
+            for (int i = topPaddingInset; i <= transitionalAction.Count(); i++)
+                topPadding += transitionalTopInfix;
+
+            //middlePadding
+            for (int i = 6; i <= (transitionalBottomPrefix.Count() - transitionalAction.Count()); i++)
+                middlePadding += transitionalMidInfix;
+
+            //topPadding if too small for the middle
+            for (int i = 1; i <= middlePadding.Count(); i++)
+                topPadding += transitionalTopInfix;
+
+            //bottomPadding
+            for (int i = -4; i <= (transitionalAction.Count() - transitionalBottomPrefix.Count()); i++)
+                bottomPadding += transitionalBottomInfix;
+
+            //bottomEnding
+            for (int i = 0; i <= (bottomLength - (transitionalBottomPrefix.Count() + bottomPadding.Count() + transitionalBottomMark.Count())); i++)
+                bottomEnding += transitionalBottomSuffix;
+
+            string concatenatedTop = transitionalTopPrefix + topPadding + transitionalTopSuffix;
+            string concatenatedMid = transitionalMidPrefix + transitionalAction + middlePadding + transitionalMidSuffix;
+            string concatenatedBottom = transitionalBottomPrefix + bottomPadding + transitionalBottomMark + bottomEnding;
+
+            return concatenatedTop + concatenatedMid + concatenatedBottom;
         }
 
         private string ConcatenateDescriptors(List<string> roomDescriptors)
