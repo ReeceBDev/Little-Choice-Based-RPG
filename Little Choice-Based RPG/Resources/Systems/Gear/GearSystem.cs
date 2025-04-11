@@ -24,7 +24,7 @@ namespace Little_Choice_Based_RPG.Resources.Systems.Gear
         }
 
         /// <summary> Provide an initiale </summary>
-        protected override void GiveInitialInteractions(PropertyContainer sourceContainer, PropertyHandler sourceProperties)
+        protected override void InitialiseNewSubscriber(PropertyContainer sourceContainer, PropertyHandler sourceProperties)
         {
 
         }

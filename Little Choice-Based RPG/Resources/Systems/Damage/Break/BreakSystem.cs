@@ -52,7 +52,7 @@ namespace Little_Choice_Based_RPG.Resources.Systems.Damage.Break
             }
         }
 
-        protected override void GiveInitialInteractions(PropertyContainer sourceContainer, PropertyHandler sourceProperties)
+        protected override void InitialiseNewSubscriber(PropertyContainer sourceContainer, PropertyHandler sourceProperties)
         {
             // If the object is not broken
             if (sourceProperties.HasProperty("Damage.Broken", false))

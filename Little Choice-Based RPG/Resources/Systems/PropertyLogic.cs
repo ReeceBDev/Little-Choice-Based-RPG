@@ -30,8 +30,8 @@ namespace Little_Choice_Based_RPG.Resources.Systems
                 //Subscribe to the requester's property list
                 systemSubscriptionRequestData.targetPropertyContainer.Properties.PropertyChanged += OnPropertyChanged;
 
-                //Initialise currently valid system choices
-                GiveInitialInteractions(systemSubscriptionRequestData.targetPropertyContainer, systemSubscriptionRequestData.targetPropertyContainer.Properties);
+                //Initialise the subscriber
+                InitialiseNewSubscriber(systemSubscriptionRequestData.targetPropertyContainer, systemSubscriptionRequestData.targetPropertyContainer.Properties);
             }
         }
 
@@ -43,7 +43,7 @@ namespace Little_Choice_Based_RPG.Resources.Systems
         /// <summary> Provide logic for co-ordinating property changes with their relevant methods. </summary>
         protected abstract void OnPropertyChanged(object sender, PropertyChangedEventArgs propertyChangedData);
 
-        /// <summary> Provide the interactions which currently apply upon loading. </summary>
-        protected abstract void GiveInitialInteractions(PropertyContainer sourceContainer, PropertyHandler sourceProperties);
+        /// <summary> Apply starting implementation to a subscription. This may include handling the initial interactions based on its initial property state. </summary>
+        protected abstract void InitialiseNewSubscriber(PropertyContainer sourceContainer, PropertyHandler sourceProperties);
     }
 }

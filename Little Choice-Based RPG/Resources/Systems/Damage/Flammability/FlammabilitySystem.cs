@@ -27,7 +27,7 @@ namespace Little_Choice_Based_RPG.Resources.Systems.Damage.Flammability
         }
 
         /// <summary> Provide an initiale </summary>
-        protected override void GiveInitialInteractions(PropertyContainer sourceContainer, PropertyHandler sourceProperties)
+        protected override void InitialiseNewSubscriber(PropertyContainer sourceContainer, PropertyHandler sourceProperties)
         {
 
         }
