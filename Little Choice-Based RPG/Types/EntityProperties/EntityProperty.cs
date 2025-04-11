@@ -9,6 +9,7 @@ namespace Little_Choice_Based_RPG.Types.EntityProperties
 { 
     public struct EntityProperty
     {
+        /// <summary> Represents a string key and its associated value. The keys and values must match their schema in PropertyValidation. </summary>
         public EntityProperty(string setPropertyName, Object setPropertyValue, bool setIsFrozen = false)
         {
             SetPropertyName(setPropertyName); // Name must be set before Value, or else the value will not know what name to validate against.
@@ -16,6 +17,7 @@ namespace Little_Choice_Based_RPG.Types.EntityProperties
             ReadOnly = setIsFrozen; // ReadOnly must be set at the end, or else the property might be ReadOnly before the value can be set.
         }
 
+        /// <summary> Sets the property value. The type must match the type allocated to this properties property name. The property name and their type are defined in PropertyValidation. </summary>
         public void SetPropertyValue(object setPropertyValue)
         {
             if (!PropertyValidation.IsValidPropertyType(setPropertyValue))
@@ -30,10 +32,13 @@ namespace Little_Choice_Based_RPG.Types.EntityProperties
             PropertyValue = setPropertyValue;
         }
 
+        /// <summary> Stops this property from being modified. Sets this property as ReadOnly = true;. </summary>
         public void SetPropertyAsReadOnly() => ReadOnly = true;
 
+        /// <summary> Make this property modifiable. Sets this property as ReadOnly = false; </summary>
         public void UnsetPropertyAsReadOnly() => ReadOnly = false;
 
+        /// <summary> Changes the property name to that of another ValidProperty. </summary>
         private void SetPropertyName(string setPropertyName)
         {
             if (PropertyValidation.IsValidPropertyName(setPropertyName))
@@ -42,9 +47,13 @@ namespace Little_Choice_Based_RPG.Types.EntityProperties
                 throw new ArgumentException($"Name {setPropertyName} not valid. Tried to name an EntityProperty without a matching ValidProperty name!");
         }
 
+        /// <summary> The name of the property. This must match an valid property name in PropertyValidation. </summary>
         public string PropertyName { get; private set; }
 
+        /// <summary> The value of the property. This must match the PropertyName's correlated value in PropertyValidation. </summary>
         public Object PropertyValue { get; private set; }
+
+        /// <summary> Declares if a property is modifiable and deletable. </summary>
         public bool ReadOnly { get; private set; }
     }
 }
