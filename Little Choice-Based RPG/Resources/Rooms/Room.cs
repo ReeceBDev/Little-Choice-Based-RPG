@@ -241,7 +241,5 @@ namespace Little_Choice_Based_RPG.Resources.Rooms
 
         public uint RoomID => uniqueID;
         public RoomType RoomType { get; init; }
-        public List<RoomDirection> Directions { get; private protected set; } = new List<RoomDirection>();
-
     }
 }
