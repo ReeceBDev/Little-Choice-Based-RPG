@@ -13,7 +13,5 @@ namespace Little_Choice_Based_RPG.Types.EntityProperties
         String,
         UInt32,
         Decimal,
-
-        Component
     }
 }
