@@ -222,9 +222,7 @@ namespace Little_Choice_Based_RPG.Resources.Rooms
                 foreach (uint testEntityID in currentObjectIDs)
                 {
                     if (higherPriorityObjectIDs.Contains(testEntityID))
-                    {
                         descriptorRemainsValid = false;
-                    }
                 }
 
                 if (descriptorRemainsValid)
