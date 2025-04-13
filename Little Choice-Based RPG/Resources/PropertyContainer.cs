@@ -14,8 +14,6 @@ namespace Little_Choice_Based_RPG.Resources
     {
         protected static uint globalCounter;
 
-        public List<IInvokableInteraction> Interactions = new List<IInvokableInteraction>();
-
         private readonly static Dictionary<string, PropertyType> requiredProperties = new Dictionary<string, PropertyType>()
         {
             { "ID", PropertyType.UInt32 },
@@ -29,6 +27,7 @@ namespace Little_Choice_Based_RPG.Resources
         private Dictionary<string, object> defaultProperties = new Dictionary<string, object>()
         {
             {"ID", ++globalCounter},
+            {"Component.AttachLogic" }
         };
 
         static PropertyContainer()
@@ -76,5 +75,7 @@ namespace Little_Choice_Based_RPG.Resources
         }
 
         public PropertyHandler Properties { get; set; }
+        public ExtensionHandler Extensions { get; set; } = new ExtensionHandler();
+        public List<IInvokableInteraction> Interactions { get; set; } = new List<IInvokableInteraction>();
     }
 }
