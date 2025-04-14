@@ -20,7 +20,6 @@ using Little_Choice_Based_RPG.Resources.Rooms.Premade.Unique.Test;
 using Little_Choice_Based_RPG.Resources.Systems.Damage.Break;
 using Little_Choice_Based_RPG.Resources.Systems.Damage.Flammability;
 using Little_Choice_Based_RPG.Resources.Systems.Damage.Repair;
-using Little_Choice_Based_RPG.Resources.Systems.Gear;
 using Little_Choice_Based_RPG.Resources.Systems.SystemEventBus;
 using Little_Choice_Based_RPG.Types;
 using Little_Choice_Based_RPG.Types.EntityProperties;
@@ -30,10 +29,10 @@ internal class TextBasedRPG
     private static void Main(string[] args)
     {
         //Initialise the current systems:
-        new FlammabilitySystem();
-        new RepairSystem();
-        new BreakSystem();
-        new GearSystem();
+        new FlammabilitySystem().Instance;
+        new RepairSystem().Instance;
+        new BreakSystem().Instance;
+        new GearSystem().Instance;
 
         //Main
         var mainWorld = new GameEnvironment();
