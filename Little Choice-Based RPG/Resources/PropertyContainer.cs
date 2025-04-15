@@ -1,4 +1,5 @@
 ﻿using Little_Choice_Based_RPG.Types.EntityProperties;
+using Little_Choice_Based_RPG.Types.Extensions;
 using Little_Choice_Based_RPG.Types.Interactions.InteractDelegate;
 using System;
 using System.Collections.Generic;
@@ -27,7 +28,6 @@ namespace Little_Choice_Based_RPG.Resources
         private Dictionary<string, object> defaultProperties = new Dictionary<string, object>()
         {
             {"ID", ++globalCounter},
-            {"Component.AttachLogic" }
         };
 
         static PropertyContainer()
