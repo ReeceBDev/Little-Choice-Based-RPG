@@ -1,5 +1,5 @@
 ﻿using Little_Choice_Based_RPG.Resources.Entities.Conceptual;
-using Little_Choice_Based_RPG.Resources.Systems.Damage.Repair;
+using Little_Choice_Based_RPG.Resources.Systems.DamageSystems.Repair;
 using Little_Choice_Based_RPG.Resources.Systems.SystemEventBus;
 using Little_Choice_Based_RPG.Types.EntityProperties;
 using System;
@@ -8,7 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Little_Choice_Based_RPG.Resources.Systems.Damage.Flammability
+namespace Little_Choice_Based_RPG.Resources.Systems.DamageSystems.Flammability
 {
     public class FlammabilitySystem : PropertyLogic
     {
