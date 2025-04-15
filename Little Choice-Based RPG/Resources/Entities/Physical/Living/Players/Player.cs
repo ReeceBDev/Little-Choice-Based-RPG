@@ -20,8 +20,6 @@ namespace Little_Choice_Based_RPG.Resources.Entities.Physical.Living.Players
     {
         private readonly static Dictionary<string, PropertyType> requiredProperties = new Dictionary<string, PropertyType>()
         {
-            {"Player.CanHear", PropertyType.Boolean },
-            {"Player.CanSee", PropertyType.Boolean }
         };
 
         private readonly static Dictionary<string, PropertyType> optionalProperties = new Dictionary<string, PropertyType>()
@@ -34,7 +32,7 @@ namespace Little_Choice_Based_RPG.Resources.Entities.Physical.Living.Players
             {"HasGearSlots", true },
             {"Player.CanHear", true},
             {"Player.CanSee", true },
-            {"StrengthInKG",  32.0m}
+            {"Weightbearing.StrengthInKG",  32.0m}
         };
 
         static Player()
