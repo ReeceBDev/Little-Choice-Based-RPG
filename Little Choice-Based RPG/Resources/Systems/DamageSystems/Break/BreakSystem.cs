@@ -1,6 +1,6 @@
 ﻿using Little_Choice_Based_RPG.Managers.Player_Manager.Frontend.UserInterface;
 using Little_Choice_Based_RPG.Resources.Entities.Conceptual;
-using Little_Choice_Based_RPG.Resources.Systems.Damage.Repair;
+using Little_Choice_Based_RPG.Resources.Systems.DamageSystems.Repair;
 using Little_Choice_Based_RPG.Resources.Systems.SystemEventBus;
 using Little_Choice_Based_RPG.Types.EntityProperties;
 using Little_Choice_Based_RPG.Types.Interactions.InteractDelegate;
@@ -12,7 +12,7 @@ using System.Text;
 using System.Threading.Tasks;
 using static Little_Choice_Based_RPG.Types.Interactions.InteractDelegate.InteractionUsingNothing;
 
-namespace Little_Choice_Based_RPG.Resources.Systems.Damage.Break
+namespace Little_Choice_Based_RPG.Resources.Systems.DamageSystems.Break
 {
     public class BreakSystem : PropertyLogic
     {
@@ -28,10 +28,10 @@ namespace Little_Choice_Based_RPG.Resources.Systems.Damage.Break
             PropertyValidation.CreateValidProperty("Descriptor.Inspect.Broken", PropertyType.String); //A closer look
         }
 
-        /// <summary> Allows objects to break. Requires DamageCommon. </summary>
+        /// <summary> Allows objects to break. Requires DamageLogic. </summary>
         public BreakSystem()
         {
-            DamageCommon damageCommonInstantiation = DamageCommon.Instance;
+            DamageLogic damageCommonInstantiation = DamageLogic.Instance;
         }
 
         protected override void OnPropertyChanged(object sender, PropertyChangedEventArgs propertyChangedData)
@@ -98,7 +98,7 @@ namespace Little_Choice_Based_RPG.Resources.Systems.Damage.Break
                 throw new Exception("This object has no broken description! Tried to break an object where there is no EntityProperty of Descriptor.Generic.Broken.");
 
             //Main breaking logic.
-            sourceContainer.Properties.UpsertProperty("Damage.Broken", true); //Property found in DamageCommon
+            sourceContainer.Properties.UpsertProperty("Damage.Broken", true); //Property found in DamageLogic
 
             //Set generic descriptor.
             sourceContainer.Properties.ReplaceProperty("Descriptor.Generic.Current", sourceContainer.Properties.GetPropertyValue("Descriptor.Generic.Broken"));
