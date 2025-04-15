@@ -5,17 +5,17 @@ using System.Text;
 using System.Threading.Tasks;
 using Little_Choice_Based_RPG.Types.EntityProperties;
 
-namespace Little_Choice_Based_RPG.Resources.Systems.Damage
+namespace Little_Choice_Based_RPG.Resources.Systems.DamageSystems
 {
-    public sealed class DamageCommon
+    public sealed class DamageLogic
     {
-        private static readonly DamageCommon singletonInstance = new DamageCommon();
-        private DamageCommon()
+        private static readonly DamageLogic singletonInstance = new DamageLogic();
+        private DamageLogic()
         {
             PropertyValidation.CreateValidProperty("Damage.Broken", PropertyType.Boolean); //Indicates when an object becomes broken. Used by BreakSystem and RepairSystem.
         }
 
-        public static DamageCommon Instance
+        public static DamageLogic Instance
         { 
             get
             {
