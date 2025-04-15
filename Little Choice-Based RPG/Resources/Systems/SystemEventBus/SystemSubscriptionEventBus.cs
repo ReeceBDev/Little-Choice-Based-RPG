@@ -1,4 +1,4 @@
-﻿using Little_Choice_Based_RPG.Resources.Systems.Damage;
+﻿using Little_Choice_Based_RPG.Resources.Systems.DamageSystems;
 using System;
 using System.Collections.Generic;
 using System.Linq;
