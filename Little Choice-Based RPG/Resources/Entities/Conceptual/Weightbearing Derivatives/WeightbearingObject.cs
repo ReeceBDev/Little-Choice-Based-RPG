@@ -14,12 +14,12 @@ namespace Little_Choice_Based_RPG.Resources.Entities.Conceptual.Weightbearing_De
         private readonly static Dictionary<string, PropertyType> requiredProperties = new Dictionary<string, PropertyType>()
         {
             {"IsWeightBearing", PropertyType.Boolean},
-            {"StrengthInKG", PropertyType.Decimal}, // maximum weightbearing capacity
+            {"Weightbearing.StrengthInKG", PropertyType.Decimal}, // maximum weightbearing capacity
         };
 
         private readonly static Dictionary<string, PropertyType> optionalProperties = new Dictionary<string, PropertyType>()
         {
-            {"TotalWeightHeldInKG", PropertyType.Decimal}, //current weight held
+            {"Weightbearing.WeightHeldInKG", PropertyType.Decimal}, //current weight held
         };
 
         private readonly static Dictionary<string, object> defaultProperties = new Dictionary<string, object>()
@@ -53,11 +53,11 @@ namespace Little_Choice_Based_RPG.Resources.Entities.Conceptual.Weightbearing_De
             if (!Properties.HasProperty("IsWeightBearing", true))
                 throw new Exception($"{this} is unable to hold any weight itself!");
 
-            if (!Properties.HasExistingPropertyName("TotalWeightHeldInKG"))
-                Properties.CreateProperty("TotalWeightHeldInKG", 0);
+            if (!Properties.HasExistingPropertyName("Weightbearing.WeightHeldInKG"))
+                Properties.CreateProperty("Weightbearing.WeightHeldInKG", 0);
 
-            uint totalStrength = (uint)Properties.GetPropertyValue("StrengthInKG");
-            uint weightHeld = (uint)Properties.GetPropertyValue("TotalWeightHeldInKG");
+            uint totalStrength = (uint)Properties.GetPropertyValue("Weightbearing.StrengthInKG");
+            uint weightHeld = (uint)Properties.GetPropertyValue("Weightbearing.WeightHeldInKG");
 
             uint targetWeight = (uint)target.Properties.GetPropertyValue("WeightInKG");
 
@@ -65,19 +65,19 @@ namespace Little_Choice_Based_RPG.Resources.Entities.Conceptual.Weightbearing_De
                 throw new Exception("the object is too heavy to be picked up by this"); // This should just be an error, really.
 
             Attach(target);
-            Properties.ReplaceProperty("TotalWeightHeldInKG", weightHeld + targetWeight);
+            Properties.ReplaceProperty("Weightbearing.WeightHeldInKG", weightHeld + targetWeight);
         }
 
         public void Drop(GameObject target)
         {
             uint targetWeight = (uint)target.Properties.GetPropertyValue("WeightInKG");
-            uint weightHeld = (uint)Properties.GetPropertyValue("TotalWeightHeldInKG");
+            uint weightHeld = (uint)Properties.GetPropertyValue("Weightbearing.WeightHeldInKG");
 
             if (0 > (weightHeld - targetWeight))
                 throw new Exception($"{this} went below 0kg weight held when it tried to drop the {target}. That shouldn't happen!");
 
             Unattach(target);
-            Properties.ReplaceProperty("TotalWeightHeldInKG", weightHeld - targetWeight);
+            Properties.ReplaceProperty("Weightbearing.WeightHeldInKG", weightHeld - targetWeight);
         }
 
     }
