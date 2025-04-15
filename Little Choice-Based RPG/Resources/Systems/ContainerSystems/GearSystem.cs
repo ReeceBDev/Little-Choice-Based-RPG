@@ -7,10 +7,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Little_Choice_Based_RPG.Resources.Systems.Gear
+namespace Little_Choice_Based_RPG.Resources.Systems.ContainerSystems
 {
-    internal class GearSystem : PropertyLogic
+    /// <summary> Creates GameObject slots that can be filled with specific types for each slot definition. Requires WeightbearingCommon</summary>
+    public class GearSystem : PropertyLogic
     {
+        //This class requires WeightbearingCommon.
+        WeightbearingLogic weightBearingLogicInstantiation = WeightbearingLogic.Instance;
+
         static GearSystem()
         {
             PropertyValidation.CreateValidProperty("HasGearSlots", PropertyType.Boolean);
