@@ -35,7 +35,7 @@ namespace Little_Choice_Based_RPG.Resources.Systems
             }
         }
 
-        public void GiveInteraction(PropertyContainer target, IInvokableInteraction interaction)
+        public static void GiveInteraction(PropertyContainer target, IInvokableInteraction interaction)
         {
             target.Interactions.Add(interaction);
         }
