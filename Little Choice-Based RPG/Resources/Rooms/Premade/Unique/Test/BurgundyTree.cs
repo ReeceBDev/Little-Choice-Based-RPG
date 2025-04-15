@@ -2,9 +2,9 @@
 using Little_Choice_Based_RPG.Resources.Entities.Conceptual;
 using Little_Choice_Based_RPG.Resources.Entities.Physical.Furniture;
 using Little_Choice_Based_RPG.Resources.Entities.Physical.Plants;
-using Little_Choice_Based_RPG.Resources.Systems.Damage.Break;
-using Little_Choice_Based_RPG.Resources.Systems.Damage.Flammability;
-using Little_Choice_Based_RPG.Resources.Systems.Damage.Repair;
+using Little_Choice_Based_RPG.Resources.Systems.DamageSystems.Break;
+using Little_Choice_Based_RPG.Resources.Systems.DamageSystems.Flammability;
+using Little_Choice_Based_RPG.Resources.Systems.DamageSystems.Repair;
 using Little_Choice_Based_RPG.Resources.Systems.Gear;
 using Little_Choice_Based_RPG.Types.EntityProperties;
 using System;
@@ -111,7 +111,7 @@ Dependent on Tree = Burnt, Chair being Untouched
             zalolintLightbulb48w230vHP.Add("Descriptor.Breakable.Interaction.Invoking", "Relentlessly smashing the centre of the zalolint's tubular trunk, a loud crack splits glass into energetic shards which skate the air with viciousness, whispering off the floor.");
             zalolintLightbulb48w230vHP.Add("Descriptor.Generic.Broken", "Above hangs pieces of a shattered zalolint lightstrip. Underfoot crunches glass shards, the sharp citric of leaked zalolintene permeates your smell. Its souless husk clings by its decrepit filament to its socket, its home turned graveyard.");
             zalolintLightbulb48w230vHP.Add("Descriptor.Inspect.Broken", "Charred and crisp, the gashed and razor edges of aluminium that once housed the zalolint lightstrip are now warped and twisted, bearing their metallic teeth to the world.\n Rubbing your thumb over one side, rubbing away some soot, you find grey capitals which announce meekly, \"48W 230V - HP 24INCH ZA...INT HIG...\" \nThe rest of the text is obscured by a long blackened scorch-mark that runs from its tip electric blue into a strand of bold copper, the burn widening rapidly into charcoal grey up until the very end of the casing where the burn looks to have originated.");
-            GameObject testLightBulb = GameObjectFactory.NewGameObject(zalolintLightbulb48w230vHP);
+            GameObject testLightBulb = PropertyContainerFactory.NewGameObject(zalolintLightbulb48w230vHP);
             roomEntities.Add(testLightBulb);
         }
     }
