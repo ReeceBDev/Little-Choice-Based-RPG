@@ -28,7 +28,7 @@ namespace Little_Choice_Based_RPG.Resources.Rooms
     public record struct EntityState(uint EntityReferenceID, List<EntityProperty>? RequiredProperties); //An ID without an EntityProperty should just be checked for being present
     public record struct ConditionalDescriptor(string Descriptor, List<EntityState> RequiredEntityStates, uint Priority = 6);
 
-    public class Room
+    public class Room : PropertyContainer
     {
         private protected static uint currentID = 0U; // 0 is an null, Invalid ID
         private protected uint uniqueID;
