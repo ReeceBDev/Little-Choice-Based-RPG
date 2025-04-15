@@ -17,9 +17,9 @@ using Little_Choice_Based_RPG.Resources.Entities.Physical.Furniture;
 using Little_Choice_Based_RPG.Resources.Entities.Physical.Living.Players;
 using Little_Choice_Based_RPG.Resources.Rooms;
 using Little_Choice_Based_RPG.Resources.Rooms.Premade.Unique.Test;
-using Little_Choice_Based_RPG.Resources.Systems.Damage.Break;
-using Little_Choice_Based_RPG.Resources.Systems.Damage.Flammability;
-using Little_Choice_Based_RPG.Resources.Systems.Damage.Repair;
+using Little_Choice_Based_RPG.Resources.Systems.DamageSystems.Break;
+using Little_Choice_Based_RPG.Resources.Systems.DamageSystems.Flammability;
+using Little_Choice_Based_RPG.Resources.Systems.DamageSystems.Repair;
 using Little_Choice_Based_RPG.Resources.Systems.SystemEventBus;
 using Little_Choice_Based_RPG.Types;
 using Little_Choice_Based_RPG.Types.EntityProperties;
@@ -62,7 +62,7 @@ internal class TextBasedRPG
         davodianMk1Helmet.Add("Breakable.ByChoice", true);
         davodianMk1Helmet.Add("Descriptor.Breakable.Interaction.Title", "Damage - Intentionally misalign the helmets longitudinal wave sensor-array");
         davodianMk1Helmet.Add("Descriptor.Breakable.Interaction.Invoking", "You broke the helmet oh nooo!");
-        GameObject testDavodian = GameObjectFactory.NewGameObject(davodianMk1Helmet);
+        GameObject testDavodian = PropertyContainerFactory.NewGameObject(davodianMk1Helmet);
 
         //Give the player a helmet
         playerProperties.Add("Gear.Slot.Helmet.ID", testDavodian.Properties.GetPropertyValue("ID"));
