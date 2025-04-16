@@ -1,4 +1,5 @@
-﻿using Little_Choice_Based_RPG.Managers.Player_Manager.Frontend.UserInterface;
+﻿using Little_Choice_Based_RPG.Managers.Player_Manager;
+using Little_Choice_Based_RPG.Managers.Player_Manager.Frontend.UserInterface;
 using Little_Choice_Based_RPG.Resources;
 using Little_Choice_Based_RPG.Resources.Entities.Conceptual;
 using Little_Choice_Based_RPG.Types.EntityProperties;
@@ -15,7 +16,7 @@ namespace Little_Choice_Based_RPG.Types.Interactions.InteractDelegate
     /// <summary> Provides a way to present options and choices to the player by exposing a delegate with pre-defined parameters. </summary>
     public abstract class Interaction : IInvokableInteraction
     {
-        protected IUserInterface? invocationMutexIdentity;
+        protected PlayerController? invocationMutexIdentity;
 
         static Interaction()
         {
@@ -44,10 +45,10 @@ namespace Little_Choice_Based_RPG.Types.Interactions.InteractDelegate
             */
         }
         /// <summary> Invokes the delegate if able. Requests required parameters if unable. </summary>
-        public abstract void AttemptInvoke(IUserInterface sourceInvocationMutexIdentity);
-        public abstract void CancelInteraction(IUserInterface sourceInvocationMutexIdentity, PropertyContainer sourceContainer);
-        public abstract void GiveRequiredParameter(object newParameter, IUserInterface sourceInvocationMutexIdentity);
-        protected abstract void Invoke(IUserInterface sourceInvocationMutexIdentity);
+        public abstract void AttemptInvoke(PlayerController sourceInvocationMutexIdentity);
+        public abstract void CancelInteraction(PlayerController sourceInvocationMutexIdentity, PropertyContainer sourceContainer);
+        public abstract void GiveRequiredParameter(object newParameter, PlayerController sourceInvocationMutexIdentity);
+        protected abstract void Invoke(PlayerController sourceInvocationMutexIdentity);
 
         /// <summary> The originating PropertyContainer </summary>
         public PropertyContainer SourceContainer { get; init; }
