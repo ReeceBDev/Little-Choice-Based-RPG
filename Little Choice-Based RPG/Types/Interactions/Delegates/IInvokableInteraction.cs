@@ -1,4 +1,5 @@
-﻿using Little_Choice_Based_RPG.Managers.Player_Manager.Frontend.UserInterface;
+﻿using Little_Choice_Based_RPG.Managers.Player_Manager;
+using Little_Choice_Based_RPG.Managers.Player_Manager.Frontend.UserInterface;
 using Little_Choice_Based_RPG.Resources;
 using Little_Choice_Based_RPG.Types.EntityProperties;
 using System;
@@ -13,9 +14,9 @@ namespace Little_Choice_Based_RPG.Types.Interactions.InteractDelegate
     public interface IInvokableInteraction
     {
         /// <summary> Invokes the delegate using its required parameters. </summary>
-        public void AttemptInvoke(IUserInterface sourceInvocationMutexIdentity);
-        public abstract void CancelInteraction(IUserInterface sourceInvocationMutexIdentity, PropertyContainer sourceContainer);
-        public void GiveRequiredParameter(object newParameter, IUserInterface sourceInvocationMutexIdentity);
+        public void AttemptInvoke(PlayerController sourceInvocationMutexIdentity);
+        public abstract void CancelInteraction(PlayerController sourceInvocationMutexIdentity, PropertyContainer sourceContainer);
+        public void GiveRequiredParameter(object newParameter, PlayerController sourceInvocationMutexIdentity);
 
         /// <summary> The originating PropertyContainer </summary>
         public PropertyContainer SourceContainer { get; init; }
