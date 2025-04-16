@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Little_Choice_Based_RPG.Types.PropertyExtensions.ExtensionEventArgs;
+using Little_Choice_Based_RPG.Types.PropertyExtensions.Extensions;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection.Metadata.Ecma335;
@@ -12,11 +14,18 @@ namespace Little_Choice_Based_RPG.Types.Extensions
         private List<IExtension> localExtensions = new List<IExtension>();
 
         public bool ContainsExtension(string extension) => localExtensions.Any(i => i.UniqueIdentifier.Equals(extension));
-        public void RemoveExtension(IExtension extension) => localExtensions.Remove(extension);
+        public void RemoveExtension(IExtension extension)
+        {
+            localExtensions.Remove(extension);
+
+            ExtensionRemoved?.Invoke(this, extension);
+        }
         public void AddExtension(IExtension extension)
         {
             if (localExtensions.Contains(extension))
                 throw new ArgumentException($"This additional extension {extension} already exists in this event handlers' extensions {localExtensions}!");
+
+            ExtensionAdded?.Invoke(this, extension);
         }
         public IExtension GetExtension(string extension)
         {
@@ -27,5 +36,8 @@ namespace Little_Choice_Based_RPG.Types.Extensions
 
             return selectedExtension;
         }
+
+        public event EventHandler<IExtension> ExtensionAdded;
+        public event EventHandler<IExtension> ExtensionRemoved;
     }
 }
