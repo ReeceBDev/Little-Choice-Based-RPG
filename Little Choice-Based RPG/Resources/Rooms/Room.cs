@@ -17,33 +17,51 @@ using System.Collections;
 using System.Runtime.ConstrainedExecution;
 using Little_Choice_Based_RPG.Resources.Entities.Immaterial.Transition;
 using Little_Choice_Based_RPG.Types.EntityProperties;
+using Little_Choice_Based_RPG.Types.RoomTypes;
 
 namespace Little_Choice_Based_RPG.Resources.Rooms
 {
-    public enum RoomType
-    {
-        Desert,
-        Town
-    }
-    public record struct EntityState(uint EntityReferenceID, List<EntityProperty>? RequiredProperties); //An ID without an EntityProperty should just be checked for being present
-    public record struct ConditionalDescriptor(string Descriptor, List<EntityState> RequiredEntityStates, uint Priority = 6);
-
     public class Room : PropertyContainer
     {
-        private protected static uint currentID = 0U; // 0 is an null, Invalid ID
-        private protected uint uniqueID;
-        private protected string defaultDescriptor;
         private protected List<GameObject> roomEntities = new List<GameObject>();
         private protected List<ConditionalDescriptor> localConditionalDescriptors = new List<ConditionalDescriptor>();
 
-        public string Name;
-
-        public Room(string setName, RoomType setRoomType, string setDefaultDescriptor) : base()
+        private readonly static Dictionary<string, PropertyType> requiredProperties = new Dictionary<string, PropertyType>()
         {
-            uniqueID = ++currentID;
-            RoomType = setRoomType;
-            Name = setName;
-            defaultDescriptor = setDefaultDescriptor;
+            {"Descriptor.Default", PropertyType.String},
+        };
+
+        private readonly static Dictionary<string, PropertyType> optionalProperties = new Dictionary<string, PropertyType>()
+        {
+
+        };
+
+        private readonly static Dictionary<string, object> defaultProperties = new Dictionary<string, object>()
+        {
+            {"Name", "Default Room Test"},
+            {"Component.InventorySystem", true }
+        };
+
+        static Room()
+        {
+            //Define new required and optional ValidProperties for this class
+            DeclareNewPropertyTypes(requiredProperties);
+            DeclareNewPropertyTypes(optionalProperties);
+        }
+
+        private protected Room(Dictionary<string, object>? derivedProperties = null)
+            : base(SetLocalProperties(derivedProperties ??= new Dictionary<string, object>()))
+        {
+            //Validate required properties have been set on entityProperties
+            ValidateRequiredProperties(requiredProperties);
+        }
+
+        private static Dictionary<string, object> SetLocalProperties(Dictionary<string, object> derivedProperties)
+        {
+            //Apply default properties for this class to the current list of derivedProperties
+            ApplyDefaultProperties(derivedProperties, defaultProperties);
+
+            return derivedProperties; //Return is required to give (base) the derived list.
         }
 
         public List<uint> GetRoomEntityIDs()
@@ -51,12 +69,12 @@ namespace Little_Choice_Based_RPG.Resources.Rooms
             List<uint> entityIDs = new List<uint>();
             foreach (GameObject entity in roomEntities)
             {
-                entityIDs.Add((uint) entity.Properties.GetPropertyValue("ID"));
+                entityIDs.Add((uint)entity.Properties.GetPropertyValue("ID"));
             }
             return entityIDs;
         }
 
-        public List<GameObject> GetRoomObjects(string requiredEntityPropertyName, object requiredEntityPropertyValue) 
+        public List<GameObject> GetRoomObjects(string requiredEntityPropertyName, object requiredEntityPropertyValue)
             => GetRoomObjects(new List<EntityProperty> { new EntityProperty(requiredEntityPropertyName, requiredEntityPropertyValue) });
 
         public List<GameObject> GetRoomObjects(List<EntityProperty>? requiredProperties = null)
@@ -114,7 +132,7 @@ namespace Little_Choice_Based_RPG.Resources.Rooms
             List<string> prioritisedDescriptors = PrioritiseDescriptorsAsStrings(validRoomDescriptors);
             return prioritisedDescriptors;
         }
-        
+
         private protected bool CheckConditionIsValid(ConditionalDescriptor condition, List<GameObject> roomEntities)
         {
             //records if existing entity states match the conditions' required entity states
@@ -146,7 +164,7 @@ namespace Little_Choice_Based_RPG.Resources.Rooms
         private protected bool CheckStateIsValid(EntityState testState, GameObject currentState)
         {
 
-            if (testState.EntityReferenceID == (uint) currentState.Properties.GetPropertyValue("ID")) //check if the entityIDs match
+            if (testState.EntityReferenceID == (uint)currentState.Properties.GetPropertyValue("ID")) //check if the entityIDs match
             {
                 //If no properties exist, then the object will be considered a match by default, since there are no properties being checked, just presence.
                 if (testState.RequiredProperties == null)
@@ -237,7 +255,6 @@ namespace Little_Choice_Based_RPG.Resources.Rooms
 
         public bool RoomContainsObject(GameObject ofGameObject) => roomEntities.Contains(ofGameObject);
 
-        public uint RoomID => uniqueID;
         public RoomType RoomType { get; init; }
     }
 }
