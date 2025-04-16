@@ -13,7 +13,7 @@ namespace Little_Choice_Based_RPG.Resources.Systems.ContainerSystems
     public class GearSystem : PropertyLogic
     {
         //This class requires WeightbearingCommon.
-        WeightbearingLogic weightBearingLogicInstantiation = WeightbearingLogic.Instance;
+        WeightbearingSystem weightBearingLogicInstantiation = WeightbearingSystem.Instance;
 
         static GearSystem()
         {
