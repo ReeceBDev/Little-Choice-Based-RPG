@@ -29,9 +29,16 @@ namespace Little_Choice_Based_RPG.Resources.Entities.Physical.Living.Players
 
         private readonly static Dictionary<string, object> defaultProperties = new Dictionary<string, object>()
         {
-            {"HasGearSlots", true },
+            //Components
+            {"Component.PlayerSystem", true },
+            {"Component.InventorySystem", true },
+            {"Component.GearSystem", true },
+
+            //Capabilities
             {"Player.CanHear", true},
             {"Player.CanSee", true },
+
+            //Stats
             {"Weightbearing.StrengthInKG",  32.0m}
         };
 
