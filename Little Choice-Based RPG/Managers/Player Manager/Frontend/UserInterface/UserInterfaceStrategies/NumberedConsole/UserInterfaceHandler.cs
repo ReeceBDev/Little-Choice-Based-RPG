@@ -27,10 +27,10 @@ namespace Little_Choice_Based_RPG.Managers.Player_Manager.Frontend.UserInterface
 
         bool exitGame = false;
 
-        public UserInterfaceHandler(Player currentPlayer, GameEnvironment currentEnvironment)
+        public UserInterfaceHandler(PlayerController currentPlayerController)
         {
             ChangeInterfaceStyleCallback changeInterface = new ChangeInterfaceStyleCallback(ChangeUserInterfaceStyle);
-            currentInterfaceStyle = new ExploreMenu(changeInterface, currentPlayer, currentEnvironment); 
+            currentInterfaceStyle = new ExploreMenu(changeInterface, currentPlayerController); 
         }
         public void GenerateOutput()
         {
