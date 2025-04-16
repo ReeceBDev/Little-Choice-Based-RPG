@@ -15,13 +15,10 @@ using System.Threading.Tasks;
 
 namespace Little_Choice_Based_RPG.Resources.Entities.Conceptual
 {
-    //public record struct EntityProperty(string Key, object Value);
     public abstract class GameObject : PropertyContainer
     {
         private readonly static Dictionary<string, PropertyType> requiredProperties = new Dictionary<string, PropertyType>()
         {
-            {"Name", PropertyType.String},
-            {"Type", PropertyType.String},
             {"WeightInKG", PropertyType.Decimal}
         };
 
@@ -32,8 +29,6 @@ namespace Little_Choice_Based_RPG.Resources.Entities.Conceptual
 
         private readonly static Dictionary<string, object> defaultProperties = new Dictionary<string, object>()
         {
-            {"Name", "Default Generic GameObject Name Test"},
-            {"WeightInKG", 1.0m},
         };
 
         static GameObject()
@@ -46,9 +41,6 @@ namespace Little_Choice_Based_RPG.Resources.Entities.Conceptual
         private protected GameObject(Dictionary<string, object>? derivedProperties = null)
             : base(SetLocalProperties(derivedProperties ??= new Dictionary<string, object>()))
         {
-            //Set the type property to reflect the classes type.
-            Properties.UpsertProperty("Type", this.GetType().ToString());
-
             //Validate required properties have been set on entityProperties
             ValidateRequiredProperties(requiredProperties);
         }
@@ -61,6 +53,7 @@ namespace Little_Choice_Based_RPG.Resources.Entities.Conceptual
             return derivedProperties; //Return is required to give (base) the derived list.
         }
 
+        /*
         private protected void Attach(GameObject attachee) // Cojoin together with another object
         {
             AttachedObjects.Add(attachee);
@@ -76,6 +69,8 @@ namespace Little_Choice_Based_RPG.Resources.Entities.Conceptual
         {
             return $"you lose {healthToLose}";
         }
+        
         public HashSet<GameObject> AttachedObjects { get; private protected set; } = [];
+        */
     }
 }
