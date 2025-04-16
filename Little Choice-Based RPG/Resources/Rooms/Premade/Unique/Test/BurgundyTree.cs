@@ -5,8 +5,9 @@ using Little_Choice_Based_RPG.Resources.Entities.Physical.Plants;
 using Little_Choice_Based_RPG.Resources.Systems.DamageSystems.Break;
 using Little_Choice_Based_RPG.Resources.Systems.DamageSystems.Flammability;
 using Little_Choice_Based_RPG.Resources.Systems.DamageSystems.Repair;
-using Little_Choice_Based_RPG.Resources.Systems.Gear;
+
 using Little_Choice_Based_RPG.Types.EntityProperties;
+using Little_Choice_Based_RPG.Types.RoomTypes;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
