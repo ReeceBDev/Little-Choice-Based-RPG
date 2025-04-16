@@ -6,7 +6,7 @@ using Little_Choice_Based_RPG.Resources.Entities.Immaterial.System;
 using Little_Choice_Based_RPG.Resources.Entities.Physical.Living.Players;
 using Little_Choice_Based_RPG.Resources.Rooms;
 using Little_Choice_Based_RPG.Types.EntityProperties;
-using Little_Choice_Based_RPG.Types.Interaction;
+using Little_Choice_Based_RPG.Types.Interactions.Delegates;
 using Little_Choice_Based_RPG.Types.Interactions.InteractDelegate;
 using System;
 using System.Collections;
@@ -17,15 +17,13 @@ using System.Reflection.Metadata;
 using System.Text;
 using System.Threading.Tasks;
 using static Little_Choice_Based_RPG.Managers.Player_Manager.Frontend.UserInterface.UserInterfaceHandler;
-using static Little_Choice_Based_RPG.Types.Interactions.InteractDelegate.InteractionUsingNothing;
+using static Little_Choice_Based_RPG.Types.Interactions.Delegates.InteractionUsingNothing;
 
 namespace Little_Choice_Based_RPG.Managers.Player_Manager.Frontend.UserInterface.UserInterfaceStyles
 {
     public class ExploreMenu : IUserInterface
     {
-        private protected uint currentRoomID;
-        private protected Room currentRoom;
-        private protected Player currentPlayer;
+        private protected PlayerController currentPlayerController;
 
         private List<IInvokableInteraction> systemChoices;
         private List<IInvokableInteraction> subMenuSystemChoices;
@@ -46,13 +44,11 @@ namespace Little_Choice_Based_RPG.Managers.Player_Manager.Frontend.UserInterface
 
 
         private protected ChangeInterfaceStyleCallback changeInterfaceStyleCallback;
-        public ExploreMenu(ChangeInterfaceStyleCallback changeInterfaceStyle, Player player, GameEnvironment currentEnvironment)
+        public ExploreMenu(ChangeInterfaceStyleCallback changeInterfaceStyle, PlayerController setCurrentPlayerController)
         {
             exitExploreMenu = false;
 
-            currentPlayer = player;
-            currentRoomID = (uint)player.Properties.GetPropertyValue("Position");
-            currentRoom = currentEnvironment.GetRoomByID(currentRoomID);
+            currentPlayerController = setCurrentPlayerController;
 
             systemChoices = InitialiseSystemChoices();
             subMenuSystemChoices = InitialiseSubMenuSystemChoices();
@@ -116,7 +112,7 @@ namespace Little_Choice_Based_RPG.Managers.Player_Manager.Frontend.UserInterface
         /// <summary> Generates a Sub-Menu asking the player to choose an object from the room, which optionally matches property filters. </summary>
         private void GenerateSubMenu(IInvokableInteraction sender, string requirementDescription, IInvokableInteraction abortInteraction, List<EntityProperty>? setFilters = null)
         {
-            List<GameObject> possibleObjects = currentRoom.GetRoomObjects(setFilters);
+            List<GameObject> possibleObjects = currentPlayerController.CurrentRoom.GetRoomObjects(setFilters);
             List<GameObject> listedObjects = new List<GameObject>();
 
             subMenuSystemChoices.Add(abortInteraction);
@@ -152,7 +148,7 @@ namespace Little_Choice_Based_RPG.Managers.Player_Manager.Frontend.UserInterface
             {
                 GameObject chosenObject = listedObjects.ElementAt(userInput - choiceIndexOffset);
 
-                sender.GiveRequiredParameter(chosenObject, this);
+                sender.GiveRequiredParameter(chosenObject, currentPlayerController);
                 
                 //Reset the additional SubMenu choice
                 subMenuSystemChoices.Remove(abortInteraction);
@@ -162,7 +158,7 @@ namespace Little_Choice_Based_RPG.Managers.Player_Manager.Frontend.UserInterface
             {
 
                 subMenuSystemChoices.ElementAt(userInput - (listedObjects.Count + choiceIndexOffset));
-                abortInteraction.AttemptInvoke(this);
+                abortInteraction.AttemptInvoke(currentPlayerController);
 
                 //Reset the additional SubMenu choice
                 subMenuSystemChoices.Remove(abortInteraction);
@@ -263,7 +259,7 @@ namespace Little_Choice_Based_RPG.Managers.Player_Manager.Frontend.UserInterface
             IInvokableInteraction selectedInteraction = listedInteractions.ElementAt(userInput - choiceIndexOffset);
 
             //Invoke!
-            selectedInteraction.AttemptInvoke(this);
+            selectedInteraction.AttemptInvoke(currentPlayerController);
 
             //Record the action in the log.
             AddNewHistoryLog(selectedInteraction.InteractDescriptor);
@@ -371,7 +367,7 @@ namespace Little_Choice_Based_RPG.Managers.Player_Manager.Frontend.UserInterface
         {
             string topStatusPrefix = " ╔══════════════════════════════════════════════════════════════════════════════════" + "══════-=════-=═=-=--=-=-- - - -";
             string topStatusInfix = "\n ║ ";
-            string topStatusBar = $"{currentRoom.Name}\t -=-\t Potsun Burran\t -=-\t Relative, {currentRoomID}\t -=-\t {DateTime.UtcNow.AddYears(641)}";
+            string topStatusBar = $"{currentPlayerController.CurrentRoom.Properties.GetPropertyValue("Name")}\t -=-\t Potsun Burran\t -=-\t Relative, {currentPlayerController.CurrentRoom.Properties.GetPropertyValue("ID")}\t -=-\t {DateTime.UtcNow.AddYears(641)}";
 
             string concatenatedStatusBar = topStatusPrefix + topStatusInfix + topStatusBar;
 
@@ -380,7 +376,7 @@ namespace Little_Choice_Based_RPG.Managers.Player_Manager.Frontend.UserInterface
 
         private string GetCurrentDescription()
         {
-            string newDescriptionContent = ConcatenateDescriptors(currentRoom.GetRoomDescriptors());
+            string newDescriptionContent = ConcatenateDescriptors(currentPlayerController.CurrentRoom.GetRoomDescriptors());
             List<string> roomLines = UserInterfaceUtilities.SplitIntoLines(newDescriptionContent, "\n ╟ ", "\n ║ ", "\n ╟ ");
 
             string descriptionPrefix =
@@ -615,7 +611,7 @@ namespace Little_Choice_Based_RPG.Managers.Player_Manager.Frontend.UserInterface
                 allCurrentChoices = systemChoices;
             else
                 //Initialise choices from the Room of the given InteractionRole:
-                allCurrentChoices = InteractionController.GetInteractions(ofInteractionRole, currentRoom);
+                allCurrentChoices = InteractionController.GetInteractions(ofInteractionRole, currentPlayerController.CurrentRoom);
 
             return allCurrentChoices;
         }
@@ -826,7 +822,7 @@ namespace Little_Choice_Based_RPG.Managers.Player_Manager.Frontend.UserInterface
             return formattedObjectList;
         }
 
-        private void ReturnToMainMenu(IUserInterface currentInterface, PropertyContainer sourceContainer)
+        private void ReturnToMainMenu(PlayerController currentInterface, PropertyContainer sourceContainer)
         {
             changeInterfaceStyleCallback(new MainMenu());
             exitExploreMenu = true;
