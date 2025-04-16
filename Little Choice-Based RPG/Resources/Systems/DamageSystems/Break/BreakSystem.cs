@@ -3,14 +3,14 @@ using Little_Choice_Based_RPG.Resources.Entities.Conceptual;
 using Little_Choice_Based_RPG.Resources.Systems.DamageSystems.Repair;
 using Little_Choice_Based_RPG.Resources.Systems.SystemEventBus;
 using Little_Choice_Based_RPG.Types.EntityProperties;
-using Little_Choice_Based_RPG.Types.Interactions.InteractDelegate;
+using Little_Choice_Based_RPG.Types.Interactions.Delegates;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.AccessControl;
 using System.Text;
 using System.Threading.Tasks;
-using static Little_Choice_Based_RPG.Types.Interactions.InteractDelegate.InteractionUsingNothing;
+using static Little_Choice_Based_RPG.Types.Interactions.Delegates.InteractionUsingNothing;
 
 namespace Little_Choice_Based_RPG.Resources.Systems.DamageSystems.Break
 {
@@ -88,7 +88,7 @@ namespace Little_Choice_Based_RPG.Resources.Systems.DamageSystems.Break
 
 
         /// <summary> Sets Damage.Broken to true. </summary>
-        public void Break(IUserInterface mutexHolder, PropertyContainer sourceContainer)
+        public void Break(PlayerController mutexHolder, PropertyContainer sourceContainer)
         {
             //Guard clauses for the values in use.
             if (sourceContainer.Properties.HasProperty("Damage.Broken", true))
