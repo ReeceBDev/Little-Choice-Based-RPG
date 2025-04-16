@@ -13,7 +13,7 @@ using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Little_Choice_Based_RPG.Types.Interaction
+namespace Little_Choice_Based_RPG.Managers.Player_Manager.Frontend
 {
     public static class InteractionController
     {
