@@ -9,27 +9,27 @@ using System.Threading.Tasks;
 
 namespace Little_Choice_Based_RPG.Types.Extensions
 {
-    public class ExtensionHandler
+    public class PropertyExtensionHandler
     {
-        private List<IExtension> localExtensions = new List<IExtension>();
+        private List<IPropertyExtension> localExtensions = new List<IPropertyExtension>();
 
         public bool ContainsExtension(string extension) => localExtensions.Any(i => i.UniqueIdentifier.Equals(extension));
-        public void RemoveExtension(IExtension extension)
+        public void RemoveExtension(IPropertyExtension extension)
         {
             localExtensions.Remove(extension);
 
             ExtensionRemoved?.Invoke(this, extension);
         }
-        public void AddExtension(IExtension extension)
+        public void AddExtension(IPropertyExtension extension)
         {
             if (localExtensions.Contains(extension))
                 throw new ArgumentException($"This additional extension {extension} already exists in this event handlers' extensions {localExtensions}!");
 
             ExtensionAdded?.Invoke(this, extension);
         }
-        public IExtension GetExtension(string extension)
+        public IPropertyExtension GetExtension(string extension)
         {
-            IExtension? selectedExtension = localExtensions.Find(i => i.UniqueIdentifier.Equals(extension));
+            IPropertyExtension? selectedExtension = localExtensions.Find(i => i.UniqueIdentifier.Equals(extension));
 
             if (selectedExtension == null)
                 throw new ArgumentException($"The desired extension {extension} was not present in this ExtensionHandler!");
@@ -37,7 +37,7 @@ namespace Little_Choice_Based_RPG.Types.Extensions
             return selectedExtension;
         }
 
-        public event EventHandler<IExtension> ExtensionAdded;
-        public event EventHandler<IExtension> ExtensionRemoved;
+        public event EventHandler<IPropertyExtension> ExtensionAdded;
+        public event EventHandler<IPropertyExtension> ExtensionRemoved;
     }
 }
