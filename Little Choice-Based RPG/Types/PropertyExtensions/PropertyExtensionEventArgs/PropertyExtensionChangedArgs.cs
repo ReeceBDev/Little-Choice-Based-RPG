@@ -6,5 +6,5 @@ using System.Threading.Tasks;
 
 namespace Little_Choice_Based_RPG.Types.PropertyExtensions.ExtensionEventArgs
 {
-    public record struct ExtensionChangedArgs(string UniqueIdentifier, object SubjectChanged);
+    public record struct PropertyExtensionChangedArgs(string UniqueIdentifier, object SubjectChanged);
 }
