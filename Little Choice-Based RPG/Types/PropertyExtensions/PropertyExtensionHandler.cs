@@ -7,7 +7,7 @@ using System.Reflection.Metadata.Ecma335;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Little_Choice_Based_RPG.Types.Extensions
+namespace Little_Choice_Based_RPG.Types.PropertyExtensions
 {
     public class PropertyExtensionHandler
     {
