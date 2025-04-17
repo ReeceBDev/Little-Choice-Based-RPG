@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Little_Choice_Based_RPG.Types.Interactions.InteractDelegate
+namespace Little_Choice_Based_RPG.Types.Interactions
 {
     /// <summary> Describes parameters and what they should be sourced from. </summary>
     public enum InteractionParameter

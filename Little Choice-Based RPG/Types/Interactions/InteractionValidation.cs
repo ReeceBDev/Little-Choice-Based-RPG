@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 
-namespace Little_Choice_Based_RPG.Types.Interactions.InteractDelegate
+namespace Little_Choice_Based_RPG.Types.Interactions
 {
     public static class InteractionValidation
     {
