@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Little_Choice_Based_RPG.Types.RoomTypes
+namespace Little_Choice_Based_RPG.Types.RoomSpecificTypes
 {
     public enum RoomType
     {
