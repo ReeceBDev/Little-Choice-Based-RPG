@@ -1,5 +1,5 @@
-﻿using Little_Choice_Based_RPG.Types.Interactions.InteractDelegate;
-using Little_Choice_Based_RPG.Types.PropertyExtensions.ExtensionEventArgs;
+﻿using Little_Choice_Based_RPG.Types.Interactions.InteractionDelegates;
+using Little_Choice_Based_RPG.Types.PropertyExtensions.PropertyExtensionEventArgs;
 using System;
 using System.Collections.Generic;
 using System.Linq;
