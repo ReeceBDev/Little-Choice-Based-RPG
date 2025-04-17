@@ -9,21 +9,21 @@ using System.Threading.Tasks;
 
 namespace Little_Choice_Based_RPG.Types.PropertyExtensions.Extensions
 {
-    public class ItemContainer : IExtension
+    public class ItemContainer : IPropertyExtension
     {
         public void Add(GameObject target)
         {
-            ExtensionChanged?.Invoke(this, new ExtensionChangedArgs("ItemContainer.Added", target));
+            PropertyExtensionChanged?.Invoke(this, new PropertyExtensionChangedArgs("ItemContainer.Added", target));
             Inventory.Add(target);
         }
 
         public void Remove(GameObject target)
         {
-            ExtensionChanged?.Invoke(this, new ExtensionChangedArgs("ItemContainer.Removed", target));
+            PropertyExtensionChanged?.Invoke(this, new PropertyExtensionChangedArgs("ItemContainer.Removed", target));
             Inventory.Remove(target);
         }
 
-        public event EventHandler<ExtensionChangedArgs> ExtensionChanged;
+        public event EventHandler<PropertyExtensionChangedArgs> PropertyExtensionChanged;
         public string UniqueIdentifier { get; init; } = "ItemContainer";
         public List<GameObject> Inventory { get; private set; } = new List<GameObject>();
     }
