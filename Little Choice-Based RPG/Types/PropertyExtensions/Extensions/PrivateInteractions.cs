@@ -8,11 +8,11 @@ using System.Threading.Tasks;
 
 namespace Little_Choice_Based_RPG.Types.PropertyExtensions.Extensions
 {
-    public class PrivateInteractions : IExtension
+    public class PrivateInteractions : IPropertyExtension
     {
         public List<IInvokableInteraction> PrivateInteractionsList { get; set; }
 
-        public event EventHandler<ExtensionChangedArgs> ExtensionChanged; //No need to invoke this yet, it has no practical purpose (yet).
+        public event EventHandler<PropertyExtensionChangedArgs> PropertyExtensionChanged; //No need to invoke this yet, it has no practical purpose (yet).
         public string UniqueIdentifier { get; init; } = "PrivateInteractions";
 
     }
