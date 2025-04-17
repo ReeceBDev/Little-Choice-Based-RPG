@@ -8,9 +8,9 @@ using System.Threading.Tasks;
 
 namespace Little_Choice_Based_RPG.Types.PropertyExtensions.Extensions
 {
-    public interface IExtension
+    public interface IPropertyExtension
     {
         public string UniqueIdentifier { get; init; }
-        public event EventHandler<ExtensionChangedArgs> ExtensionChanged;
+        public event EventHandler<PropertyExtensionChangedArgs> PropertyExtensionChanged;
     }
 }
