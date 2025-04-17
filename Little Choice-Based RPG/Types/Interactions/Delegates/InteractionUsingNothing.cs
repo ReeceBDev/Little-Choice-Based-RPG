@@ -1,14 +1,16 @@
-﻿using Little_Choice_Based_RPG.Managers.Player_Manager.Frontend.UserInterface;
+﻿using Little_Choice_Based_RPG.Managers.Player_Manager;
+using Little_Choice_Based_RPG.Managers.Player_Manager.Frontend.UserInterface;
 using Little_Choice_Based_RPG.Resources;
 using Little_Choice_Based_RPG.Resources.Entities.Conceptual;
 using Little_Choice_Based_RPG.Types.EntityProperties;
+using Little_Choice_Based_RPG.Types.Interactions.InteractDelegate;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Little_Choice_Based_RPG.Types.Interactions.InteractDelegate
+namespace Little_Choice_Based_RPG.Types.Interactions.Delegates
 {
     /// <summary> Provides a way to present options and choices to the player by exposing a delegate with pre-defined parameters. </summary>
     public class InteractionUsingNothing : Interaction
@@ -29,7 +31,7 @@ namespace Little_Choice_Based_RPG.Types.Interactions.InteractDelegate
         }
 
         /// <summary> Invokes the delegate if able. Requests required parameters if unable. </summary>
-        public override void AttemptInvoke(IUserInterface sourceInvocationMutexIdentity)
+        public override void AttemptInvoke(PlayerController sourceInvocationMutexIdentity)
         {
             //Hold mutex if not already held
             if (invocationMutexIdentity == null)
@@ -42,13 +44,13 @@ namespace Little_Choice_Based_RPG.Types.Interactions.InteractDelegate
             Invoke(sourceInvocationMutexIdentity);
         }
 
-        public override void GiveRequiredParameter(object newParameter, IUserInterface sourceInvocationMutexIdentity)
+        public override void GiveRequiredParameter(object newParameter, PlayerController sourceInvocationMutexIdentity)
         {
             // Not needed here since there are no parameters.
             // It is still required for the interface to support the Interactions with parameters.
         }
 
-        protected override void Invoke(IUserInterface sourceInvocationMutexIdentity)
+        protected override void Invoke(PlayerController sourceInvocationMutexIdentity)
         {
             if (invocationMutexIdentity == null)
                 throw new Exception("The invocationMutexIdentity on this interaction has not been set. There is nothing to compare the sourceInvocationMutexIdentity to!");
@@ -62,7 +64,7 @@ namespace Little_Choice_Based_RPG.Types.Interactions.InteractDelegate
             invocationMutexIdentity = null; //Release mutex
         }
 
-        public override void CancelInteraction(IUserInterface sourceInvocationMutexIdentity, PropertyContainer sourceContainer)
+        public override void CancelInteraction(PlayerController sourceInvocationMutexIdentity, PropertyContainer sourceContainer)
         {
             if (invocationMutexIdentity != sourceInvocationMutexIdentity)
                 return; //The sender identity sourceInvocationMutexIdentity did not match the current invocationMutexIdentity");
@@ -72,6 +74,6 @@ namespace Little_Choice_Based_RPG.Types.Interactions.InteractDelegate
         }
 
         /// <summary> Create a delegate which uses no additional parameters. </summary>
-        public delegate void InteractionUsingNothingDelegate(IUserInterface newInvocationMutexIdentity, PropertyContainer sourceContainer);
+        public delegate void InteractionUsingNothingDelegate(PlayerController newInvocationMutexIdentity, PropertyContainer sourceContainer);
     }
 }
