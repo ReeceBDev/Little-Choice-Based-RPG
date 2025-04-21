@@ -24,7 +24,7 @@ namespace Little_Choice_Based_RPG.Types.Interactions.InteractionDelegates
 
         /// <summary> Creates a new interaction for players to be presented with in ChoiceHandler. </summary>
         public InteractionUsingNothing(InteractionUsingNothingDelegate setDelegate, PropertyContainer setSourceContainer, string setInteractTitle, string setInteractDescriptor, InteractionRole setInteractRole = InteractionRole.Explore)
-            : base(setSourceContainer, setInteractTitle, setInteractDescriptor, setInteractRole)
+            : base(setDelegate, setSourceContainer, setInteractTitle, setInteractDescriptor, setInteractRole)
         {
             storedDelegate = setDelegate;
         }
@@ -57,9 +57,9 @@ namespace Little_Choice_Based_RPG.Types.Interactions.InteractionDelegates
             if (invocationMutexIdentity != sourceInvocationMutexIdentity)
                 return; //The sender identity sourceInvocationMutexIdentity did not match the current invocationMutexIdentity");
 
-            storedDelegate.Invoke(sourceInvocationMutexIdentity, SourceContainer);
+            storedDelegate.Invoke(sourceInvocationMutexIdentity, AssociatedSource);
 
-            SourceContainer.Interactions.Remove(this); //Remove self
+            AssociatedSource.Interactions.Remove(this); //Remove self
             invocationMutexIdentity = null; //Release mutex
         }
 

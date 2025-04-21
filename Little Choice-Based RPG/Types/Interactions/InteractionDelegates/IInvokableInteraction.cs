@@ -19,7 +19,7 @@ namespace Little_Choice_Based_RPG.Types.Interactions.InteractionDelegates
         public void GiveRequiredParameter(object newParameter, PlayerController sourceInvocationMutexIdentity);
 
         /// <summary> The originating PropertyContainer </summary>
-        public PropertyContainer SourceContainer { get; init; }
+        public PropertyContainer AssociatedSource { get; init; }
 
         /// <summary> The title shown when a player gets listed their choice options. </summary>
         public string InteractionTitle { get; init; }
@@ -29,5 +29,9 @@ namespace Little_Choice_Based_RPG.Types.Interactions.InteractionDelegates
 
         /// <summary> Describes how an Interaction should be presented by the User Interface, for example, if it belongs to a context-menu. </summary>
         public InteractionRole InteractionContext { get; init; }
+
+        /// <summary> Represents the method being invoked, in the specific way designated by delegates' type. 
+        /// Only used for equivalence. Mirrors the delegate in the derived class.</summary>
+        public Delegate DelegateRecord { get; init; }
     }
 }
