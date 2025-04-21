@@ -9,15 +9,8 @@ using System.Threading.Tasks;
 
 namespace Little_Choice_Based_RPG.Types.EntityProperties
 {
-    public record struct PropertyChangedEventArgs(PropertyContainer sourceContainer, EntityProperty newProperty);
     public class PropertyHandler
     {
-        private PropertyContainer sourceContainer;
-        public PropertyHandler(PropertyContainer setSourceContainer)
-        {
-            sourceContainer = setSourceContainer;
-        }
-
         /// <summary> Creates a new property on this object. </summary>
         public void CreateProperty(string setPropertyName, object setPropertyValue, bool isReadOnly = false)
         {
@@ -83,7 +76,7 @@ namespace Little_Choice_Based_RPG.Types.EntityProperties
         }
 
         /// <summary> Checks if a property matches by both name and value, on this Object. </summary>
-        public bool HasProperty(string propertyName, object propertyValue)
+        public bool HasPropertyAndValue(string propertyName, object propertyValue)
         {
             foreach (EntityProperty testProperty in EntityProperties)
             {
@@ -141,8 +134,8 @@ namespace Little_Choice_Based_RPG.Types.EntityProperties
             throw new Exception("The index didn't match any names that were checked. This shouldn't have happened!");
         }
 
-        public event EventHandler<PropertyChangedEventArgs> PropertyChanged;
-        protected private void OnPropertyChanged(EntityProperty updatedProperty) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(sourceContainer, updatedProperty));
+        public event EventHandler<EntityProperty> PropertyChanged;
+        protected private void OnPropertyChanged(EntityProperty updatedProperty) => PropertyChanged?.Invoke(this, updatedProperty);
         public List<EntityProperty> EntityProperties { get; private set; } = new List<EntityProperty>();
     }
 }
