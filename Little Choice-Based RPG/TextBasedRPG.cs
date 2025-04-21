@@ -25,6 +25,8 @@ using Little_Choice_Based_RPG.Resources.Systems.ContainerSystems.Inventory;
 using Little_Choice_Based_RPG.Resources.Systems.DamageSystems.Break;
 using Little_Choice_Based_RPG.Resources.Systems.DamageSystems.Flammability;
 using Little_Choice_Based_RPG.Resources.Systems.DamageSystems.Repair;
+using Little_Choice_Based_RPG.Resources.Systems.DescriptorSystems.Descriptor;
+using Little_Choice_Based_RPG.Resources.Systems.InformationalSystems.Descriptor;
 using Little_Choice_Based_RPG.Resources.Systems.PlayerSystems;
 using Little_Choice_Based_RPG.Resources.Systems.SystemEventBus;
 using Little_Choice_Based_RPG.Types;
@@ -42,6 +44,7 @@ internal class TextBasedRPG
         new PlayerSystem();
         new InventorySystem();
         new AttachSystem();
+        new DescriptorSystem();
 
         //Generate the environment
         GameEnvironment currentEnvironment = new GameEnvironment();
