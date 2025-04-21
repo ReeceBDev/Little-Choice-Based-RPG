@@ -2,30 +2,32 @@
 using Little_Choice_Based_RPG.Managers.Player_Manager.Frontend.UserInterface;
 using Little_Choice_Based_RPG.Resources;
 using Little_Choice_Based_RPG.Resources.Entities.Conceptual;
+using Little_Choice_Based_RPG.Resources.Entities.Physical.Living.Players;
 using Little_Choice_Based_RPG.Types.EntityProperties;
-using Little_Choice_Based_RPG.Types.Interactions.InteractDelegate;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Little_Choice_Based_RPG.Types.Interactions.Delegates
+namespace Little_Choice_Based_RPG.Types.Interactions.InteractionDelegates.SingleParameterDelegates
 {
     /// <summary> Provides a way to present options and choices to the player by exposing a delegate with pre-defined parameters. </summary>
-    public class InteractionUsingNothing : Interaction
+    public class InteractionUsingCurrentPlayer : Interaction
     {
-         /// <summary> Stores the delegate to be invoked later with Invoke(). </summary>
-        public InteractionUsingNothingDelegate storedDelegate;
+        private Player? invocationParameter1 = null;
 
-        static InteractionUsingNothing()
+        /// <summary> Stores the delegate to be invoked later with Invoke(). </summary>
+        public InteractionUsingCurrentPlayerDelegate storedDelegate;
+
+        static InteractionUsingCurrentPlayer()
         {
             InteractionValidation.CreateValidDelegate("InteractUsingNothing", []);
         }
 
         /// <summary> Creates a new interaction for players to be presented with in ChoiceHandler. </summary>
-        public InteractionUsingNothing(InteractionUsingNothingDelegate setDelegate, PropertyContainer setSourceContainer, string setInteractTitle, string setInteractDescriptor, InteractionRole setInteractRole = InteractionRole.Explore)
-            : base(setSourceContainer, setInteractTitle, setInteractDescriptor, setInteractRole)
+        public InteractionUsingCurrentPlayer(InteractionUsingCurrentPlayerDelegate setDelegate, PropertyContainer setSourceContainer, string setInteractTitle, string setInteractDescriptor, InteractionRole setInteractRole = InteractionRole.Explore)
+            : base(setDelegate, setSourceContainer, setInteractTitle, setInteractDescriptor, setInteractRole)
         {
             storedDelegate = setDelegate;
         }
@@ -40,6 +42,9 @@ namespace Little_Choice_Based_RPG.Types.Interactions.Delegates
             //Check if a held mutex matches the current identity.
             if (invocationMutexIdentity != sourceInvocationMutexIdentity)
                 return; //The sender identity sourceInvocationMutexIdentity did not match the current invocationMutexIdentity");
+
+            //Set invocationParameter1 as the current player.
+            invocationParameter1 = sourceInvocationMutexIdentity.CurrentPlayer;
 
             Invoke(sourceInvocationMutexIdentity);
         }
@@ -58,9 +63,12 @@ namespace Little_Choice_Based_RPG.Types.Interactions.Delegates
             if (invocationMutexIdentity != sourceInvocationMutexIdentity)
                 return; //The sender identity sourceInvocationMutexIdentity did not match the current invocationMutexIdentity");
 
-            storedDelegate.Invoke(sourceInvocationMutexIdentity, SourceContainer);
+            if (invocationParameter1 == null)
+                throw new Exception("Tried to invoke, but invocationParameter1, a Player, wasnt set.");
 
-            SourceContainer.Interactions.Remove(this); //Remove self
+            storedDelegate.Invoke(sourceInvocationMutexIdentity, AssociatedSource, invocationParameter1);
+
+            AssociatedSource.Interactions.Remove(this); //Remove self
             invocationMutexIdentity = null; //Release mutex
         }
 
@@ -70,10 +78,11 @@ namespace Little_Choice_Based_RPG.Types.Interactions.Delegates
                 return; //The sender identity sourceInvocationMutexIdentity did not match the current invocationMutexIdentity");
 
             //Reset parameters back to unset
+            invocationParameter1 = null;
             invocationMutexIdentity = null; //Release mutex.
         }
 
         /// <summary> Create a delegate which uses no additional parameters. </summary>
-        public delegate void InteractionUsingNothingDelegate(PlayerController newInvocationMutexIdentity, PropertyContainer sourceContainer);
+        public delegate void InteractionUsingCurrentPlayerDelegate(PlayerController newInvocationMutexIdentity, PropertyContainer sourceContainer, Player currentPlayer);
     }
 }
