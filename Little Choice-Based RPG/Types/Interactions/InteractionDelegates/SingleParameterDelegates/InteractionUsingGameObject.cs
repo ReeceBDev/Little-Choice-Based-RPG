@@ -1,4 +1,5 @@
-﻿using Little_Choice_Based_RPG.Managers.Player_Manager.Frontend.UserInterface;
+﻿using Little_Choice_Based_RPG.Managers.Player_Manager;
+using Little_Choice_Based_RPG.Managers.Player_Manager.Frontend.UserInterface;
 using Little_Choice_Based_RPG.Resources;
 using Little_Choice_Based_RPG.Resources.Entities.Conceptual;
 using Little_Choice_Based_RPG.Types.EntityProperties;
@@ -8,9 +9,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using static Little_Choice_Based_RPG.Types.Interactions.InteractDelegate.InteractionUsingNothing;
+using static Little_Choice_Based_RPG.Types.Interactions.InteractionDelegates.InteractionUsingNothing;
 
-namespace Little_Choice_Based_RPG.Types.Interactions.InteractDelegate
+namespace Little_Choice_Based_RPG.Types.Interactions.InteractionDelegates.SingleParameterDelegates
 {
     /// <summary> Provides a way to present options and choices to the player by exposing a delegate with pre-defined parameters. </summary>
     public class InteractionUsingGameObject : Interaction
@@ -18,6 +19,7 @@ namespace Little_Choice_Based_RPG.Types.Interactions.InteractDelegate
         /// <summary> Delegate to be invoked later with Invoke(). </summary>
         public InteractionUsingGameObjectDelegate storedDelegate;
 
+        private GameObject? storedPresassignedParameter1 = null;
         private GameObject? invocationParameter1 = null;
         private List<EntityProperty>? invocationParameter1Filters = null;
         private string invocationParameter1Description;
@@ -28,9 +30,9 @@ namespace Little_Choice_Based_RPG.Types.Interactions.InteractDelegate
         {
             InteractionValidation.CreateValidDelegate("InteractUsingTargetObject", [InteractionParameter.Target_GameObject]);
         }
-        /// <summary> Creates a new interaction for players to be presented with in ChoiceHandler. </summary>
+        /// <summary> Creates a new interaction for players to be presented with in ChoiceHandler. Requests a GameObject from the player. </summary>
         public InteractionUsingGameObject(InteractionUsingGameObjectDelegate setDelegate, PropertyContainer setSourceContainer, string setInteractTitle, string setInteractDescriptor, string setGameObjectRequestDescription, InteractionRole setInteractRole = InteractionRole.Explore, List<EntityProperty>? setGameObjectFilter = null)
-            : base(setSourceContainer, setInteractTitle, setInteractDescriptor, setInteractRole)
+            : base(setDelegate, setSourceContainer, setInteractTitle, setInteractDescriptor, setInteractRole)
         {
             storedDelegate = setDelegate;
 
@@ -40,8 +42,19 @@ namespace Little_Choice_Based_RPG.Types.Interactions.InteractDelegate
                 invocationParameter1Filters = setGameObjectFilter;
         }
 
+        /// <summary> Creates a new interaction with a pre-assigned GameObject for players to be presented with in ChoiceHandler. </summary>
+        public InteractionUsingGameObject(InteractionUsingGameObjectDelegate setDelegate, PropertyContainer setSourceContainer, string setInteractTitle, string setInteractDescriptor, GameObject preassignedParameter1, InteractionRole setInteractRole = InteractionRole.Explore)
+            : base(setSourceContainer, setInteractTitle, setInteractDescriptor, setInteractRole)
+        {
+            storedDelegate = setDelegate;
+
+            //Set invocationParameter1 to preassignedParameter1 and save the preassignment in case of cancellation:
+            invocationParameter1 = preassignedParameter1;
+            storedPresassignedParameter1 = preassignedParameter1;
+        }
+
         /// <summary> Invokes the delegate, requesting further user input if necessary. </summary>
-        public override void AttemptInvoke(IUserInterface sourceInvocationMutexIdentity)
+        public override void AttemptInvoke(PlayerController sourceInvocationMutexIdentity)
         {
             //Hold mutex if not already held
             if (invocationMutexIdentity == null)
@@ -51,26 +64,34 @@ namespace Little_Choice_Based_RPG.Types.Interactions.InteractDelegate
             if (invocationMutexIdentity != sourceInvocationMutexIdentity)
                 return; //The sender identity sourceInvocationMutexIdentity did not match the current invocationMutexIdentity");
 
-            //reset invocation parameters when first invoking.
-            invocationParameter1 = null;
+            //If all parameters are already filled, invoke
+            if (invocationParameter1 != null)
+            {
+                Invoke(sourceInvocationMutexIdentity);
+                return;
+            }
 
-            //Create abort delegate using this invocationMutexIdentity
-            InteractionUsingNothingDelegate abortInteractionDelegate = new InteractionUsingNothingDelegate(CancelInteraction);
-            abortInteraction = new InteractionUsingNothing(abortInteractionDelegate, SourceContainer, "Cancel selection", "Cancelling this interaction...", InteractionRole.System);
+            //Otherwise, request the missing parameter:
+            if (invocationParameter1 == null)
+            {
+                //Create abort delegate using this invocationMutexIdentity
+                InteractionUsingNothingDelegate abortInteractionDelegate = new InteractionUsingNothingDelegate(CancelInteraction);
+                abortInteraction = new InteractionUsingNothing(abortInteractionDelegate, AssociatedSource, "Cancel selection", "Cancelling this interaction...", InteractionRole.System);
 
-            var gameObjectRequest = new FilterableRequestEventArgs(invocationParameter1Description, abortInteraction);
+                var gameObjectRequest = new FilterableRequestEventArgs(invocationParameter1Description, abortInteraction);
 
-            if (invocationParameter1Filters != null)
-                gameObjectRequest.filters.AddRange(invocationParameter1Filters);
+                if (invocationParameter1Filters != null)
+                    gameObjectRequest.filters.AddRange(invocationParameter1Filters);
 
-            OnGameObjectRequest(gameObjectRequest);
+                OnGameObjectRequest(gameObjectRequest);
+            }
 
-            // Invocation continues in AddInvocationParameter upon the GameObject parameter being filled.
+            // Invocation continues in AddInvocationParameter automatically upon the GameObject request being fulfilled.
         }
 
         /// <summary> Adds each invocation parameter in through this method. Upon all parameters being set, it will invoke automatically.
         /// Requires the sender identity to match the invocation mutex. </summary>
-        public override void GiveRequiredParameter(object newParameter, IUserInterface sourceInvocationMutexIdentity)
+        public override void GiveRequiredParameter(object newParameter, PlayerController sourceInvocationMutexIdentity)
         {
             if (invocationMutexIdentity != sourceInvocationMutexIdentity)
                 return; //The sender identity sourceInvocationMutexIdentity did not match the current invocationMutexIdentity");
@@ -90,20 +111,20 @@ namespace Little_Choice_Based_RPG.Types.Interactions.InteractDelegate
                 invocationParameter1 = (GameObject)newParameter;
             }
 
-            //Once all parameters have been set, invoke and then reset the parameters back to unset.
+            //Once all parameters have been set, invoke.
             Invoke(sourceInvocationMutexIdentity);
         }
-        public override void CancelInteraction(IUserInterface sourceInvocationMutexIdentity, PropertyContainer sourceContainer)
+        public override void CancelInteraction(PlayerController sourceInvocationMutexIdentity, PropertyContainer sourceContainer)
         {
             if (invocationMutexIdentity != sourceInvocationMutexIdentity)
                 return; //The sender identity sourceInvocationMutexIdentity did not match the current invocationMutexIdentity");
 
             //Reset parameters back to unset
-            invocationParameter1 = null;
+            invocationParameter1 = storedPresassignedParameter1;
             invocationMutexIdentity = null; //Release mutex.
         }
 
-        protected override void Invoke(IUserInterface sourceInvocationMutexIdentity)
+        protected override void Invoke(PlayerController sourceInvocationMutexIdentity)
         {
             if (invocationMutexIdentity != sourceInvocationMutexIdentity)
                 return; //The sender identity sourceInvocationMutexIdentity did not match the current invocationMutexIdentity");
@@ -112,12 +133,9 @@ namespace Little_Choice_Based_RPG.Types.Interactions.InteractDelegate
                 throw new Exception("Tried to invoke, but invocationParameter1 wasnt set.");
 
             // invoke
-            storedDelegate(sourceInvocationMutexIdentity, SourceContainer, invocationParameter1);
+            storedDelegate(sourceInvocationMutexIdentity, AssociatedSource, invocationParameter1);
 
-            //Reset parameters back to unset
-            // invocationParameter1 = null; // Unnecessary since .Remove(this) was added in the line below
-
-            SourceContainer.Interactions.Remove(this); //Remove self
+            AssociatedSource.Interactions.Remove(this); //Remove self
             invocationMutexIdentity = null; //Release mutex.
         }
 
@@ -126,8 +144,8 @@ namespace Little_Choice_Based_RPG.Types.Interactions.InteractDelegate
             GameObjectRequest?.Invoke(this, gameObjectFilters);
         }
 
-        /// <summary> Create a delegate which will ask the player for a target GameObject within their location. </summary>
-        public delegate void InteractionUsingGameObjectDelegate(IUserInterface invocationMutexIdentity, PropertyContainer sourceContainer, GameObject target_GameObject);
+        /// <summary> Create a delegate which, unless pre-assigned, will ask the player for a target GameObject within their location. </summary>
+        public delegate void InteractionUsingGameObjectDelegate(PlayerController invocationMutexIdentity, PropertyContainer sourceContainer, GameObject target_GameObject);
 
         public event EventHandler<FilterableRequestEventArgs> GameObjectRequest;
     }
