@@ -2,24 +2,52 @@
 using Little_Choice_Based_RPG.Resources.Systems.ContainerSystems.Inventory.InventoryExtensions;
 using Little_Choice_Based_RPG.Resources.Systems.InformationalSystems.Descriptor.DescriptorExtensions;
 using Little_Choice_Based_RPG.Resources.Systems.InteractionSystems.PublicInteractionsSystems;
+using Little_Choice_Based_RPG.Types;
+using Little_Choice_Based_RPG.Types.DescriptorConditions;
 using Little_Choice_Based_RPG.Types.EntityProperties;
-using Little_Choice_Based_RPG.Types.RoomSpecificTypes;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Little_Choice_Based_RPG.Resources.Systems.DescriptorSystems.Descriptor
+namespace Little_Choice_Based_RPG.Resources.Systems.InformationalSystems.Descriptor
 {
+    public record struct CreateDescriptorArgs(uint EntityID, string PropertyName, object PropertyValue);
     public static class DescriptorLogic
     {
+        /*
+        /// <summary> Create a new EntityStateDescriptor on a target object. The dictionary must define Item ID, PropertyName and PropertyValue.</summary>
+        public static void CreateDescriptor(PropertyContainer target, List<CreateDescriptorArgs> conditionArgs)
+        {
+            if (!target.Extensions.ContainsExtension("ItemContainer"))
+                throw new ArgumentException($"The target {target} didn't contain an extension of the identifier \"ItemContainer\"! " +
+                    $"The extensions list was {target.Extensions}.");
+
+            if (!target.Extensions.ContainsExtension("ConditionalDescriptors"))
+                throw new ArgumentException($"The target {target} didn't contain an extension of the identifier \"ConditionalDescriptors\"! " +
+                    $"The extensions list was {target.Extensions}.");
+
+            conditionArgs.OrderByDescending()
+
+            while (conditionArgs.Count > 0)
+            {
+                uint currentID;
+                foreach (var arg in conditionArgs)
+                {
+                    arg.EntityID;
+                }
+            }
+        }
+        */
+
+
         /// <summary> Takes a target and the name of a descriptor to retrieve it. Considers conditional descriptors of the same identity before returning. 
         /// "Descriptor." may be omitted for the descriptorIdentity.
         public static string GetDescriptor(PropertyContainer targetContainer, string descriptorIdentity)
         {
             string currentDescriptor;
-            string descriptorName = (descriptorIdentity.StartsWith("Descriptor.")) ? descriptorIdentity : $"Descriptor.{descriptorIdentity}";
+            string descriptorName = descriptorIdentity.StartsWith("Descriptor.") ? descriptorIdentity : $"Descriptor.{descriptorIdentity}";
 
             currentDescriptor = targetContainer.Extensions.ContainsExtension("ConditionalDescriptors") ? 
                 GetConditionalDescriptor(targetContainer, descriptorName) : GetRegularDescriptor(targetContainer, descriptorIdentity);
@@ -46,150 +74,144 @@ namespace Little_Choice_Based_RPG.Resources.Systems.DescriptorSystems.Descriptor
                 throw new ArgumentException($"The target {targetContainer} didn't contain an extension of the identifier \"ItemContainer\"! " +
                     $"The extensions list was {targetContainer.Extensions}.");
 
+            List<uint>? remainingIDs = null;
+            List<uint>? totalIDs = null;
             string concatenatedValidDescriptors = "";
-            List<ConditionalDescriptor> relevantDescriptors = new List<ConditionalDescriptor>();
-            List<ConditionalDescriptor> prioritisedDescriptors = new List<ConditionalDescriptor>();
+            List<IDescriptorCondition> relevantDescriptors = new List<IDescriptorCondition>();
+            List<IDescriptorCondition> prioritisedDescriptors = new List<IDescriptorCondition>();
 
             ConditionalDescriptors storedDescriptors = (ConditionalDescriptors) targetContainer.Extensions.GetExtension("ConditionalDescriptors");
-            ItemContainer storedEntities = (ItemContainer)targetContainer.Extensions.GetExtension("ItemContainer");
+            ItemContainer targetContents = (ItemContainer)targetContainer.Extensions.GetExtension("ItemContainer");
+
+            //Populate the list of remainingIDs
+            foreach (var entity in targetContents.Inventory)
+                totalIDs.Add((uint)entity.Properties.GetPropertyValue("ID"));
+
+            remainingIDs = totalIDs;
 
             //Grab relevant descriptors
             foreach (var descriptor in storedDescriptors.Descriptors)
             {
-                if (descriptor.Identity == descriptorName) //Descriptor matches the required descriptorName
-                    if (CheckConditionIsValid(descriptor, storedEntities.Inventory)) //Descriptor is matches the
+                if (descriptor.DescriptorIdentity == descriptorName) //Descriptor describes the required descriptorName
+                    if (descriptor.CheckConditionIsValid()) //Descriptor currently matches its condition
                         relevantDescriptors.Add(descriptor);
             }
 
             //Prioritise the relevant descriptors
-            prioritisedDescriptors = PrioritiseDescriptors(relevantDescriptors);
+            prioritisedDescriptors = EntityStateLogic.PrioritiseDescriptors(relevantDescriptors, remainingIDs, out remainingIDs);
 
-            //Concatenate the prioritised descriptors.
-            foreach (var descriptor in prioritisedDescriptors)
-                concatenatedValidDescriptors += $"descriptor.Descriptor ";
+            //Check if the target requests an additive or ordinary description.
+            if (targetContainer.Properties.HasPropertyAndValue($"{descriptorName}.Additive", true))
+            {
+                //Generate an additive description
+                concatenatedValidDescriptors += GenerateAdditiveDescription(targetContainer, totalIDs, targetContents, prioritisedDescriptors);
+            }
+            else //Generate an ordinary description
+            { 
+                concatenatedValidDescriptors += ConcatenateDescriptors(prioritisedDescriptors);
+                concatenatedValidDescriptors += ConcatenateDescriptors(remainingIDs, targetContents);
+            }
 
             return concatenatedValidDescriptors;
         }
 
-        /// <summary> Returns whether the existing entity states match the conditions' required entity states </summary>
-        private static bool CheckConditionIsValid(ConditionalDescriptor condition, List<GameObject> roomEntities)
+        private static string ConcatenateDescriptors(List<IDescriptorCondition> prioritisedDescriptors)
         {
-            List<uint> validEntityStates = new(); //EntityID
+            string concatenatedValidDescriptors = "";
 
-            foreach (EntityState requiredEntityState in condition.RequiredEntityStates)
-            {
-                //test the ID for all the objects in the room
-                foreach (GameObject entity in roomEntities)
-                {
-                    uint entityID = (uint)entity.Properties.GetPropertyValue("ID");
+            //Concatenate the prioritised descriptors.
+            foreach (var descriptor in prioritisedDescriptors)
+                concatenatedValidDescriptors += $"{descriptor.GetDescriptor} ";
 
-                    //when an object exists, test if it matches state
-                    if (entityID == requiredEntityState.EntityReferenceID)
-                    {
-                        if (CheckStateIsValid(requiredEntityState, entity))
-                            validEntityStates.Add(entityID);
-                    }
-                }
-            }
-
-            if (validEntityStates.Count > condition.RequiredEntityStates.Count)
-                throw new Exception("Critical error during Room Descriptor assessment: There were more valid entity states than the maximum possible number of required states. Something went seriously wrong! The objects might have misconfigured IDs, check if the IDs are unique!");
-
-            //if all the objects in a condition are valid, return true
-            return validEntityStates.Count == condition.RequiredEntityStates.Count;
+            return concatenatedValidDescriptors;
         }
 
-        private static bool CheckStateIsValid(EntityState testState, GameObject currentState)
+        private static string ConcatenateDescriptors(List<uint> remainingIDs, ItemContainer targetContents)
         {
+            string concatenatedValidDescriptors = "";
 
-            if (testState.EntityReferenceID == (uint)currentState.Properties.GetPropertyValue("ID")) //check if the entityIDs match
-            {
-                //If no properties exist, then the object will be considered a match by default, since there are no properties being checked, just presence.
-                if (testState.RequiredProperties == null)
-                    return true;
-                else //check for properties to match before adding as a valid state
+            //Add in the remaining descriptors.
+            foreach (var entity in targetContents.Inventory)
+                if (remainingIDs.Contains((uint)entity.Properties.GetPropertyValue("ID")))
                 {
-                    //Check if each property matches the required properties
-                    List<EntityProperty> validProperties = new();
-
-                    //foreach (EntityProperty currentProperty in testState.RequiredProperties)
-                    foreach (EntityProperty requiredProperty in testState.RequiredProperties)
-                    {
-                        string propertyName = requiredProperty.PropertyName;
-                        object propertyValue = requiredProperty.PropertyValue;
-
-                        if (currentState.Properties.HasPropertyAndValue(propertyName, propertyValue))
-                            validProperties.Add(requiredProperty);
-                    }
-
-                    //if all properties match, then the state is valid
-                    return validProperties.Count == testState.RequiredProperties.Count;
+                    concatenatedValidDescriptors += $"{GetDescriptor(entity, "Generic.Current")} ";
                 }
-            }
-            else return false; //entity IDs didnt match.
+
+            return concatenatedValidDescriptors;
         }
 
-        private static List<ConditionalDescriptor> PrioritiseDescriptors(List<ConditionalDescriptor> rawDescriptors)
+        public static string GenerateAdditiveDescription(string descriptorName, PropertyContainer targetContainer, List<uint> remainingIDs,
+            List<IDescriptorCondition>? prioritisedDescriptors = null)
         {
-            uint previousPriority = 0;
-            uint currentPriority;
-            List<uint> higherPriorityObjectIDs = new();
-            List<uint> previousSamePriorityObjectIDs = new();
-            List<uint> currentObjectIDs = new();
-            List<ConditionalDescriptor> prioritisedDescriptors = new();
+            if (!targetContainer.Extensions.ContainsExtension("ItemContainer"))
+                throw new Exception($"This descriptors parent {targetContainer} didn't contain a reference for \"ItemContainer\" in its extensions list {targetContainer.Extensions}!");
 
-            List<ConditionalDescriptor> sortedDescriptors = rawDescriptors.OrderBy(i => i.Priority).ToList();
+            if (!targetContainer.Properties.HasPropertyAndValue($"{descriptorName}.Additive", true))
+                throw new Exception($"Was this descriptor additive? This descriptors parent {targetContainer} didn't contain a reference for \"{descriptorName}.Additive, true\" in its properties list {targetContainer.Properties}!");
 
-            foreach (var descriptor in sortedDescriptors)
+            if (!targetContainer.Properties.HasExistingPropertyName($"{descriptorName}.Additive.Prefix"))
+                throw new Exception($"This descriptors parent {targetContainer} didn't contain a reference for \"{descriptorName}.Prefix\" in its properties list {targetContainer.Properties}!");
+
+            if (!targetContainer.Properties.HasExistingPropertyName($"{descriptorName}.Additive.Infix"))
+                throw new Exception($"This descriptors parent {targetContainer} didn't contain a reference for \"{descriptorName}.Infix\" in its properties list {targetContainer.Properties}!");
+
+            if (!targetContainer.Properties.HasExistingPropertyName($"{descriptorName}.Additive.Suffix"))
+                throw new Exception($"This descriptors parent {targetContainer} didn't contain a reference for \"{descriptorName}.Suffix\" in its properties list {targetContainer.Properties}!");
+
+            if (!targetContainer.Properties.HasExistingPropertyName($"{descriptorName}.Additive.Empty"))
+                throw new Exception($"This descriptors parent {targetContainer} didn't contain a reference for \"{descriptorName}.Suffix\" in its properties list {targetContainer.Properties}!");
+
+
+            string descriptorSuffix = (string) targetContainer.Properties.GetPropertyValue($"{descriptorName}.Additive.Suffix");
+            string descriptorInfix = (string) targetContainer.Properties.GetPropertyValue($"{descriptorName}.Additive.Infix");
+            string descriptorPrefix = (string)targetContainer.Properties.GetPropertyValue($"{descriptorName}.Additive.Prefix");
+            string emptyDescriptor = (string)targetContainer.Properties.GetPropertyValue($"{descriptorName}.Additive.Empty");
+
+            string concatenatedDescriptor = descriptorPrefix; //Starts with the prefix.
+            ItemContainer parentItemContainer = (ItemContainer)targetContainer.Extensions.GetExtension("ItemContainer");
+            bool previousEntryWritten = false;
+
+            //Set the empty descriptor, if the inventory is empty
+            if (prioritisedDescriptors.Count == 0 && remainingIDs.Count == 0)
+                concatenatedDescriptor += emptyDescriptor;
+
+            //Add each prioritsied descriptor and remove its relevant remaining IDs.
+            foreach (var descriptor in prioritisedDescriptors)
             {
-                //Always set current priority
-                currentPriority = descriptor.Priority;
+                //Preceed by the infix unless it's the first entry.
+                if (!previousEntryWritten)
+                    concatenatedDescriptor += descriptorInfix;
 
-                //If currentPriority is lower than previous priority:
-                if (currentPriority > previousPriority)
-                {
-                    //Then also higherpriorityobjects += previousSamePriorityObjects;
-                    foreach (uint newPreviousSamePriorityObjectID in previousSamePriorityObjectIDs)
-                    {
-                        if (!higherPriorityObjectIDs.Contains(newPreviousSamePriorityObjectID))
-                            higherPriorityObjectIDs.Add(newPreviousSamePriorityObjectID);
-                    }
-                    //Then also clear previousSamePriorityObjects
-                    previousSamePriorityObjectIDs.Clear();
-                }
+                //Add the entry
+                concatenatedDescriptor += descriptor.GetDescriptor();
 
-                //Always clear currentObjectIDs;
-                currentObjectIDs.Clear();
+                //Remove related IDs from remainingIDs
+                foreach(var entityState in descriptor.RequiredEntityStates)
+                    remainingIDs.Remove(entityState.EntityReferenceID);                
 
-                foreach (EntityState descriptorEntityState in descriptor.RequiredEntityStates)
-                {
-                    //Always set currentObjectIDs;
-                    if (!currentObjectIDs.Contains(descriptorEntityState.EntityReferenceID))
-                        currentObjectIDs.Add(descriptorEntityState.EntityReferenceID);
-
-                    //previousSamePriorityObjects += currentObjectIDs;
-                    if (!previousSamePriorityObjectIDs.Contains(descriptorEntityState.EntityReferenceID))
-                        previousSamePriorityObjectIDs.Add(descriptorEntityState.EntityReferenceID);
-                }
-
-                //currentObjectIDs should always be checked to see if items already exist in higherpriorityobjects.
-                //If they dont exist, this descriptor will be added valid.
-                bool descriptorRemainsValid = true;
-                foreach (uint testEntityID in currentObjectIDs)
-                {
-                    if (higherPriorityObjectIDs.Contains(testEntityID))
-                        descriptorRemainsValid = false;
-                }
-
-                if (descriptorRemainsValid)
-                    prioritisedDescriptors.Add(descriptor);
-
-                //Always set previousPriority = currentPriority; then continue the loop.
-                previousPriority = currentPriority;
+                previousEntryWritten = true;
             }
 
-            return prioritisedDescriptors;
-        }
+            //Add each objectname until the remaining IDs are emtpy. 
+            foreach (var entity in parentItemContainer.Inventory)
+                foreach (var id in remainingIDs)
+                    if (id.Equals(entity.Properties.GetPropertyValue("ID")))
+                    {
+                        //Preceed by the infix unless it's the first entry.
+                        if (!previousEntryWritten)
+                            concatenatedDescriptor += descriptorInfix;
 
+                        //Add the name and remove the ID from remainingIDs
+                        concatenatedDescriptor += entity.Properties.GetPropertyValue("Name");
+                        remainingIDs.Remove(id);
+
+                        previousEntryWritten = true;
+                    }
+
+            //Add the final suffix
+            concatenatedDescriptor += descriptorSuffix;
+
+            return concatenatedDescriptor;
+        }
     }
 }
