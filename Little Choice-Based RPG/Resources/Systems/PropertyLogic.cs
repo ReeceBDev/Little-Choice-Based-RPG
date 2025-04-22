@@ -1,6 +1,9 @@
-﻿using Little_Choice_Based_RPG.Resources.Systems.SystemEventBus;
+﻿using Little_Choice_Based_RPG.Resources.Entities.Physical.Living.Players;
+using Little_Choice_Based_RPG.Resources.PropertyContainerEventArgs;
+using Little_Choice_Based_RPG.Resources.Systems.InteractionSystems.PrivateInteractionsSystems.PrivateInteractionsExtensions;
+using Little_Choice_Based_RPG.Resources.Systems.SystemEventBus;
 using Little_Choice_Based_RPG.Types.EntityProperties;
-using Little_Choice_Based_RPG.Types.Interactions.InteractDelegate;
+using Little_Choice_Based_RPG.Types.Interactions.InteractionDelegates;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,21 +30,16 @@ namespace Little_Choice_Based_RPG.Resources.Systems
             //If the current system type matches the reference name, subscribe to the requester's property list.
             if (systemSubscriptionRequestData.systemReferenceName == this.GetType().Name.ToString())
             {
-                //Subscribe to the requester's property list
-                systemSubscriptionRequestData.targetPropertyContainer.Properties.PropertyChanged += OnPropertyChanged;
+                //Subscribe to the requesting object's change event
+                systemSubscriptionRequestData.targetPropertyContainer.ObjectChanged += OnObjectChanged;
 
                 //Initialise the subscriber
                 InitialiseNewSubscriber(systemSubscriptionRequestData.targetPropertyContainer, systemSubscriptionRequestData.targetPropertyContainer.Properties);
             }
         }
 
-        public static void GiveInteraction(PropertyContainer target, IInvokableInteraction interaction)
-        {
-            target.Interactions.Add(interaction);
-        }
-
         /// <summary> Provide logic for co-ordinating property changes with their relevant methods. </summary>
-        protected abstract void OnPropertyChanged(object sender, PropertyChangedEventArgs propertyChangedData);
+        protected abstract void OnObjectChanged(object sender, ObjectChangedEventArgs propertyChangedData);
 
         /// <summary> Apply starting implementation to a subscription. This may include handling the initial interactions based on its initial property state. </summary>
         protected abstract void InitialiseNewSubscriber(PropertyContainer sourceContainer, PropertyHandler sourceProperties);
