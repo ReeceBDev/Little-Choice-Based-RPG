@@ -1,6 +1,9 @@
-﻿using Little_Choice_Based_RPG.Types.EntityProperties;
-using Little_Choice_Based_RPG.Types.Extensions;
-using Little_Choice_Based_RPG.Types.Interactions.InteractDelegate;
+﻿using Little_Choice_Based_RPG.Resources.PropertyContainerEventArgs;
+using Little_Choice_Based_RPG.Resources.Systems.ContainerSystems.Inventory;
+using Little_Choice_Based_RPG.Types.EntityProperties;
+using Little_Choice_Based_RPG.Types.Interactions.InteractionDelegates;
+using Little_Choice_Based_RPG.Types.PropertyExtensions;
+using Little_Choice_Based_RPG.Types.PropertyExtensions.PropertyExtensionEventArgs;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -8,6 +11,7 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 
 namespace Little_Choice_Based_RPG.Resources
 {
@@ -18,6 +22,8 @@ namespace Little_Choice_Based_RPG.Resources
         private readonly static Dictionary<string, PropertyType> requiredProperties = new Dictionary<string, PropertyType>()
         {
             { "ID", PropertyType.UInt32 },
+            {"Type", PropertyType.String},
+            {"Name", PropertyType.String},
         };
 
         private readonly static Dictionary<string, PropertyType> optionalProperties = new Dictionary<string, PropertyType>()
@@ -28,6 +34,7 @@ namespace Little_Choice_Based_RPG.Resources
         private Dictionary<string, object> defaultProperties = new Dictionary<string, object>()
         {
             {"ID", ++globalCounter},
+            {"Component.DescriptorSystem", true }
         };
 
         static PropertyContainer()
@@ -39,15 +46,24 @@ namespace Little_Choice_Based_RPG.Resources
 
         private protected PropertyContainer(Dictionary<string, object> derivedProperties)
         {
+            //Extensions
+            //Subscribe to extension add and remove events, for the local ExtensionHandler
+            Extensions.ExtensionAdded += OnExtensionAdded;
+            Extensions.ExtensionRemoved += OnExtensionRemoved;
+
+            //Properties
+            //Subscribe to property change events, for the local PropertyHandler
+            Properties.PropertyChanged += OnPropertyChanged;
+
             //Apply default properties for this class to the current list of derivedProperties
             ApplyDefaultProperties(derivedProperties, defaultProperties);
-
-            //Create a new property list on Properties.
-            Properties = new PropertyHandler(this);
 
             //Store the final list of properties
             foreach (KeyValuePair<string, object> property in derivedProperties)
                 Properties.CreateProperty(property.Key, property.Value);
+
+            //Set the type property to reflect the classes type.
+            Properties.UpsertProperty("Type", this.GetType().ToString());
 
             //Validate required properties have been set on entityProperties
             ValidateRequiredProperties(requiredProperties);
@@ -74,8 +90,19 @@ namespace Little_Choice_Based_RPG.Resources
                     throw new Exception($"A required property has not been defined in {Properties}. Property name: {property.Key}");
         }
 
-        public PropertyHandler Properties { get; set; }
-        public ExtensionHandler Extensions { get; set; } = new ExtensionHandler();
+        protected virtual void OnExtensionAdded(object sender, IPropertyExtension subject) => subject.PropertyExtensionChanged += OnExtensionChanged;        
+
+        protected virtual void OnExtensionRemoved(object sender, IPropertyExtension subject) => subject.PropertyExtensionChanged -= OnExtensionChanged;
+
+        protected virtual void OnExtensionChanged(object sender, PropertyExtensionChangedArgs args)
+            => ObjectChanged?.Invoke(sender, new ObjectChangedEventArgs(this, args.UniqueIdentifier, args.SubjectChanged));
+
+        protected virtual void OnPropertyChanged(object sender, EntityProperty args) 
+            => ObjectChanged?.Invoke(sender, new ObjectChangedEventArgs(this, args.PropertyName, args.PropertyValue));
+
+        public event EventHandler<ObjectChangedEventArgs> ObjectChanged;
+        public PropertyHandler Properties { get; set; } = new PropertyHandler();
+        public PropertyExtensionHandler Extensions { get; set; } = new PropertyExtensionHandler();
         public List<IInvokableInteraction> Interactions { get; set; } = new List<IInvokableInteraction>();
     }
 }
