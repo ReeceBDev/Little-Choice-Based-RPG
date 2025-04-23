@@ -23,8 +23,8 @@ namespace Little_Choice_Based_RPG.Types.Interactions.InteractionDelegates
         }
 
         /// <summary> Creates a new interaction for players to be presented with in ChoiceHandler. </summary>
-        public InteractionUsingNothing(InteractionUsingNothingDelegate setDelegate, PropertyContainer setSourceContainer, string setInteractTitle, string setInteractDescriptor, InteractionRole setInteractRole = InteractionRole.Explore)
-            : base(setDelegate, setSourceContainer, setInteractTitle, setInteractDescriptor, setInteractRole)
+        public InteractionUsingNothing(InteractionUsingNothingDelegate setDelegate, string setInteractTitle, string setInteractDescriptor, InteractionRole setInteractRole = InteractionRole.Explore)
+            : base(setDelegate, setInteractTitle, setInteractDescriptor, setInteractRole)
         {
             storedDelegate = setDelegate;
         }
@@ -57,13 +57,11 @@ namespace Little_Choice_Based_RPG.Types.Interactions.InteractionDelegates
             if (invocationMutexIdentity != sourceInvocationMutexIdentity)
                 return; //The sender identity sourceInvocationMutexIdentity did not match the current invocationMutexIdentity");
 
-            storedDelegate.Invoke(sourceInvocationMutexIdentity, AssociatedSource);
-
-            AssociatedSource.Interactions.Remove(this); //Remove self
-            invocationMutexIdentity = null; //Release mutex
+            storedDelegate.Invoke(sourceInvocationMutexIdentity);
+            ResetInteraction(sourceInvocationMutexIdentity);
         }
 
-        public override void CancelInteraction(PlayerController sourceInvocationMutexIdentity, PropertyContainer sourceContainer)
+        public override void ResetInteraction(PlayerController sourceInvocationMutexIdentity)
         {
             if (invocationMutexIdentity != sourceInvocationMutexIdentity)
                 return; //The sender identity sourceInvocationMutexIdentity did not match the current invocationMutexIdentity");
@@ -73,6 +71,6 @@ namespace Little_Choice_Based_RPG.Types.Interactions.InteractionDelegates
         }
 
         /// <summary> Create a delegate which uses no additional parameters. </summary>
-        public delegate void InteractionUsingNothingDelegate(PlayerController newInvocationMutexIdentity, PropertyContainer sourceContainer);
+        public delegate void InteractionUsingNothingDelegate(PlayerController newInvocationMutexIdentity);
     }
 }
