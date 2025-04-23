@@ -28,11 +28,11 @@ namespace Little_Choice_Based_RPG.Types.Interactions.InteractionDelegates.Single
 
         static InteractionUsingGameObject()
         {
-            InteractionValidation.CreateValidDelegate("InteractUsingTargetObject", [InteractionParameter.Target_GameObject]);
+            //InteractionValidation.CreateValidDelegate("InteractUsingTargetObject", [InteractionParameter.Target_GameObject]);
         }
         /// <summary> Creates a new interaction for players to be presented with in ChoiceHandler. Requests a GameObject from the player. </summary>
-        public InteractionUsingGameObject(InteractionUsingGameObjectDelegate setDelegate, PropertyContainer setSourceContainer, string setInteractTitle, string setInteractDescriptor, string setGameObjectRequestDescription, InteractionRole setInteractRole = InteractionRole.Explore, List<EntityProperty>? setGameObjectFilter = null)
-            : base(setDelegate, setSourceContainer, setInteractTitle, setInteractDescriptor, setInteractRole)
+        public InteractionUsingGameObject(InteractionUsingGameObjectDelegate setDelegate, string setInteractTitle, string setInteractDescriptor, string setGameObjectRequestDescription, List<EntityProperty>? setGameObjectFilter = null, InteractionRole setInteractRole = InteractionRole.Explore)
+            : base(setDelegate, setInteractTitle, setInteractDescriptor, setInteractRole)
         {
             storedDelegate = setDelegate;
 
@@ -43,8 +43,8 @@ namespace Little_Choice_Based_RPG.Types.Interactions.InteractionDelegates.Single
         }
 
         /// <summary> Creates a new interaction with a pre-assigned GameObject for players to be presented with in ChoiceHandler. </summary>
-        public InteractionUsingGameObject(InteractionUsingGameObjectDelegate setDelegate, PropertyContainer setSourceContainer, string setInteractTitle, string setInteractDescriptor, GameObject preassignedParameter1, InteractionRole setInteractRole = InteractionRole.Explore)
-            : base(setSourceContainer, setInteractTitle, setInteractDescriptor, setInteractRole)
+        public InteractionUsingGameObject(InteractionUsingGameObjectDelegate setDelegate, string setInteractTitle, string setInteractDescriptor, GameObject preassignedParameter1, InteractionRole setInteractRole = InteractionRole.Explore)
+            : base(setDelegate, setInteractTitle, setInteractDescriptor, setInteractRole)
         {
             storedDelegate = setDelegate;
 
@@ -75,8 +75,8 @@ namespace Little_Choice_Based_RPG.Types.Interactions.InteractionDelegates.Single
             if (invocationParameter1 == null)
             {
                 //Create abort delegate using this invocationMutexIdentity
-                InteractionUsingNothingDelegate abortInteractionDelegate = new InteractionUsingNothingDelegate(CancelInteraction);
-                abortInteraction = new InteractionUsingNothing(abortInteractionDelegate, AssociatedSource, "Cancel selection", "Cancelling this interaction...", InteractionRole.System);
+                InteractionUsingNothingDelegate abortInteractionDelegate = new InteractionUsingNothingDelegate(ResetInteraction);
+                abortInteraction = new InteractionUsingNothing(abortInteractionDelegate, "Cancel selection", "Cancelling this interaction...", InteractionRole.System);
 
                 var gameObjectRequest = new FilterableRequestEventArgs(invocationParameter1Description, abortInteraction);
 
@@ -114,7 +114,7 @@ namespace Little_Choice_Based_RPG.Types.Interactions.InteractionDelegates.Single
             //Once all parameters have been set, invoke.
             Invoke(sourceInvocationMutexIdentity);
         }
-        public override void CancelInteraction(PlayerController sourceInvocationMutexIdentity, PropertyContainer sourceContainer)
+        public override void ResetInteraction(PlayerController sourceInvocationMutexIdentity)
         {
             if (invocationMutexIdentity != sourceInvocationMutexIdentity)
                 return; //The sender identity sourceInvocationMutexIdentity did not match the current invocationMutexIdentity");
@@ -133,10 +133,8 @@ namespace Little_Choice_Based_RPG.Types.Interactions.InteractionDelegates.Single
                 throw new Exception("Tried to invoke, but invocationParameter1 wasnt set.");
 
             // invoke
-            storedDelegate(sourceInvocationMutexIdentity, AssociatedSource, invocationParameter1);
-
-            AssociatedSource.Interactions.Remove(this); //Remove self
-            invocationMutexIdentity = null; //Release mutex.
+            storedDelegate(sourceInvocationMutexIdentity, invocationParameter1);
+            ResetInteraction(sourceInvocationMutexIdentity);
         }
 
         protected virtual void OnGameObjectRequest(FilterableRequestEventArgs gameObjectFilters)
@@ -145,7 +143,7 @@ namespace Little_Choice_Based_RPG.Types.Interactions.InteractionDelegates.Single
         }
 
         /// <summary> Create a delegate which, unless pre-assigned, will ask the player for a target GameObject within their location. </summary>
-        public delegate void InteractionUsingGameObjectDelegate(PlayerController invocationMutexIdentity, PropertyContainer sourceContainer, GameObject target_GameObject);
+        public delegate void InteractionUsingGameObjectDelegate(PlayerController invocationMutexIdentity, GameObject target_GameObject);
 
         public event EventHandler<FilterableRequestEventArgs> GameObjectRequest;
     }
