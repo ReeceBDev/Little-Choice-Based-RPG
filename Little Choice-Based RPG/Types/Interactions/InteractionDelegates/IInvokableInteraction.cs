@@ -15,11 +15,11 @@ namespace Little_Choice_Based_RPG.Types.Interactions.InteractionDelegates
     {
         /// <summary> Invokes the delegate using its required parameters. </summary>
         public void AttemptInvoke(PlayerController sourceInvocationMutexIdentity);
-        public abstract void CancelInteraction(PlayerController sourceInvocationMutexIdentity, PropertyContainer sourceContainer);
+        public abstract void ResetInteraction(PlayerController sourceInvocationMutexIdentity);
         public void GiveRequiredParameter(object newParameter, PlayerController sourceInvocationMutexIdentity);
 
         /// <summary> The originating PropertyContainer </summary>
-        public PropertyContainer AssociatedSource { get; init; }
+        
 
         /// <summary> The title shown when a player gets listed their choice options. </summary>
         public string InteractionTitle { get; init; }
