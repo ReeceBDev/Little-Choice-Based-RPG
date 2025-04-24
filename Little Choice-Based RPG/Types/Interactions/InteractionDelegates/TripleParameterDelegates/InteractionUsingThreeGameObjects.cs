@@ -39,11 +39,11 @@ namespace Little_Choice_Based_RPG.Types.Interactions.InteractionDelegates.Triple
 
         static InteractionUsingThreeGameObjects()
         {
-            InteractionValidation.CreateValidDelegate("InteractUsingTargetObject", [InteractionParameter.Target_GameObject]);
+            //InteractionValidation.CreateValidDelegate("InteractUsingTargetObject", [InteractionParameter.Target_GameObject]);
         }
         /// <summary> Creates a new interaction for players to be presented with in ChoiceHandler. Requests three GameObject from the player. Each GameObjectRequest may be filtered. </summary>
-        public InteractionUsingThreeGameObjects(InteractUsingThreeGameObjectsDelegate setDelegate, PropertyContainer setSourceContainer, string setInteractTitle, string setInteractDescriptor, string firstRequestDescription, string secondRequestDescription, string thirdRequestDescription, InteractionRole setInteractRole = InteractionRole.Explore, List<EntityProperty>? setFirstGameObjectFilter = null, List<EntityProperty>? setSecondGameObjectFilter = null, List<EntityProperty>? setThirdGameObjectFilter = null)
-            : base(setDelegate, setSourceContainer, setInteractTitle, setInteractDescriptor, setInteractRole)
+        public InteractionUsingThreeGameObjects(InteractUsingThreeGameObjectsDelegate setDelegate, string setInteractTitle, string setInteractDescriptor, string firstRequestDescription, string secondRequestDescription, string thirdRequestDescription, List<EntityProperty>? setFirstGameObjectFilter = null, List<EntityProperty>? setSecondGameObjectFilter = null, List<EntityProperty>? setThirdGameObjectFilter = null, InteractionRole setInteractRole = InteractionRole.Explore)
+            : base(setDelegate, setInteractTitle, setInteractDescriptor, setInteractRole)
         {
             storedDelegate = setDelegate;
 
@@ -62,8 +62,8 @@ namespace Little_Choice_Based_RPG.Types.Interactions.InteractionDelegates.Triple
         }
 
         /// <summary> Creates a new interaction for players to be presented with in ChoiceHandler. The first GameObject is pre-assigned. Requests a second and third GameObject from the player. The GameObjectRequest may be filtered. </summary>
-        public InteractionUsingThreeGameObjects(InteractUsingThreeGameObjectsDelegate setDelegate, PropertyContainer setSourceContainer, string setInteractTitle, string setInteractDescriptor, GameObject preassignedParameter1, string secondRequestDescription, string thirdRequestDescription, InteractionRole setInteractRole = InteractionRole.Explore, List<EntityProperty>? setSecondGameObjectFilter = null, List<EntityProperty>? setThirdGameObjectFilter = null)
-            : base(setDelegate, setSourceContainer, setInteractTitle, setInteractDescriptor, setInteractRole)
+        public InteractionUsingThreeGameObjects(InteractUsingThreeGameObjectsDelegate setDelegate, string setInteractTitle, string setInteractDescriptor, GameObject preassignedParameter1, string secondRequestDescription, string thirdRequestDescription, List<EntityProperty>? setSecondGameObjectFilter = null, List<EntityProperty>? setThirdGameObjectFilter = null, InteractionRole setInteractRole = InteractionRole.Explore)
+            : base(setDelegate, setInteractTitle, setInteractDescriptor, setInteractRole)
         {
             storedDelegate = setDelegate;
 
@@ -82,8 +82,8 @@ namespace Little_Choice_Based_RPG.Types.Interactions.InteractionDelegates.Triple
         }
 
         /// <summary> Creates a new interaction for players to be presented with in ChoiceHandler. The second GameObject is pre-assigned. Requests the first and third GameObjects from the player. The GameObjectRequest may be filtered. </summary>
-        public InteractionUsingThreeGameObjects(InteractUsingThreeGameObjectsDelegate setDelegate, PropertyContainer setSourceContainer, string setInteractTitle, string setInteractDescriptor, string firstRequestDescription, GameObject preassignedParameter2, string thirdRequestDescription, InteractionRole setInteractRole = InteractionRole.Explore, List<EntityProperty>? setFirstGameObjectFilter = null, List<EntityProperty>? setThirdGameObjectFilter = null)
-            : base(setDelegate, setSourceContainer, setInteractTitle, setInteractDescriptor, setInteractRole)
+        public InteractionUsingThreeGameObjects(InteractUsingThreeGameObjectsDelegate setDelegate, string setInteractTitle, string setInteractDescriptor, string firstRequestDescription, GameObject preassignedParameter2, string thirdRequestDescription, List<EntityProperty>? setFirstGameObjectFilter = null, List<EntityProperty>? setThirdGameObjectFilter = null, InteractionRole setInteractRole = InteractionRole.Explore)
+            : base(setDelegate, setInteractTitle, setInteractDescriptor, setInteractRole)
         {
             storedDelegate = setDelegate;
 
@@ -103,8 +103,8 @@ namespace Little_Choice_Based_RPG.Types.Interactions.InteractionDelegates.Triple
         }
 
         /// <summary> Creates a new interaction for players to be presented with in ChoiceHandler. The third GameObject is pre-assigned. Requests the first and second GameObjects from the player. The GameObjectRequest may be filtered. </summary>
-        public InteractionUsingThreeGameObjects(InteractUsingThreeGameObjectsDelegate setDelegate, PropertyContainer setSourceContainer, string setInteractTitle, string setInteractDescriptor, string firstRequestDescription, string secondRequestDescription, GameObject preassignedParameter3, InteractionRole setInteractRole = InteractionRole.Explore, List<EntityProperty>? setFirstGameObjectFilter = null, List<EntityProperty>? setSecondGameObjectFilter = null)
-            : base(setDelegate, setSourceContainer, setInteractTitle, setInteractDescriptor, setInteractRole)
+        public InteractionUsingThreeGameObjects(InteractUsingThreeGameObjectsDelegate setDelegate, string setInteractTitle, string setInteractDescriptor, string firstRequestDescription, string secondRequestDescription, GameObject preassignedParameter3, List<EntityProperty>? setFirstGameObjectFilter = null, List<EntityProperty>? setSecondGameObjectFilter = null, InteractionRole setInteractRole = InteractionRole.Explore)
+            : base(setDelegate, setInteractTitle, setInteractDescriptor, setInteractRole)
         {
             storedDelegate = setDelegate;
 
@@ -125,8 +125,8 @@ namespace Little_Choice_Based_RPG.Types.Interactions.InteractionDelegates.Triple
 
 
         /// <summary> Creates a new interaction for players to be presented with in ChoiceHandler. The first and second GameObjects are pre-assigned. Requests third GameObject from the player. The GameObjectRequest may be filtered. </summary>
-        public InteractionUsingThreeGameObjects(InteractUsingThreeGameObjectsDelegate setDelegate, PropertyContainer setSourceContainer, string setInteractTitle, string setInteractDescriptor, GameObject preassignedParameter1, GameObject preassignedParameter2, string thirdRequestDescription, InteractionRole setInteractRole = InteractionRole.Explore, List<EntityProperty>? setThirdGameObjectFilter = null)
-            : base(setDelegate, setSourceContainer, setInteractTitle, setInteractDescriptor, setInteractRole)
+        public InteractionUsingThreeGameObjects(InteractUsingThreeGameObjectsDelegate setDelegate, string setInteractTitle, string setInteractDescriptor, GameObject preassignedParameter1, GameObject preassignedParameter2, string thirdRequestDescription, List<EntityProperty>? setThirdGameObjectFilter = null, InteractionRole setInteractRole = InteractionRole.Explore)
+            : base(setDelegate, setInteractTitle, setInteractDescriptor, setInteractRole)
         {
             storedDelegate = setDelegate;
 
@@ -145,8 +145,8 @@ namespace Little_Choice_Based_RPG.Types.Interactions.InteractionDelegates.Triple
         }
 
         /// <summary> Creates a new interaction for players to be presented with in ChoiceHandler. The first and third GameObjects are pre-assigned. Requests the second GameObject from the player. The GameObjectRequest may be filtered. </summary>
-        public InteractionUsingThreeGameObjects(InteractUsingThreeGameObjectsDelegate setDelegate, PropertyContainer setSourceContainer, string setInteractTitle, string setInteractDescriptor, GameObject preassignedParameter1, string secondRequestDescription, GameObject preassignedParameter3, InteractionRole setInteractRole = InteractionRole.Explore, List<EntityProperty>? setSecondGameObjectFilter = null)
-            : base(setDelegate, setSourceContainer, setInteractTitle, setInteractDescriptor, setInteractRole)
+        public InteractionUsingThreeGameObjects(InteractUsingThreeGameObjectsDelegate setDelegate, string setInteractTitle, string setInteractDescriptor, GameObject preassignedParameter1, string secondRequestDescription, GameObject preassignedParameter3, List<EntityProperty>? setSecondGameObjectFilter = null, InteractionRole setInteractRole = InteractionRole.Explore)
+            : base(setDelegate, setInteractTitle, setInteractDescriptor, setInteractRole)
         {
             storedDelegate = setDelegate;
 
@@ -165,8 +165,8 @@ namespace Little_Choice_Based_RPG.Types.Interactions.InteractionDelegates.Triple
         }
 
         /// <summary> Creates a new interaction for players to be presented with in ChoiceHandler. The second and third GameObjects are pre-assigned. Requests the first GameObject from the player. The GameObjectRequest may be filtered. </summary>
-        public InteractionUsingThreeGameObjects(InteractUsingThreeGameObjectsDelegate setDelegate, PropertyContainer setSourceContainer, string setInteractTitle, string setInteractDescriptor, string firstRequestDescription, GameObject preassignedParameter2, GameObject preassignedParameter3, InteractionRole setInteractRole = InteractionRole.Explore, List<EntityProperty>? setFirstGameObjectFilter = null)
-            : base(setDelegate, setSourceContainer, setInteractTitle, setInteractDescriptor, setInteractRole)
+        public InteractionUsingThreeGameObjects(InteractUsingThreeGameObjectsDelegate setDelegate, string setInteractTitle, string setInteractDescriptor, string firstRequestDescription, GameObject preassignedParameter2, GameObject preassignedParameter3, List<EntityProperty>? setFirstGameObjectFilter = null, InteractionRole setInteractRole = InteractionRole.Explore)
+            : base(setDelegate, setInteractTitle, setInteractDescriptor, setInteractRole)
         {
             storedDelegate = setDelegate;
 
@@ -185,8 +185,8 @@ namespace Little_Choice_Based_RPG.Types.Interactions.InteractionDelegates.Triple
         }
 
         /// <summary> Creates a new interaction for players to be presented with in ChoiceHandler. All three GameObjects are pre-assigned. The GameObjectRequest may be filtered. </summary>
-        public InteractionUsingThreeGameObjects(InteractUsingThreeGameObjectsDelegate setDelegate, PropertyContainer setSourceContainer, string setInteractTitle, string setInteractDescriptor, GameObject preassignedParameter1, GameObject preassignedParameter2, GameObject preassignedParameter3, InteractionRole setInteractRole = InteractionRole.Explore)
-            : base(setDelegate, setSourceContainer, setInteractTitle, setInteractDescriptor, setInteractRole)
+        public InteractionUsingThreeGameObjects(InteractUsingThreeGameObjectsDelegate setDelegate, string setInteractTitle, string setInteractDescriptor, GameObject preassignedParameter1, GameObject preassignedParameter2, GameObject preassignedParameter3, InteractionRole setInteractRole = InteractionRole.Explore)
+            : base(setDelegate, setInteractTitle, setInteractDescriptor, setInteractRole)
         {
             storedDelegate = setDelegate;
 
@@ -225,8 +225,8 @@ namespace Little_Choice_Based_RPG.Types.Interactions.InteractionDelegates.Triple
             //Otherwise, fill each remaining parameter with GameObjectRequests:
 
             //Create abort delegate using this invocationMutexIdentity
-            InteractionUsingNothingDelegate abortInteractionDelegate = new InteractionUsingNothingDelegate(CancelInteraction);
-            abortInteraction = new InteractionUsingNothing(abortInteractionDelegate, AssociatedSource, "Cancel selection", "Cancelling this interaction...", InteractionRole.System);
+            InteractionUsingNothingDelegate abortInteractionDelegate = new InteractionUsingNothingDelegate(ResetInteraction);
+            abortInteraction = new InteractionUsingNothing(abortInteractionDelegate, "Cancel selection", "Cancelling this interaction...", InteractionRole.System);
 
             if (invocationParameter1 != null)
             {
@@ -330,7 +330,7 @@ namespace Little_Choice_Based_RPG.Types.Interactions.InteractionDelegates.Triple
             Invoke(sourceInvocationMutexIdentity);
         }
 
-        public override void CancelInteraction(PlayerController sourceInvocationMutexIdentity, PropertyContainer sourceContainer)
+        public override void ResetInteraction(PlayerController sourceInvocationMutexIdentity)
         {
             if (invocationMutexIdentity != sourceInvocationMutexIdentity)
                 return; //The sender identity sourceInvocationMutexIdentity did not match the current invocationMutexIdentity");
@@ -357,10 +357,8 @@ namespace Little_Choice_Based_RPG.Types.Interactions.InteractionDelegates.Triple
                 throw new Exception("Tried to invoke, but invocationParameter3 wasnt set.");
 
             // invoke
-            storedDelegate(sourceInvocationMutexIdentity, AssociatedSource, invocationParameter1, invocationParameter2, invocationParameter3);
-
-            AssociatedSource.Interactions.Remove(this); //Remove self
-            invocationMutexIdentity = null; //Release mutex.
+            storedDelegate(sourceInvocationMutexIdentity, invocationParameter1, invocationParameter2, invocationParameter3);
+            ResetInteraction(sourceInvocationMutexIdentity);
         }
         protected virtual void OnGameObjectRequest(FilterableRequestEventArgs gameObjectFilters)
         {
@@ -387,7 +385,7 @@ namespace Little_Choice_Based_RPG.Types.Interactions.InteractionDelegates.Triple
         }
 
         /// <summary> Create a delegate which, unless pre-assigned, will ask the player for up to three target GameObjects within their location. </summary>
-        public delegate void InteractUsingThreeGameObjectsDelegate(PlayerController invocationMutexIdentity, PropertyContainer sourceContainer, GameObject first_GameObject, GameObject second_GameObject, GameObject third_GameObject);
+        public delegate void InteractUsingThreeGameObjectsDelegate(PlayerController invocationMutexIdentity, GameObject first_GameObject, GameObject second_GameObject, GameObject third_GameObject);
 
         public event EventHandler<FilterableRequestEventArgs> GameObjectRequest;
     }
