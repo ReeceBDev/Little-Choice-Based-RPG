@@ -1,7 +1,6 @@
 ﻿using Little_Choice_Based_RPG.Managers.Player_Manager.Frontend.UserInterface.UserInterfaceStyles;
 using Little_Choice_Based_RPG.Managers.World;
 using Little_Choice_Based_RPG.Resources.Entities.Physical.Living.Players;
-using Little_Choice_Based_RPG.Types.Interaction;
 
 namespace Little_Choice_Based_RPG.Managers.Player_Manager.Frontend.UserInterface
 {
@@ -23,22 +22,20 @@ namespace Little_Choice_Based_RPG.Managers.Player_Manager.Frontend.UserInterface
         // Handle the logic and the errors
 
         public delegate void ChangeInterfaceStyleCallback(IUserInterface newUserInterfaceStyle);
-        private IUserInterface currentInterfaceStyle; // This uses the Strategy Pattern
 
         bool exitGame = false;
-
-        public UserInterfaceHandler(PlayerController currentPlayerController)
-        {
-            ChangeInterfaceStyleCallback changeInterface = new ChangeInterfaceStyleCallback(ChangeUserInterfaceStyle);
-            currentInterfaceStyle = new ExploreMenu(changeInterface, currentPlayerController); 
+        public UserInterfaceHandler(PlayerController setCurrentPlayerController)
+        {        
+            CurrentMenu = new ExploreMenu(setCurrentPlayerController);
         }
+
         public void GenerateOutput()
         {
             while (exitGame == false)
             {
                 Console.Clear();
-                currentInterfaceStyle.RunMenu();
-                UserInterfaceUtilities.Pause();
+                Console.WriteLine("\x1b[3J"); //Escape code from stackoverflow! It clears the whole console buffer :) *Magic*
+                CurrentMenu.RunMenu();
             }
 
             Console.WriteLine("Exiting the game...");
@@ -50,9 +47,12 @@ namespace Little_Choice_Based_RPG.Managers.Player_Manager.Frontend.UserInterface
             exitGame = true;
         }
 
-        private void ChangeUserInterfaceStyle(IUserInterface newInterfaceStyle)
+        public void ChangeInterface(IUserInterface newInterfaceStyle)
         {
-            currentInterfaceStyle = newInterfaceStyle;
+            CurrentMenu = newInterfaceStyle;
         }
+
+        public IUserInterface CurrentMenu { get; private set; }
+
     }
 }
