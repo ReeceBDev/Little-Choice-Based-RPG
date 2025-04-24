@@ -13,7 +13,6 @@ using Little_Choice_Based_RPG.Resources.Entities.Physical.Living.Players;
 using Little_Choice_Based_RPG.Managers.World;
 using Little_Choice_Based_RPG.Resources.Rooms;
 using Little_Choice_Based_RPG.Types;
-using Little_Choice_Based_RPG.Types.Interactions.InteractDelegate;
 using Little_Choice_Based_RPG.Resources.Entities.Conceptual;
 using Little_Choice_Based_RPG.Types.EntityProperties;
 
@@ -24,6 +23,8 @@ namespace Little_Choice_Based_RPG.Managers.Player_Manager.Frontend.UserInterface
     {
         static uint uniqueIdentifier;
         public void RunMenu();
+
+        public bool ExitMenu { get; set; }
         /*
         public IInvokableInteraction RequestUserChoosesInteraction(List<IInvokableInteraction> possibleInteractionChoices);
         public GameObject RequestUserChoosesGameObject(List<EntityProperty>? propertyFilter = null);
