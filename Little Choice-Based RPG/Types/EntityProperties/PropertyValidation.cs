@@ -20,11 +20,12 @@ namespace Little_Choice_Based_RPG.Types.EntityProperties
             if (!IsValidPropertyName(setPropertyName))
                 validProperties.Add(setPropertyName, setPropertyType);
             else
-                throw new ArgumentException("Duplicate ValidProperty name. Tried to add a ValidProperty which already exists!");
+                throw new ArgumentException($"Duplicate ValidProperty name. Tried to add a ValidProperty which already exists! Offender details: Name: {setPropertyName}, PropertyType: {setPropertyType}");
         }
 
         /// <summary> Tests if a property value's type exists. </summary>
-        public static bool IsValidPropertyType(object propertyValueType) => Enum.IsDefined(typeof(PropertyType), propertyValueType.GetType().Name.ToString());
+        public static bool IsValidPropertyType(object propertyValueType) 
+            => Enum.IsDefined(typeof(PropertyType), propertyValueType.GetType().Name.ToString());
 
         /// <summary> Tests if a property name exists. </summary>
         public static bool IsValidPropertyName(string propertyName) => validProperties.ContainsKey(propertyName);
