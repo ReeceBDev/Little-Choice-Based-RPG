@@ -1,5 +1,6 @@
 ﻿using Little_Choice_Based_RPG.Resources.PropertyContainerEventArgs;
 using Little_Choice_Based_RPG.Resources.Systems.ContainerSystems.Inventory;
+using Little_Choice_Based_RPG.Resources.Systems.SystemEventBus;
 using Little_Choice_Based_RPG.Types.EntityProperties;
 using Little_Choice_Based_RPG.Types.Interactions.InteractionDelegates;
 using Little_Choice_Based_RPG.Types.PropertyExtensions;
@@ -17,7 +18,7 @@ namespace Little_Choice_Based_RPG.Resources
 {
     public abstract class PropertyContainer : IPropertyContainer
     {
-        protected static uint globalCounter;
+        public static uint globalCounter;
 
         private readonly static Dictionary<string, PropertyType> requiredProperties = new Dictionary<string, PropertyType>()
         {
@@ -33,7 +34,6 @@ namespace Little_Choice_Based_RPG.Resources
 
         private Dictionary<string, object> defaultProperties = new Dictionary<string, object>()
         {
-            {"ID", ++globalCounter},
             {"Component.DescriptorSystem", true }
         };
 
@@ -46,6 +46,8 @@ namespace Little_Choice_Based_RPG.Resources
 
         private protected PropertyContainer(Dictionary<string, object> derivedProperties)
         {
+            Properties.CreateProperty("ID", globalCounter++); // Must be here, as the intialisers are saved per type, inculding the = new Dictionary!
+
             //Extensions
             //Subscribe to extension add and remove events, for the local ExtensionHandler
             Extensions.ExtensionAdded += OnExtensionAdded;
@@ -87,7 +89,7 @@ namespace Little_Choice_Based_RPG.Resources
         {
             foreach (var property in testRequiredProperties)
                 if (!Properties.HasExistingPropertyName(property.Key))
-                    throw new Exception($"A required property has not been defined in {Properties}. Property name: {property.Key}");
+                    throw new Exception($"A required property has not been defined in the PropertyHandler of a prospective {this.GetType().Name.ToString()}. \n\nMissing Property details: \nName: {property.Key}, \nValue: {property.Value}. \n\n{this.GetType().Name.ToString()} details: \nPropertyContainer: {this}, \nType: {this.GetType()}, \nName: {(this.Properties.HasExistingPropertyName("Name") ? this.Properties.GetPropertyValue("Name") : "Null - Name not set.")}, \nPropertyHandler: {this.Properties}");
         }
 
         protected virtual void OnExtensionAdded(object sender, IPropertyExtension subject) => subject.PropertyExtensionChanged += OnExtensionChanged;        
