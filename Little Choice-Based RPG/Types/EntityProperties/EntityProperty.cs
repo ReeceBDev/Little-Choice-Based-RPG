@@ -14,7 +14,7 @@ namespace Little_Choice_Based_RPG.Types.EntityProperties
         public EntityProperty(string setPropertyName, Object setPropertyValue, bool setIsFrozen = false)
         {
             SetPropertyName(setPropertyName); // Name must be set before Value, or else the value will not know what name to validate against.
-            SetPropertyValue(setPropertyValue);
+                    SetPropertyValue(setPropertyValue);
             ReadOnly = setIsFrozen; // ReadOnly must be set at the end, or else the property might be ReadOnly before the value can be set.
         }
 
@@ -45,7 +45,7 @@ namespace Little_Choice_Based_RPG.Types.EntityProperties
             if (PropertyValidation.IsValidPropertyName(setPropertyName))
                 PropertyName = setPropertyName;
             else
-                throw new ArgumentException($"Name {setPropertyName} not valid. Tried to name an EntityProperty without a matching ValidProperty name!");
+                throw new ArgumentException($"Name {setPropertyName} not valid. Tried to name an EntityProperty without a matching ValidProperty name! \n\nNote: If this was a Component, make sure: \n1. The name matched a real component class type. \n2. The class inherits from PropertyLogic, where the Component.Type ValidProperties are created. \n3. The required component system is running its static constructor before being called!");
         }
 
         /// <summary> The name of the property. This must match an valid property name in PropertyValidation. </summary>
