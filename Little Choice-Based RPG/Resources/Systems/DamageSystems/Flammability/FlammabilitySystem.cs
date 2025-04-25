@@ -1,4 +1,5 @@
 ﻿using Little_Choice_Based_RPG.Resources.Entities.Conceptual;
+using Little_Choice_Based_RPG.Resources.PropertyContainerEventArgs;
 using Little_Choice_Based_RPG.Resources.Systems.DamageSystems.Repair;
 using Little_Choice_Based_RPG.Resources.Systems.SystemEventBus;
 using Little_Choice_Based_RPG.Types.EntityProperties;
@@ -21,7 +22,7 @@ namespace Little_Choice_Based_RPG.Resources.Systems.DamageSystems.Flammability
         }
 
         /// <summary> Provide logic for co-ordinating property changes with their relevant methods. </summary>
-        protected override void OnPropertyChanged(object sender, PropertyChangedEventArgs propertyChangedData)
+        protected override void OnObjectChanged(object sender, ObjectChangedEventArgs objectChangedData)
         {
 
         }
