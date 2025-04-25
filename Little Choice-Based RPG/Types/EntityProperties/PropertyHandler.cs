@@ -117,13 +117,13 @@ namespace Little_Choice_Based_RPG.Types.EntityProperties
                     return testProperty;
             }
 
-            throw new ArgumentException("No such EntityProperty exists inside this objects list of EntityProperties.");
+            throw new ArgumentException($"No such EntityProperty {propertyName} exists inside this objects list of EntityProperties. \n\nEntity Information: \nType: {(HasExistingPropertyName("Type") ? GetPropertyValue("Type") : "Null - Type not set.")}, \nName: {(HasExistingPropertyName("Name") ? GetPropertyValue("Name") : "Null - Name not set.")}");
         }
 
         private int GetEntityPropertyIndex(string propertyName)
         {
             if (!HasExistingPropertyName(propertyName))
-                throw new ArgumentException($"The name {propertyName} was not found on this object's EntityProperties {EntityProperties}!");
+                throw new ArgumentException($"The name {propertyName} was not found on this object's EntityProperties {EntityProperties}! \n\nEntity Information: \nType: {(HasExistingPropertyName("Type") ? GetPropertyValue("Type") : "Null - Type not set.")}, \nName: {(HasExistingPropertyName("Name") ? GetPropertyValue("Name") : "Null - Name not set.")}");
 
             for (int index = 0; index < EntityProperties.Count(); index++)
             {
