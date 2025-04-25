@@ -15,21 +15,20 @@ using System.Runtime.InteropServices.Marshalling;
 using System.Collections.Immutable;
 using System.Collections;
 using System.Runtime.ConstrainedExecution;
-using Little_Choice_Based_RPG.Resources.Entities.Immaterial.Transition;
+using Little_Choice_Based_RPG.Resources.Entities.ImmaterialEntities.Transition;
 using Little_Choice_Based_RPG.Types.EntityProperties;
-using Little_Choice_Based_RPG.Types.RoomSpecificTypes;
 using Little_Choice_Based_RPG.Types;
+using Little_Choice_Based_RPG.Types.DescriptorConditions;
 
 namespace Little_Choice_Based_RPG.Resources.Rooms
 {
     public class Room : PropertyContainer
     {
         private protected List<GameObject> roomEntities = new List<GameObject>();
-        private protected List<ConditionalDescriptor> localConditionalDescriptors = new List<ConditionalDescriptor>();
+        private protected List<IDescriptorCondition> localConditionalDescriptors = new List<IDescriptorCondition>();
 
         private readonly static Dictionary<string, PropertyType> requiredProperties = new Dictionary<string, PropertyType>()
         {
-            {"Descriptor.Default", PropertyType.String},
         };
 
         private readonly static Dictionary<string, PropertyType> optionalProperties = new Dictionary<string, PropertyType>()
@@ -39,7 +38,6 @@ namespace Little_Choice_Based_RPG.Resources.Rooms
 
         private readonly static Dictionary<string, object> defaultProperties = new Dictionary<string, object>()
         {
-            {"Name", "Default Room Test"},
             {"Component.InventorySystem", true }
         };
 
@@ -50,7 +48,7 @@ namespace Little_Choice_Based_RPG.Resources.Rooms
             DeclareNewPropertyTypes(optionalProperties);
         }
 
-        private protected Room(Dictionary<string, object>? derivedProperties = null)
+        public Room(Dictionary<string, object>? derivedProperties = null)
             : base(SetLocalProperties(derivedProperties ??= new Dictionary<string, object>()))
         {
             //Validate required properties have been set on entityProperties
