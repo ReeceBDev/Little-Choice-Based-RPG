@@ -1,5 +1,4 @@
 ﻿using Little_Choice_Based_RPG.Resources.Entities.Conceptual;
-using Little_Choice_Based_RPG.Resources.Entities.Conceptual.Descriptive_Derivatives;
 using Little_Choice_Based_RPG.Resources.Entities.Conceptual.Interactions;
 using Little_Choice_Based_RPG.Types.EntityProperties;
 using System;
@@ -27,7 +26,8 @@ namespace Little_Choice_Based_RPG.Resources.Entities.Physical.Furniture
         private readonly static Dictionary<string, object> defaultProperties = new Dictionary<string, object>()
         {
             { "Component.FlammabilitySystem", true },
-            { "IsFlammable", true }
+            { "IsFlammable", true },
+            { "WeightInKG", 22.0m }
         };
 
         static Chair()
