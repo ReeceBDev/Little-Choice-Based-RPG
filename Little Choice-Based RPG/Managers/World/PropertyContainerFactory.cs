@@ -41,8 +41,7 @@ namespace Little_Choice_Based_RPG.Managers.World
 
         private static void SubscribeToComponents(PropertyContainer targetGameObject)
         {
-            var test = targetGameObject.Properties.EntityProperties.ToList();
-            foreach (var property in test)
+            foreach (var property in targetGameObject.Properties.EntityProperties.ToList())
             {
                 if (!(property.PropertyName.StartsWith("Component.")))
                     continue;
