@@ -1,10 +1,18 @@
 ﻿using Little_Choice_Based_RPG.Managers.Player_Manager.Frontend.UserInterface;
+using Little_Choice_Based_RPG.Managers.Player_Manager.Frontend.UserInterface.UserInterfaceStrategies.NumberedConsole;
+using Little_Choice_Based_RPG.Managers.Player_Manager.Frontend.UserInterface.UserInterfaceStyles;
 using Little_Choice_Based_RPG.Managers.World;
+using Little_Choice_Based_RPG.Resources;
 using Little_Choice_Based_RPG.Resources.Entities.Conceptual;
 using Little_Choice_Based_RPG.Resources.Entities.Physical.Living.Players;
-using Little_Choice_Based_RPG.Resources.EventArgs;
+using Little_Choice_Based_RPG.Resources.PropertyContainerEventArgs;
 using Little_Choice_Based_RPG.Resources.Rooms;
-using Little_Choice_Based_RPG.Resources.Systems.ContainerSystems;
+using Little_Choice_Based_RPG.Resources.Systems.ContainerSystems.Inventory;
+using Little_Choice_Based_RPG.Resources.Systems.ContainerSystems.Inventory.InventoryExtensions;
+using Little_Choice_Based_RPG.Resources.Systems.InteractionSystems.PrivateInteractionsSystems;
+using Little_Choice_Based_RPG.Resources.Systems.InteractionSystems.PrivateInteractionsSystems.PrivateInteractionsExtensions;
+using Little_Choice_Based_RPG.Types.Interactions.InteractionDelegates;
+using Microsoft.VisualBasic;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,17 +24,21 @@ namespace Little_Choice_Based_RPG.Managers.Player_Manager
     /// <summary> One controller is made per active player. Holds information about its player. Provides a central point of access to the entire application. Requires InventorySystem. </summary>
     public class PlayerController
     {
-        InventorySystem currentInventorySystem = new InventorySystem.Instance();
         public PlayerController(Room setCurrentRoom, GameEnvironment setCurrentEnvironment)
         {
             //Set current room, environment and player on this controller
             CurrentRoom = setCurrentRoom;
             CurrentEnvironment = setCurrentEnvironment;
+            CurrentHistoryLog = new();
 
             //Generate the player properties
             //Set player spawn position
             Dictionary<string, object> playerProperties = new Dictionary<string, object>();
-            playerProperties.Add("Position", CurrentRoom.RoomID);
+            playerProperties.Add("Position", setCurrentRoom.Properties.GetPropertyValue("ID"));
+            playerProperties.Add("Type", "Little_Choice_Based_RPG.Resources.Entities.Physical.Living.Players.Player");
+            playerProperties.Add("Name", "A Mysterious Man");
+            playerProperties.Add("Descriptor.Generic.Default", "You are here.");
+            playerProperties.Add("Descriptor.Inspect.Default", "You pat yourself down. You are still here.");
 
             //Create a helmet
             Dictionary<string, object> davodianMk1Helmet = new Dictionary<string, object>();
@@ -46,47 +58,59 @@ namespace Little_Choice_Based_RPG.Managers.Player_Manager
             davodianMk1Helmet.Add("Breakable.ByChoice", true);
             davodianMk1Helmet.Add("Descriptor.Breakable.Interaction.Title", "Damage - Intentionally misalign the helmets longitudinal wave sensor-array");
             davodianMk1Helmet.Add("Descriptor.Breakable.Interaction.Invoking", "You broke the helmet oh nooo!");
+
+            davodianMk1Helmet.Add("Descriptor.InventorySystem.Interaction.Pickup.Title", "");
+            davodianMk1Helmet.Add("Descriptor.InventorySystem.Interaction.Pickup.Invoking", "");
+            davodianMk1Helmet.Add("Descriptor.InventorySystem.Interaction.Drop.Title", "");
+            davodianMk1Helmet.Add("Descriptor.InventorySystem.Interaction.Drop.Invoking", "");
             GameObject testDavodian = (GameObject) PropertyContainerFactory.NewGameObject(davodianMk1Helmet);
 
             //Give the player a helmet
             playerProperties.Add("Gear.Slot.Helmet.ID", testDavodian.Properties.GetPropertyValue("ID"));
 
+
             //Generate the player
             CurrentPlayer = (Player) PropertyContainerFactory.NewGameObject(playerProperties);
+            InitialisePlayer();
+        }
 
+        private void InitialisePlayer()
+        {
             //Put the player into the room
-            currentInventorySystem.StoreInInventory(this, CurrentRoom, CurrentPlayer);
+            InventoryProcessor.StoreInInventory(this, CurrentRoom, CurrentPlayer);
 
             //Generate userinterface
-            var currentUserInterfaceHandler = new UserInterfaceHandler(this);
+            CurrentUserInterfaceHandler = new UserInterfaceHandler(this);
 
             //Subscribe to the Room
-            CurrentRoom.ObjectChanged += OnCurrentRoomUpdated;
+            //CurrentRoom.ObjectChanged += OnCurrentRoomUpdated;
+
+            //Force the player notice this Room
+            HandlePlayerChangedRoom(CurrentRoom, null);
+
+            //Add the player's own descriptor as the first history log entry.
+            CurrentHistoryLog.AddNewHistoryLog((string)CurrentPlayer.Properties.GetPropertyValue("Descriptor.Player.Custom"));
 
             //Run user interface
             while (true)
             {
-                currentUserInterfaceHandler.GenerateOutput();
+                CurrentUserInterfaceHandler.GenerateOutput();
             }
         }
 
-        private void HandlePlayerChangedRoom()
+        private void HandlePlayerChangedRoom(Room newRoom, Room? oldRoom)
         {
-            HandleRoomInventorySystemInteractions();
+            //Subscribe them to the new local user message event
+            ((ItemContainer)newRoom.Extensions.Get("ItemContainer")).BroadcastLocalUserMessage += OnBroadcastLocalUserMessage;
+
+            //Unsubscribe the player from the old local user message event
+            if (oldRoom != null)
+                ((ItemContainer)oldRoom.Extensions.Get("ItemContainer")).BroadcastLocalUserMessage -= OnBroadcastLocalUserMessage;
         }
 
-        private void HandleRoomInventorySystemInteractions()
+        protected virtual void OnBroadcastLocalUserMessage(object sender, string userMessage)
         {
-            //Remove old room pickup interactions
-            throw new NotImplementedException();
-
-            //Add new room pickups interactions
-            currentInventorySystem.GivePlayerRoomPickups(CurrentPlayer, CurrentRoom);
-        }
-
-        protected virtual void OnCurrentRoomUpdated(object sender, ObjectChangedEventArgs roomUpdateArgs)
-        {
-            currentInventorySystem.OnRoomUpdate(CurrentPlayer, roomUpdateArgs);
+            ReceivedLocalUserMessage?.Invoke(this, userMessage);
         }
 
         public GameEnvironment CurrentEnvironment { get; private set; }
@@ -95,11 +119,21 @@ namespace Little_Choice_Based_RPG.Managers.Player_Manager
             get; 
             private set
             {
-                field = value;
+                Room oldRoom = field;
+                Room newRoom = value;
 
-                HandlePlayerChangedRoom();
+                //Set the new room
+                field = newRoom;
+
+                if (CurrentPlayer is not null)
+                    HandlePlayerChangedRoom(newRoom, oldRoom);
             }
         }
+
+        public event EventHandler<string> ReceivedLocalUserMessage;
         public Player CurrentPlayer { get; private set; }
+
+        public PlayerHistoryLog CurrentHistoryLog { get; private set;}
+        public UserInterfaceHandler CurrentUserInterfaceHandler { get; private set; }
     }
 }
