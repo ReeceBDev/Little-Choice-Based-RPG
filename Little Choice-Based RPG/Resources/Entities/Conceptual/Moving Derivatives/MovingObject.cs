@@ -1,20 +1,20 @@
-﻿using Little_Choice_Based_RPG.Types;
+﻿using Little_Choice_Based_RPG.Resources.Rooms;
 using Little_Choice_Based_RPG.Types.EntityProperties;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net;
 using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Little_Choice_Based_RPG.Resources.Entities.Conceptual.Interactions
+namespace Little_Choice_Based_RPG.Resources.Entities.Conceptual.Weightbearing_Derivatives
 {
-    public abstract class InteractableObject : GameObject
+    public class MovingObject : GameObject
     {
         private readonly static Dictionary<string, PropertyType> requiredProperties = new Dictionary<string, PropertyType>()
         {
-
+            { "CanMove", PropertyType.Boolean },
+            { "Position", PropertyType.UInt32 }
         };
 
         private readonly static Dictionary<string, PropertyType> optionalProperties = new Dictionary<string, PropertyType>()
@@ -24,17 +24,17 @@ namespace Little_Choice_Based_RPG.Resources.Entities.Conceptual.Interactions
 
         private readonly static Dictionary<string, object> defaultProperties = new Dictionary<string, object>()
         {
-
+            { "CanMove", true }
         };
 
-        static InteractableObject()
+        static MovingObject()
         {
             //Define new required and optional ValidProperties for this class
             DeclareNewPropertyTypes(requiredProperties);
             DeclareNewPropertyTypes(optionalProperties);
         }
 
-        private protected InteractableObject(Dictionary<string, object>? derivedProperties = null)
+        private protected MovingObject(Dictionary<string, object>? derivedProperties = null)
             : base(SetLocalProperties(derivedProperties ??= new Dictionary<string, object>()))
         {
             //Validate required properties have been set on entityProperties
@@ -48,5 +48,14 @@ namespace Little_Choice_Based_RPG.Resources.Entities.Conceptual.Interactions
 
             return derivedProperties; //Return is required to give (base) the derived list.
         }
+
+        /*
+        public void Move(uint newPosition)
+        {
+            //this.Position = newPosition;
+        }
+
+        //public void MoveToRoom(RoomDirection direction) => this.Position = direction.DestinationRoomID;
+        */
     }
 }

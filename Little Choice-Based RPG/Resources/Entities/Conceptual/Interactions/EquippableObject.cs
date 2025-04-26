@@ -1,4 +1,4 @@
-﻿using Little_Choice_Based_RPG.Resources.Entities.Conceptual.Descriptive_Derivatives;
+﻿using Little_Choice_Based_RPG.Resources.Systems.InformationalSystems.Descriptor;
 using Little_Choice_Based_RPG.Types;
 using Little_Choice_Based_RPG.Types.EntityProperties;
 using Microsoft.VisualBasic;
@@ -66,13 +66,15 @@ namespace Little_Choice_Based_RPG.Resources.Entities.Conceptual.Interactions
         }
         */
 
-        public void Equip()
+        /*
+        public void Equip(GameObject targetContainer)
         {
-            Console.WriteLine(Properties.GetPropertyValue("Descriptor.Equip"));
+            Console.WriteLine(DescriptorLogic.GetDescriptor(targetContainer, "Equip"));
         }
-        public void Unequip()
+        public void Unequip(GameObject targetContainer)
         {
-            Console.WriteLine(Properties.GetPropertyValue("Descriptor.Unequip"));
+            Console.WriteLine(DescriptorLogic.GetDescriptor(targetContainer, "Unequip"));
         }
+        */
     }
 }
