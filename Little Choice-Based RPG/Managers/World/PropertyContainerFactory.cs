@@ -20,7 +20,9 @@ namespace Little_Choice_Based_RPG.Managers.World
         public static PropertyContainer NewGameObject(Dictionary<string, object> properties)
         {
             PropertyContainer newGameObject = GenerateObjectFromTypeProperty(properties);
-            SubscribeToComponents(newGameObject, properties);
+
+            //Subscribe to components
+            SubscribeToComponents(newGameObject);
 
             return newGameObject;
         }
@@ -37,9 +39,10 @@ namespace Little_Choice_Based_RPG.Managers.World
             return castedGameObject;
         }
 
-        private static void SubscribeToComponents(PropertyContainer targetGameObject, Dictionary<string, object> properties)
+        private static void SubscribeToComponents(PropertyContainer targetGameObject)
         {
-            foreach (EntityProperty property in targetGameObject.Properties.EntityProperties)
+            var test = targetGameObject.Properties.EntityProperties.ToList();
+            foreach (var property in test)
             {
                 if (!(property.PropertyName.StartsWith("Component.")))
                     continue;
