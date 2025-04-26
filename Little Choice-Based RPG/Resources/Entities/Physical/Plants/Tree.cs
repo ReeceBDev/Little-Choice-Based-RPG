@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using static Little_Choice_Based_RPG.Types.Interactions.InteractDelegate.Interaction;
+using static Little_Choice_Based_RPG.Types.Interactions.InteractionDelegates.Interaction;
 
 namespace Little_Choice_Based_RPG.Resources.Entities.Physical.Plants
 {
@@ -24,7 +24,7 @@ namespace Little_Choice_Based_RPG.Resources.Entities.Physical.Plants
 
         private readonly static Dictionary<string, object> defaultProperties = new Dictionary<string, object>()
         {
-
+            { "WeightInKG", 26000.0m }
         };
 
         static Tree()
