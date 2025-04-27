@@ -17,16 +17,58 @@ namespace Little_Choice_Based_RPG.Managers.Player_Manager.Frontend.UserInterface
 
         public static string WriteDialogue(string inputText, uint setTextDelayInMs = 0)
         {
-            int textDelayInMs = (int) setTextDelayInMs;
+            int textDelayInMs = (int)setTextDelayInMs;
+            Console.ForegroundColor = GetColourByCode(default);
 
             for (int i = 0; i < inputText.Length; i++)
             {
-                if (Console.KeyAvailable) textDelayInMs = 1;
+                //if (Console.KeyAvailable) textDelayInMs = 1;
+
+                //Change the colour when requested.
+                if (inputText[i].Equals('§'))
+                {
+                    //Change the colour
+                    if ((i + 1) >= inputText.Remove(0, i).Length) //Ensure that there is more than one input character remaining, to prevent exception out of bound errors.
+                    {
+                        Console.ForegroundColor = GetColourByCode(inputText[i + 1]);
+                        i++; //Skip the next character
+                        continue; //Skip the current character
+                    }
+                }
+
+
                 Console.Write(inputText[i]);
                 if (i % 2 == 0) Thread.Sleep(textDelayInMs);
             }
             return inputText;
 
+        }
+
+        private static ConsoleColor GetColourByCode(char code)
+        {
+            var defaultColour = ConsoleColor.White;
+
+            Dictionary<char, ConsoleColor> colourCodes = new Dictionary<char, ConsoleColor>
+                {
+                    { '0', ConsoleColor.Black },
+                    { '1', ConsoleColor.DarkBlue },
+                    { '2', ConsoleColor.DarkGreen },
+                    { '3', ConsoleColor.DarkCyan },
+                    { '4', ConsoleColor.DarkRed },
+                    { '5', ConsoleColor.DarkMagenta },
+                    { '6', ConsoleColor.DarkYellow },
+                    { '7', ConsoleColor.Gray },
+                    { '8', ConsoleColor.DarkGray },
+                    { '9', ConsoleColor.Blue },
+                    { 'a', ConsoleColor.Green },
+                    { 'b', ConsoleColor.Cyan },
+                    { 'c', ConsoleColor.Red },
+                    { 'd', ConsoleColor.Magenta },
+                    { 'e', ConsoleColor.Yellow },
+                    { 'f', ConsoleColor.White },
+                };
+
+            return colourCodes.TryGetValue(code, out var newColour) ? newColour : defaultColour;
         }
 
         public static void RemoveDialogue(string message, int sleepTime = 20)
@@ -52,7 +94,7 @@ namespace Little_Choice_Based_RPG.Managers.Player_Manager.Frontend.UserInterface
         }
 
         /// <summary> Splits a string into new lines based on a maximum line count, with a prefix, infix and suffix. </summary>
-        public static List<string> SplitIntoLines(string newEntry, string entryPrefix, 
+        public static List<string> SplitIntoLines(string newEntry, string entryPrefix,
             string entryInfix, string entrySuffix, uint maximumLineLength = 120)
         {
             int prospectiveCharacterIndex = 0;
