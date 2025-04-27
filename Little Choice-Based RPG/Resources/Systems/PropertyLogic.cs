@@ -22,10 +22,11 @@ namespace Little_Choice_Based_RPG.Resources.Systems
                 PropertyValidation.CreateValidProperty($"Component.{this.GetType().Name.ToString()}", PropertyType.Boolean);
 
             //Listen for new property containers which try to use systems
-            SystemSubscriptionEventBus.SystemSubcriptionRequest += OnSystemSubscriptionRequest;
+            SystemSubscriptionEventBus.SystemSubcriptionRequest += OnSystemSubscriptionRequest; //Subscribe
+            SystemSubscriptionEventBus.SystemUnsubscriptionRequest += OnSystemUnsubscriptionRequest; //Optional unsubscribe
         }
         
-        protected virtual void OnSystemSubscriptionRequest(object sender, SystemSubscriptionRequestEventArgs systemSubscriptionRequestData)
+        protected void OnSystemSubscriptionRequest(object sender, SystemSubscriptionRequestEventArgs systemSubscriptionRequestData)
         {
             //If the current system type matches the reference name, subscribe to the requester's property list.
             if (systemSubscriptionRequestData.systemReferenceName == this.GetType().Name.ToString())
@@ -35,6 +36,16 @@ namespace Little_Choice_Based_RPG.Resources.Systems
 
                 //Initialise the subscriber
                 InitialiseNewSubscriber(systemSubscriptionRequestData.targetPropertyContainer, systemSubscriptionRequestData.targetPropertyContainer.Properties);
+            }
+        }
+
+        protected void OnSystemUnsubscriptionRequest(object sender, SystemSubscriptionRequestEventArgs systemSubscriptionRequestData)
+        {
+            //If the current system type matches the reference name, unsubscribe from the requester's property list.
+            if (systemSubscriptionRequestData.systemReferenceName == this.GetType().Name.ToString())
+            {
+                //Unsubscribe from the requesting object's change event
+                systemSubscriptionRequestData.targetPropertyContainer.ObjectChanged -= OnObjectChanged;
             }
         }
 
