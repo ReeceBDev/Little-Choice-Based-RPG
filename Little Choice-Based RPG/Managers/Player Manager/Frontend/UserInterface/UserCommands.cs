@@ -184,7 +184,8 @@ namespace Little_Choice_Based_RPG.Managers.Player_Manager.Frontend.UserInterface
                     "Valid Commands:" +
                     "\n - Say (\"Your message goes here\") - Broadcasts a message to other players in the room." +
                     "\n - Advert (\"Your message goes here\") - Broadcasts a message to all players in the game, in-character." +
-                    "\n - OOC (\"Your message goes here\") - Broadcasts a message to all players in the game, out of character"
+                    "\n - OOC (\"Your message goes here\") - Broadcasts a message to all players in the game, out of character" +
+                    "\n - RAINBOW - Produces a rainbow piece of text, for fun."
                     );
 
                 return true;
