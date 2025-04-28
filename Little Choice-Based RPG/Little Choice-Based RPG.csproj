@@ -19,6 +19,5 @@
     <Folder Include="Managers\Player Manager\Frontend\UserInterface\UserInterfaceStrategies\ParserMUD\" />
     <Folder Include="Resources\Entities\ImmaterialEntities\Container\" />
     <Folder Include="Resources\Entities\Physical\Vehicles\" />
-    <Folder Include="Types\PropertyExtensions\Extensions\" />
   </ItemGroup>
 </Project>

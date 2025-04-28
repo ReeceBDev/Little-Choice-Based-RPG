@@ -1,5 +1,4 @@
 ﻿using Little_Choice_Based_RPG.Resources.Entities.Conceptual;
-using Little_Choice_Based_RPG.Resources.Entities.Conceptual.Interactions;
 using Little_Choice_Based_RPG.Types.EntityProperties;
 using System;
 using System.Collections.Generic;
@@ -10,7 +9,7 @@ using static Little_Choice_Based_RPG.Types.Interactions.InteractionDelegates.Int
 
 namespace Little_Choice_Based_RPG.Resources.Entities.Physical.Plants
 {
-    public class Tree : InteractableObject
+    public class Tree : GameObject
     {
         private readonly static Dictionary<string, PropertyType> requiredProperties = new Dictionary<string, PropertyType>()
         {

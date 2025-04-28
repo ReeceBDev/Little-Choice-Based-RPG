@@ -34,7 +34,7 @@ namespace Little_Choice_Based_RPG.Managers.Player_Manager
             //Generate the player properties
             //Set player spawn position
             Dictionary<string, object> playerProperties = new Dictionary<string, object>();
-            playerProperties.Add("Position", setCurrentRoom.Properties.GetPropertyValue("ID"));
+            //playerProperties.Add("Position", setCurrentRoom.Properties.GetPropertyValue("ID"));
             playerProperties.Add("Type", "Little_Choice_Based_RPG.Resources.Entities.Physical.Living.Players.Player");
             playerProperties.Add("Name", "A Mysterious Man");
             playerProperties.Add("Descriptor.Generic.Default", "You are here.");
@@ -46,8 +46,8 @@ namespace Little_Choice_Based_RPG.Managers.Player_Manager
             davodianMk1Helmet.Add("Type", "Little_Choice_Based_RPG.Resources.Entities.Physical.Equippables.Armour.Helmet");
             davodianMk1Helmet.Add("Descriptor.Generic.Default", "Discarded aside here is your original Davodian MkI, its dented gunmetal grey faceplate long lustreless.");
             davodianMk1Helmet.Add("Descriptor.Inspect.Default", "Disfigured and mottled from years of abuse, the gunmetal grey protective sensors relay a live feed, protecting your vision and perceptible hearing.\r\nThe units bodywork has been long since reworked in patchwork copper shielding - under the seams near-charred components made up of scrapped debris poke through residual sand.");
-            davodianMk1Helmet.Add("Descriptor.Equip", "Dusty residue coats your hands as you heave the thick, heavy metal above you and press your forehead in.\r\nInterlocking clicks engage behind your neck, a gentle buzz as the metal comes online.");
-            davodianMk1Helmet.Add("Descriptor.Unequip", "Engaging the clasp at the rear, the locks reluctantly scrape their disengaging clicks and the full weight of the visor bears down on your head.\r\nSandpaper lining scratches the sides of your face when you tilt your head forwards and force the faceplate off.");
+            //davodianMk1Helmet.Add("Descriptor.Equip", "Dusty residue coats your hands as you heave the thick, heavy metal above you and press your forehead in.\r\nInterlocking clicks engage behind your neck, a gentle buzz as the metal comes online.");
+            //davodianMk1Helmet.Add("Descriptor.Unequip", "Engaging the clasp at the rear, the locks reluctantly scrape their disengaging clicks and the full weight of the visor bears down on your head.\r\nSandpaper lining scratches the sides of your face when you tilt your head forwards and force the faceplate off.");
 
             davodianMk1Helmet.Add("Component.RepairSystem", true);
             davodianMk1Helmet.Add("Repairable.ByChoice", true);

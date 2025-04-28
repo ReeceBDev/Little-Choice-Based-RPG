@@ -4,12 +4,12 @@ using System.Linq;
 using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
-using Little_Choice_Based_RPG.Resources.Entities.Conceptual.Interactions;
+using Little_Choice_Based_RPG.Resources.Entities.Conceptual;
 using Little_Choice_Based_RPG.Types.EntityProperties;
 
 namespace Little_Choice_Based_RPG.Resources.Entities.Physical.Equippables.Armour
 {
-    internal class Helmet : EquippableObject
+    internal class Helmet : GameObject
     {
         private readonly static Dictionary<string, PropertyType> requiredProperties = new Dictionary<string, PropertyType>()
         {

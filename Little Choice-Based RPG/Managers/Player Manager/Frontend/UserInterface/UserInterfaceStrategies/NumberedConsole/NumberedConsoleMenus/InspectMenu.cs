@@ -1,6 +1,5 @@
 ﻿using Little_Choice_Based_RPG.Managers.Player_Manager.Frontend.UserInterface.UserInterfaceStyles;
 using Little_Choice_Based_RPG.Resources.Entities.Conceptual;
-using Little_Choice_Based_RPG.Resources.Entities.ImmaterialEntities.System;
 using Little_Choice_Based_RPG.Resources;
 using Little_Choice_Based_RPG.Types.Interactions.InteractionDelegates;
 using Little_Choice_Based_RPG.Types.Interactions;

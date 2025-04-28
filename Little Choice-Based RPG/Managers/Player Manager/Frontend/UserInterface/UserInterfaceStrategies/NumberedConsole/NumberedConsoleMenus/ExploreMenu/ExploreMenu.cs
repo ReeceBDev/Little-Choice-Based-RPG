@@ -2,7 +2,6 @@
 using Little_Choice_Based_RPG.Managers.World;
 using Little_Choice_Based_RPG.Resources;
 using Little_Choice_Based_RPG.Resources.Entities.Conceptual;
-using Little_Choice_Based_RPG.Resources.Entities.ImmaterialEntities.System;
 using Little_Choice_Based_RPG.Resources.Entities.Physical.Living.Players;
 using Little_Choice_Based_RPG.Resources.Rooms;
 using Little_Choice_Based_RPG.Types.EntityProperties;

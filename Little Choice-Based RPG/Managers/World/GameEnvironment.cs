@@ -23,6 +23,7 @@ namespace Little_Choice_Based_RPG.Managers.World
         private protected static uint currentID = 0;
         public uint UniqueID { get; init; }
 
+        public Dictionary<>
         public Dictionary<uint, Room> Rooms = new Dictionary<uint, Room>();
 
         public GameEnvironment()

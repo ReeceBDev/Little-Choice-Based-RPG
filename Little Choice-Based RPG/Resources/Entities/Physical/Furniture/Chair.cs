@@ -1,5 +1,4 @@
 ﻿using Little_Choice_Based_RPG.Resources.Entities.Conceptual;
-using Little_Choice_Based_RPG.Resources.Entities.Conceptual.Interactions;
 using Little_Choice_Based_RPG.Types.EntityProperties;
 using System;
 using System.Collections.Generic;
@@ -10,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Little_Choice_Based_RPG.Resources.Entities.Physical.Furniture
 {
-    public class Chair : InteractableObject
+    public class Chair : GameObject
     {
 
         private readonly static Dictionary<string, PropertyType> requiredProperties = new Dictionary<string, PropertyType>()

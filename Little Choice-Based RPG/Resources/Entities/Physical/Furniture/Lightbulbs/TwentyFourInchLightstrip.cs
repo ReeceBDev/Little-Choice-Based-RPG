@@ -1,5 +1,4 @@
-﻿using Little_Choice_Based_RPG.Resources.Entities.Conceptual.Interactions;
-using Little_Choice_Based_RPG.Types.EntityProperties;
+﻿using Little_Choice_Based_RPG.Types.EntityProperties;
 using System;
 using System.Collections.Generic;
 using System.Linq;
