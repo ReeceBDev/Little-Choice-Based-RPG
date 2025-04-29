@@ -17,17 +17,20 @@ namespace Little_Choice_Based_RPG.Managers.World
     /// <summary> Manufactures PropertyContainers of any type based on its properties. Gets allocated an outline of each object from JSONs. </summary>
     public static class PropertyContainerFactory
     {
-        public static PropertyContainer NewGameObject(Dictionary<string, object> properties)
+        public static PropertyContainer New(Dictionary<string, object> properties)
         {
-            PropertyContainer newGameObject = GenerateObjectFromTypeProperty(properties);
+            PropertyContainer newGameObject = GenerateFromTypeProperty(properties);
 
             //Subscribe to components
             SubscribeToComponents(newGameObject);
 
+            //Notify the creaton of a new PropertyContainer.
+            NewPropertyContainer?.Invoke(null, newGameObject);
+
             return newGameObject;
         }
 
-        private static PropertyContainer GenerateObjectFromTypeProperty(Dictionary<string, object> properties)
+        private static PropertyContainer GenerateFromTypeProperty(Dictionary<string, object> properties)
         {
             if (!properties.ContainsKey("Type"))
                 throw new ArgumentException("The properties of the new object did not include the Type property! Properties: {properties}");
@@ -55,5 +58,7 @@ namespace Little_Choice_Based_RPG.Managers.World
                 SystemSubscriptionEventBus.Subscribe(targetGameObject, systemReferenceName);
             }
         }
+
+        public static event EventHandler<PropertyContainer> NewPropertyContainer;
     }
 }

@@ -63,14 +63,14 @@ namespace Little_Choice_Based_RPG.Managers.Player_Manager
             davodianMk1Helmet.Add("Descriptor.InventorySystem.Interaction.Pickup.Invoking", "");
             davodianMk1Helmet.Add("Descriptor.InventorySystem.Interaction.Drop.Title", "");
             davodianMk1Helmet.Add("Descriptor.InventorySystem.Interaction.Drop.Invoking", "");
-            GameObject testDavodian = (GameObject) PropertyContainerFactory.NewGameObject(davodianMk1Helmet);
+            GameObject testDavodian = (GameObject) PropertyContainerFactory.New(davodianMk1Helmet);
 
             //Give the player a helmet
             playerProperties.Add("Gear.Slot.Helmet.ID", testDavodian.Properties.GetPropertyValue("ID"));
 
 
             //Generate the player
-            CurrentPlayer = (Player) PropertyContainerFactory.NewGameObject(playerProperties);
+            CurrentPlayer = (Player) PropertyContainerFactory.New(playerProperties);
             InitialisePlayer();
         }
 
