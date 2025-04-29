@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Little_Choice_Based_RPG.Types.Navigation
 {
-    public enum Directions
+    public enum CardinalDirection
     {
         North,
         Northeast,
