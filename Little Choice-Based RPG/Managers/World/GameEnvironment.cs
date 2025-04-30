@@ -1,60 +1,75 @@
-﻿using Little_Choice_Based_RPG.Resources.Entities.Conceptual;
-using Little_Choice_Based_RPG.Resources.Entities.Physical.Furniture;
+﻿using Little_Choice_Based_RPG.Resources;
+using Little_Choice_Based_RPG.Resources.Entities.Conceptual;
 using Little_Choice_Based_RPG.Resources.Entities.Physical.Plants;
 using Little_Choice_Based_RPG.Resources.Rooms;
 using Little_Choice_Based_RPG.Resources.Systems.ContainerSystems.Inventory.InventoryExtensions;
 using Little_Choice_Based_RPG.Resources.Systems.InformationalSystems;
 using Little_Choice_Based_RPG.Resources.Systems.InformationalSystems.Descriptor;
-using Little_Choice_Based_RPG.Resources.Systems.InformationalSystems.Descriptor.DescriptorExtensions;
-using Little_Choice_Based_RPG.Types;
-using Little_Choice_Based_RPG.Types.DescriptorConditions;
-using Little_Choice_Based_RPG.Types.EntityProperties;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Numerics;
-using System.Text;
-using System.Threading.Tasks;
+using Little_Choice_Based_RPG.Types.Navigation;
 
 namespace Little_Choice_Based_RPG.Managers.World
 {
     public class GameEnvironment
     {
+        private readonly Coordinates minimumMapPoint = new Coordinates(-5, 0, -5);
+        private readonly Coordinates maximumMapPoint = new Coordinates(5, 0, 5);
+
         private protected static uint currentID = 0;
         public uint UniqueID { get; init; }
 
-        public Dictionary<>
-        public Dictionary<uint, Room> Rooms = new Dictionary<uint, Room>();
+        public RoomPositions Rooms = new();
 
         public GameEnvironment()
         {
             UniqueID = ++currentID;
+
+            Rooms = GenerateEnvironment();
+
+            //Subscribe to the PropertyContainer Factory, for recieving room additions.
+            //PropertyContainerFactory.NewPropertyContainer += OnNewPropertyContainer;
         }
 
-        public void GenerateAllRooms()
+        public RoomPositions GenerateEnvironment()
         {
+            RoomPositions predefinedRooms = new();
+
+            predefinedRooms = GeneratePredefinedRooms();
+            predefinedRooms = EnvironmentMapper.AutoGenerate(predefinedRooms, minimumMapPoint, maximumMapPoint);
+
+            return predefinedRooms;
+        }
+
+        public RoomPositions GeneratePredefinedRooms()
+        {
+            RoomPositions predefinedRooms = new();
             //string setNorthOfAtriiKaalDefaultDescriptor = "You wake up with a start - you breath in sharply and sputter as heavy dust dries your mouth. \r\nIn front of you is the cracked and charred sandstone ground of the Potsun Burran. It glitters with the debris of a thousand shredded spaceships.\r\nThe high-pitched drone you hear subsides in to a roar as you realise you are laying on the ground, face-first.";
             //Room northOfAtriiKaal = new Room ("NorthOfAtriiKaal", RoomType.Desert, setNorthOfAtriiKaalDefaultDescriptor);
             //Rooms.Add((uint)northOfAtriiKaal.Properties.GetPropertyValue("ID"), northOfAtriiKaal);
 
             Room burgundyTree1 = GenerateBurgundyTree();
-            Rooms.Add((uint)burgundyTree1.Properties.GetPropertyValue("ID"), burgundyTree1);
+            predefinedRooms.Add(0, 0, 0, burgundyTree1);
 
             Room burgundyTree2 = GenerateBurgundyTree();
-            Rooms.Add((uint) burgundyTree2.Properties.GetPropertyValue("ID"), burgundyTree2);
+            predefinedRooms.Add(1, 0, 0, burgundyTree2);
+
+            return predefinedRooms;
         }
 
-        public Room? GetRoomByID(uint ID)
+        protected virtual void OnNewPropertyContainer(object? sender, PropertyContainer newObject)
         {
-            foreach (KeyValuePair<uint, Room> roomList in Rooms)
+            if (newObject is not Room newRoom)
+                return;
+
+            //If the room already knows where it wants to be exactly:
+            if (newRoom.Properties.HasExistingPropertyName("Position"))
             {
-                if (roomList.Key.Equals(ID))
-                    return roomList.Value;
+                Coordinates coordinates = (Coordinates)newRoom.Properties.GetPropertyValue("Position");
+                Rooms.Add(coordinates.X, coordinates.Y, coordinates.Z, newRoom);
             }
-
-            return null;
+            else
+                return; //Otherwise, for now, do nothing
         }
-
+        
 
         private Room GenerateBurgundyTree()
         {
@@ -68,8 +83,8 @@ namespace Little_Choice_Based_RPG.Managers.World
             newBurgundyWoodChair.Add("Descriptor.InventorySystem.Interaction.Pickup.Invoking", "you hoist up the chair. its heavy.");
             newBurgundyWoodChair.Add("Descriptor.InventorySystem.Interaction.Drop.Title", "let go of the heavy chair.");
             newBurgundyWoodChair.Add("Descriptor.InventorySystem.Interaction.Drop.Invoking", "you drop the chair with a thud. what a relief.");
-            GameObject burgundyWoodChair = (GameObject)PropertyContainerFactory.NewGameObject(newBurgundyWoodChair);
-            GameObject burgundyWoodChair2 = (GameObject)PropertyContainerFactory.NewGameObject(newBurgundyWoodChair);
+            GameObject burgundyWoodChair = (GameObject)PropertyContainerFactory.New(newBurgundyWoodChair);
+            GameObject burgundyWoodChair2 = (GameObject)PropertyContainerFactory.New(newBurgundyWoodChair);
 
 
             //Create a tree
@@ -103,8 +118,8 @@ namespace Little_Choice_Based_RPG.Managers.World
             zalolintLightbulb48w230vHP.Add("Descriptor.InventorySystem.Interaction.Pickup.Invoking", "you are picking up the lightbulb test");
             zalolintLightbulb48w230vHP.Add("Descriptor.InventorySystem.Interaction.Drop.Title", "drop - the lightbulb, test");
             zalolintLightbulb48w230vHP.Add("Descriptor.InventorySystem.Interaction.Drop.Invoking", "you are dropping the lightbulb test");
-            GameObject testLightBulb = (GameObject)PropertyContainerFactory.NewGameObject(zalolintLightbulb48w230vHP);
-            GameObject testLightBulb2 = (GameObject)PropertyContainerFactory.NewGameObject(zalolintLightbulb48w230vHP);
+            GameObject testLightBulb = (GameObject)PropertyContainerFactory.New(zalolintLightbulb48w230vHP);
+            GameObject testLightBulb2 = (GameObject)PropertyContainerFactory.New(zalolintLightbulb48w230vHP);
 
 
             //Create the first conditional descriptor
@@ -138,11 +153,13 @@ namespace Little_Choice_Based_RPG.Managers.World
             newBurgundyTreeRoom.Add("Type", "Little_Choice_Based_RPG.Resources.Rooms.Room");
             newBurgundyTreeRoom.Add("Descriptor.Generic.Default", "Arid desert sand whips by your skin. A few burgundy leaves drift across the floor.");
             newBurgundyTreeRoom.Add("Descriptor.Inspect.Default", "Theres a tree here.");
+            newBurgundyTreeRoom.Add("DirectionSystem.Interaction.Travel.Description", "Feet scraping flecks of shrubbery drowned in dust scrambling from cracked sandstone, you forge your way further across the desolation.");
+            newBurgundyTreeRoom.Add("DirectionSystem.Interaction.Travel.Title", "Travel - ");
 
 
             //Establish new variables
-            Room newRoom = (Room) PropertyContainerFactory.NewGameObject(newBurgundyTreeRoom);
-            ItemContainer roomEntities = (ItemContainer) newRoom.Extensions.Get("ItemContainer");
+            Room newRoom = (Room) PropertyContainerFactory.New(newBurgundyTreeRoom);
+            List<GameObject> roomEntities = ((ItemContainer) newRoom.Extensions.Get("ItemContainer")).Inventory;
 
 
             //Add the new entites to the Room.
