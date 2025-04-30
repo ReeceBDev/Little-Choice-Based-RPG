@@ -29,6 +29,7 @@ using Little_Choice_Based_RPG.Resources.Systems.DamageSystems.Repair;
 using Little_Choice_Based_RPG.Resources.Systems.InformationalSystems.Descriptor;
 using Little_Choice_Based_RPG.Resources.Systems.InteractionSystems.PrivateInteractionsSystems;
 using Little_Choice_Based_RPG.Resources.Systems.PlayerSystems;
+using Little_Choice_Based_RPG.Resources.Systems.RoomSystems;
 using Little_Choice_Based_RPG.Resources.Systems.SystemEventBus;
 using Little_Choice_Based_RPG.Types;
 using Little_Choice_Based_RPG.Types.EntityProperties;
@@ -49,13 +50,14 @@ internal class TextBasedRPG
         new DescriptorSystem();
         new WeightbearingSystem();
         new PrivateInteractionsSystem();
+        new DirectionSystem();
 
         //Generate the environment
         GameEnvironment currentEnvironment = new GameEnvironment();
-        currentEnvironment.GenerateAllRooms(); //Generate rooms within the environment
+        currentEnvironment.GeneratePredefinedRooms(); //Generate rooms within the environment
 
         //Generate a player
-        Room spawnRoom = currentEnvironment.Rooms.ElementAt(1).Value; //Select the room to spawn the player in
+        Room spawnRoom = currentEnvironment.Rooms.GetRoom(0,0,0); //Select the room to spawn the player in
         PlayerController player1 = new PlayerController(spawnRoom, currentEnvironment); //Create the player in that room
     }
 }
