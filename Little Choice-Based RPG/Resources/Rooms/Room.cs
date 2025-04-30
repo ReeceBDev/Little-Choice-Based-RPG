@@ -15,7 +15,6 @@ using System.Runtime.InteropServices.Marshalling;
 using System.Collections.Immutable;
 using System.Collections;
 using System.Runtime.ConstrainedExecution;
-using Little_Choice_Based_RPG.Resources.Entities.ImmaterialEntities.Transition;
 using Little_Choice_Based_RPG.Types.EntityProperties;
 using Little_Choice_Based_RPG.Types;
 using Little_Choice_Based_RPG.Types.DescriptorConditions;
@@ -38,7 +37,8 @@ namespace Little_Choice_Based_RPG.Resources.Rooms
 
         private readonly static Dictionary<string, object> defaultProperties = new Dictionary<string, object>()
         {
-            {"Component.InventorySystem", true }
+            {"Component.InventorySystem", true },
+            {"Component.DirectionSystem", true }
         };
 
         static Room()
