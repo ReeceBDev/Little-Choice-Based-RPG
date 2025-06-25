@@ -1,4 +1,4 @@
-﻿using Little_Choice_Based_RPG.Resources;
+﻿using Little_Choice_Based_RPG.Resources.Entities;
 using Little_Choice_Based_RPG.Resources.Entities.Conceptual;
 using Little_Choice_Based_RPG.Resources.Entities.Physical.Plants;
 using Little_Choice_Based_RPG.Resources.Rooms;

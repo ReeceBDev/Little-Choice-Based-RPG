@@ -1,14 +1,7 @@
-﻿using Little_Choice_Based_RPG.Managers.Player_Manager;
-using Little_Choice_Based_RPG.Managers.Player_Manager.Frontend.UserInterface;
-using Little_Choice_Based_RPG.Resources;
+﻿using Little_Choice_Based_RPG.Managers.PlayerControl;
 using Little_Choice_Based_RPG.Resources.Entities.Conceptual;
 using Little_Choice_Based_RPG.Types.EntityProperties;
 using Little_Choice_Based_RPG.Types.TypedEventArgs;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using static Little_Choice_Based_RPG.Types.Interactions.InteractionDelegates.InteractionUsingNothing;
 
 namespace Little_Choice_Based_RPG.Types.Interactions.InteractionDelegates.TripleParameterDelegates

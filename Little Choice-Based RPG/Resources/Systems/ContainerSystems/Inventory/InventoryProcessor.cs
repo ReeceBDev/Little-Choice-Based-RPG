@@ -1,18 +1,13 @@
-﻿using Little_Choice_Based_RPG.Managers.Player_Manager;
-using Little_Choice_Based_RPG.Managers.Player_Manager.Frontend.UserInterface.UserInterfaceStrategies.NumberedConsole.NumberedConsoleMenus.NumberedConsoleSubMenus;
-using Little_Choice_Based_RPG.Managers.Player_Manager.Frontend.UserInterface.UserInterfaceStyles;
-using Little_Choice_Based_RPG.Managers.World;
+﻿using Little_Choice_Based_RPG.External.ConsoleEndpoint.ConsoleMenus;
+using Little_Choice_Based_RPG.External.ConsoleEndpoint.ConsoleMenus.ConsoleSubMenus;
+using Little_Choice_Based_RPG.Managers.PlayerControl;
+using Little_Choice_Based_RPG.Resources.Entities;
 using Little_Choice_Based_RPG.Resources.Entities.Conceptual;
 using Little_Choice_Based_RPG.Resources.Entities.Physical.Living.Players;
 using Little_Choice_Based_RPG.Resources.Rooms;
 using Little_Choice_Based_RPG.Resources.Systems.ContainerSystems.Inventory.InventoryExtensions;
 using Little_Choice_Based_RPG.Resources.Systems.ContainerSystems.Weightbearing;
 using Little_Choice_Based_RPG.Types.EntityProperties;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Little_Choice_Based_RPG.Resources.Systems.ContainerSystems.Inventory
 {
@@ -60,10 +55,10 @@ namespace Little_Choice_Based_RPG.Resources.Systems.ContainerSystems.Inventory
 
         public static void OpenContainer(PlayerController mutexHolder, GameObject targetContainer, Player currentPlayer)
         {
-            if (!mutexHolder.CurrentUserInterfaceHandler.CurrentMenu.Equals(typeof(ExploreMenu)))
+            if (!mutexHolder.CurrentConsoleEndpoint.CurrentMenu.Equals(typeof(ExploreMenu)))
                 throw new Exception("Tried to create an OpenContainer on the player's current Menu, but it was not ExploreMenu...!");
 
-            ExploreMenu currentMenu = (ExploreMenu) mutexHolder.CurrentUserInterfaceHandler.CurrentMenu;
+            ExploreMenu currentMenu = (ExploreMenu) mutexHolder.CurrentConsoleEndpoint.CurrentMenu;
 
             OpenContainerSubMenu.GenerateOpenContainerSubMenu(targetContainer);
             throw new Exception("Haven't implemented the submenu yet to work with the refactored menu system!" +

@@ -1,14 +1,7 @@
-﻿using Little_Choice_Based_RPG.Resources.Entities.Physical.Living.Players;
+﻿using Little_Choice_Based_RPG.Resources.Entities;
 using Little_Choice_Based_RPG.Resources.PropertyContainerEventArgs;
-using Little_Choice_Based_RPG.Resources.Systems.InteractionSystems.PrivateInteractionsSystems.PrivateInteractionsExtensions;
 using Little_Choice_Based_RPG.Resources.Systems.SystemEventBus;
 using Little_Choice_Based_RPG.Types.EntityProperties;
-using Little_Choice_Based_RPG.Types.Interactions.InteractionDelegates;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Little_Choice_Based_RPG.Resources.Systems
 {

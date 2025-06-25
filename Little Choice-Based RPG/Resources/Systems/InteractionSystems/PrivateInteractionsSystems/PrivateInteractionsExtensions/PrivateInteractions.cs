@@ -1,48 +1,57 @@
-﻿using Little_Choice_Based_RPG.Resources.Entities.Physical.Living.Players;
+﻿using Little_Choice_Based_RPG.Resources.Entities;
+using Little_Choice_Based_RPG.Types;
 using Little_Choice_Based_RPG.Types.Interactions.InteractionDelegates;
 using Little_Choice_Based_RPG.Types.PropertyExtensions;
 using Little_Choice_Based_RPG.Types.PropertyExtensions.PropertyExtensionEventArgs;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Collections.Concurrent;
+using System.Collections.ObjectModel;
 
 namespace Little_Choice_Based_RPG.Resources.Systems.InteractionSystems.PrivateInteractionsSystems.PrivateInteractionsExtensions
 {
     public class PrivateInteractions : IPropertyExtension
     {
-        public List<KeyValuePair<PropertyContainer, IInvokableInteraction>>PrivateInteractionsList { get; private set; } = new();
+        //Note: This has to be KeyValuePair, since several different PropertyContainers might share the same IInvokableInteraction fingerprints.
+        //Similarly, this data can't be swapped, since IInvokableInteractions might match, too!
+        //This was previously a list, without the ulong, before being forced to change into ConcurrentDictionary to support concurrent reads.
 
-        public event EventHandler<PropertyExtensionChangedArgs> PropertyExtensionChanged; //No need to invoke this yet, it has no practical purpose on this class (yet). :)
+        private ConcurrentDictionary<KeyValuePair<PropertyContainer, IInvokableInteraction>, Unit> privateInteractionsList = new();
+
+        public event EventHandler<PropertyExtensionChangedArgs> PropertyExtensionChanged;
         public string UniqueIdentifier { get; init; } = "PrivateInteractions";
 
-        public static void GiveNew(Player targetPlayer, PropertyContainer associatedContainer, IInvokableInteraction interaction)
+        public ReadOnlyDictionary<KeyValuePair<PropertyContainer, IInvokableInteraction>, Unit> PrivateInteractionsList => privateInteractionsList.AsReadOnly();
+
+        public void TryAddPrivateInteraction(PropertyContainer associatedContainer, IInvokableInteraction interaction)
         {
-            if (!targetPlayer.Extensions.Contains("PrivateInteractions"))
-                targetPlayer.Extensions.AddExtension(new PrivateInteractions());
+            lock(this) { 
+            if (privateInteractionsList.ContainsKey(KeyValuePair.Create(associatedContainer, interaction)))
+                throw new Exception("The interaction already existed on the target object {target}! Remember, like removes, you could always skip duplicate values...? But I'll leave this here for now just in case :) <- Best exception message. Wow.");
 
-            PrivateInteractions currentPrivateInteractions = (PrivateInteractions)targetPlayer.Extensions.Get("PrivateInteractions");
+            privateInteractionsList.TryAdd(KeyValuePair.Create(associatedContainer, interaction), Unit.Value);
 
-            currentPrivateInteractions.PrivateInteractionsList.Add(KeyValuePair.Create(associatedContainer, interaction));
+            PropertyExtensionChanged?.Invoke(this, new PropertyExtensionChangedArgs("PrivateInteractions.Added", interaction));
+            }
         }
 
         /// <summary> Attempts to remove the interaction. Supports optional removes. Returns an error code in case error-handling is required. </summary>
-        public static int TryRemove(Player targetPlayer, PropertyContainer associatedContainer, IInvokableInteraction interaction)
+        public int TryRemovePrivateInteraction(PropertyContainer associatedContainer, IInvokableInteraction interaction)
         {
-            int errorCode;
-
-            if (!targetPlayer.Extensions.Contains("PrivateInteractions"))
-                return errorCode = 1; //throw new Exception($"TryRemovePrivateInteraction() Returned error code: 1. Tried to remove an interaction but the player {targetPlayer} did not have the extension \"PrivateInteractions\" to begin with!");
+            lock (this)
+            {
+                int errorCode;
 
             var targetInteractionKeyPair = KeyValuePair.Create(associatedContainer, interaction);
-            PrivateInteractions currentPrivateInteractions = (PrivateInteractions)targetPlayer.Extensions.Get("PrivateInteractions");
 
-            if (!currentPrivateInteractions.PrivateInteractionsList.Any(i => (i.Value.Equals(targetInteractionKeyPair.Value)) && (i.Key.Equals(targetInteractionKeyPair.Key))))
+            if (!privateInteractionsList.Any(i => i.Value.Equals(targetInteractionKeyPair)))
                 return errorCode = 2; //throw new Exception($"TryRemovePrivateInteraction() Returned error code: 2. Tried to remove an interaction but it did not exist on the player {targetPlayer}!");
 
-            currentPrivateInteractions.PrivateInteractionsList.Remove(targetInteractionKeyPair);
+            if (!privateInteractionsList.TryRemove(KeyValuePair.Create(targetInteractionKeyPair, Unit.Value)))
+                return errorCode = 3; //throw new Exception($"TryRemovePrivateInteraction() Returned error code: 3. Tried to remove an interaction but this did not succeed for an unknown reason! {targetPlayer}!");
+
+            PropertyExtensionChanged?.Invoke(this, new PropertyExtensionChangedArgs("PrivateInteractions.Removed", interaction));
+            
             return errorCode = -1; //Success
+            }
         }
     }
 }

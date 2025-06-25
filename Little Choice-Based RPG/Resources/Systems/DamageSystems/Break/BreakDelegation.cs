@@ -1,16 +1,8 @@
-﻿using Little_Choice_Based_RPG.Resources.Entities.Conceptual;
+﻿using Little_Choice_Based_RPG.Resources.Entities;
+using Little_Choice_Based_RPG.Resources.Entities.Conceptual;
 using Little_Choice_Based_RPG.Resources.Systems.InformationalSystems.Descriptor;
-using Little_Choice_Based_RPG.Resources.Systems.InteractionSystems.PublicInteractionsSystems;
 using Little_Choice_Based_RPG.Types.EntityProperties;
-using Little_Choice_Based_RPG.Types.Interactions;
-using Little_Choice_Based_RPG.Types.Interactions.InteractionDelegates;
 using Little_Choice_Based_RPG.Types.Interactions.InteractionDelegates.SingleParameterDelegates;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using static Little_Choice_Based_RPG.Types.Interactions.InteractionDelegates.InteractionUsingNothing;
 using static Little_Choice_Based_RPG.Types.Interactions.InteractionDelegates.SingleParameterDelegates.InteractionUsingGameObject;
 
 namespace Little_Choice_Based_RPG.Resources.Systems.DamageSystems.Break

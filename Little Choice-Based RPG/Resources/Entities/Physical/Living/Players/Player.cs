@@ -1,16 +1,4 @@
-﻿using Little_Choice_Based_RPG.Types;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Numerics;
-using System.Reflection.Metadata.Ecma335;
-using Little_Choice_Based_RPG.Resources.Entities.Physical.Equippables.Armour;
-using Little_Choice_Based_RPG.Resources.Rooms;
-using Little_Choice_Based_RPG.Managers.Player_Manager.Frontend.UserInterface;
-using Little_Choice_Based_RPG.Resources.Entities.Conceptual.Weightbearing_Derivatives;
+﻿using Little_Choice_Based_RPG.Resources.Entities.Conceptual.Weightbearing_Derivatives;
 using Little_Choice_Based_RPG.Types.EntityProperties;
 
 namespace Little_Choice_Based_RPG.Resources.Entities.Physical.Living.Players

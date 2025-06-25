@@ -1,10 +1,6 @@
-﻿using Little_Choice_Based_RPG.Managers.Player_Manager;
+﻿using Little_Choice_Based_RPG.Managers.PlayerControl;
+using Little_Choice_Based_RPG.Resources.Entities;
 using Little_Choice_Based_RPG.Resources.Systems.InformationalSystems.Descriptor;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Little_Choice_Based_RPG.Resources.Systems.DamageSystems.Break
 {

@@ -1,9 +1,8 @@
 ﻿using Little_Choice_Based_RPG.Resources.Entities.Conceptual;
 using Little_Choice_Based_RPG.Resources.Rooms;
 using Little_Choice_Based_RPG.Resources.Systems.ContainerSystems.Inventory.InventoryExtensions;
-using Little_Choice_Based_RPG.Resources.Systems.RoomSystems.ConnectionExtensions;
+using Little_Choice_Based_RPG.Resources.Systems.RoomSystems.DirectionExtensions;
 using Little_Choice_Based_RPG.Types.Navigation;
-using Microsoft.Win32;
 
 namespace Little_Choice_Based_RPG.Managers.World
 {
@@ -52,7 +51,7 @@ namespace Little_Choice_Based_RPG.Managers.World
             {
                 //If the existing coordinate is null, generate a new one. Mark it as auto-generated.
                 if (!existingMap.HasCoordinates(location))
-                    existingMap.Add(location, GenerateRoom(location));
+                    existingMap.Add(location, EnvironmentGeneration.GenerateRoom(location));
 
                 //Otherwise, keep the existing one anyway :)
                 return;

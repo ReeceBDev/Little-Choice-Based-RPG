@@ -1,10 +1,4 @@
-﻿using Little_Choice_Based_RPG.Resources.Entities.Conceptual;
-using Little_Choice_Based_RPG.Types.PropertyExtensions.PropertyExtensionEventArgs;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Little_Choice_Based_RPG.Types.PropertyExtensions.PropertyExtensionEventArgs;
 
 namespace Little_Choice_Based_RPG.Types.PropertyExtensions
 {

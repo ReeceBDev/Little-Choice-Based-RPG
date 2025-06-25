@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Little_Choice_Based_RPG.Types.Interactions
+﻿namespace Little_Choice_Based_RPG.Types.Interactions
 {
     /// <summary> Describes how an Interaction should be presented by the User Interface, for example, if it belongs to a context-menu. </summary>
     public enum InteractionRole

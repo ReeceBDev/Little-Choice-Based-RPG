@@ -1,16 +1,6 @@
-﻿using Little_Choice_Based_RPG.Resources;
-using Little_Choice_Based_RPG.Resources.Entities.Conceptual;
+﻿using Little_Choice_Based_RPG.Resources.Entities;
 using Little_Choice_Based_RPG.Resources.Systems.SystemEventBus;
-using Little_Choice_Based_RPG.Types.EntityProperties;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.ComponentModel.Design;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 
 namespace Little_Choice_Based_RPG.Managers.World
 {

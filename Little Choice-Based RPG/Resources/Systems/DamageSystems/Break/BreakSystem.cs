@@ -1,19 +1,7 @@
-﻿using Little_Choice_Based_RPG.Managers.Player_Manager;
-using Little_Choice_Based_RPG.Managers.Player_Manager.Frontend.UserInterface;
-using Little_Choice_Based_RPG.Resources.Entities.Conceptual;
+﻿using Little_Choice_Based_RPG.Resources.Entities;
 using Little_Choice_Based_RPG.Resources.PropertyContainerEventArgs;
-using Little_Choice_Based_RPG.Resources.Systems.DamageSystems.Repair;
-using Little_Choice_Based_RPG.Resources.Systems.InteractionSystems.PublicInteractionsSystems;
-using Little_Choice_Based_RPG.Resources.Systems.SystemEventBus;
+using Little_Choice_Based_RPG.Resources.Systems.InteractionSystems.PublicInteractionsSystems.PublicInteractionsExtensions;
 using Little_Choice_Based_RPG.Types.EntityProperties;
-using Little_Choice_Based_RPG.Types.Interactions.InteractionDelegates;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.AccessControl;
-using System.Text;
-using System.Threading.Tasks;
-using static Little_Choice_Based_RPG.Types.Interactions.InteractionDelegates.InteractionUsingNothing;
 
 namespace Little_Choice_Based_RPG.Resources.Systems.DamageSystems.Break
 {
@@ -44,13 +32,13 @@ namespace Little_Choice_Based_RPG.Resources.Systems.DamageSystems.Break
                 if (propertyChangedData.Property == "Damage.Broken" && propertyChangedData.Change.Equals(false))
                 {
                     if (modifiedProperties.HasPropertyAndValue("Breakable.ByChoice", true))
-                        PublicInteractionsLogic.AddPublicInteraction(modifiedContainer, BreakDelegation.GetBreakUsingNothing(modifiedContainer, modifiedProperties));
+                        PublicInteractions.TryAddPublicInteraction(modifiedContainer, BreakDelegation.GetBreakUsingNothing(modifiedContainer, modifiedProperties));
                 }
 
                 // When something breakable is broken, remove its choice
                 if (propertyChangedData.Property == "Damage.Broken" && propertyChangedData.Change.Equals(true))
                 {
-                    PublicInteractionsLogic.TryRemovePublicInteraction(modifiedContainer, BreakDelegation.GetBreakUsingNothing(modifiedContainer, modifiedProperties));
+                    PublicInteractions.TryRemovePublicInteraction(modifiedContainer, BreakDelegation.GetBreakUsingNothing(modifiedContainer, modifiedProperties));
                 }
             }
         }
@@ -61,7 +49,7 @@ namespace Little_Choice_Based_RPG.Resources.Systems.DamageSystems.Break
             if (!sourceProperties.HasPropertyAndValue("Damage.Broken", true))
             {
                 if (sourceProperties.HasPropertyAndValue("Breakable.ByChoice", true))
-                    PublicInteractionsLogic.AddPublicInteraction(sourceContainer, BreakDelegation.GetBreakUsingNothing(sourceContainer, sourceProperties));
+                    PublicInteractions.TryAddPublicInteraction(sourceContainer, BreakDelegation.GetBreakUsingNothing(sourceContainer, sourceProperties));
             }
 
             //If the object is already broken

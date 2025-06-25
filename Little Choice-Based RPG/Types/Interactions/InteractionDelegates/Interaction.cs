@@ -1,22 +1,29 @@
-﻿using Little_Choice_Based_RPG.Managers.Player_Manager;
-using Little_Choice_Based_RPG.Managers.Player_Manager.Frontend.UserInterface;
-using Little_Choice_Based_RPG.Resources;
-using Little_Choice_Based_RPG.Resources.Entities.Conceptual;
-using Little_Choice_Based_RPG.Types.EntityProperties;
-using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using static System.Collections.Specialized.BitVector32;
+﻿using Little_Choice_Based_RPG.Managers.PlayerControl;
 
 namespace Little_Choice_Based_RPG.Types.Interactions.InteractionDelegates
 {
     /// <summary> Provides a way to present options and choices to the player by exposing a delegate with pre-defined parameters. </summary>
     public abstract class Interaction : IInvokableInteraction
     {
+        static private ulong UniqueInstanceIDCounter;
+
         protected PlayerController? invocationMutexIdentity;
+
+        /// <summary> Allocates an identity to one specific instance. Must be unique. Should not be used in equivalence. </summary>
+        public ulong UniqueInstanceID { get; init; } = Interlocked.Increment(ref UniqueInstanceIDCounter);
+
+        /// <summary> The title shown when a player gets listed their choice options. </summary>
+        public string InteractionTitle { get; init; }
+
+        /// <summary> The descriptor shown after a player selected their choice. </summary>
+        public string InteractDescriptor { get; init; }
+
+        /// <summary> Describes how an Interaction should be presented by the User Interface, for example, if it belongs to a context-menu. </summary>
+        public InteractionRole InteractionContext { get; init; }
+
+        /// <summary> Represents the method being invoked, in the specific way designated by delegates' type. 
+        /// Only used for equivalence. Mirrors the delegate in the derived class. </summary>
+        public Delegate DelegateRecord { get; init; }
 
         static Interaction()
         {
@@ -88,7 +95,8 @@ namespace Little_Choice_Based_RPG.Types.Interactions.InteractionDelegates
                 return false;
 
             //Note:
-            //Explicitly avoid invocationMutexIdentity, InteractionTitle and InteractionDescriptor checks as these values may change, yet the delegate should still be the same.
+            //Explicitly avoid invocationMutexIdentity, InteractionTitle and InteractionDescriptor checks as these
+            //s may change, yet the delegate should still be the same.
             //(InteractionTitle and InteractionDescriptor are transient properties from the object that represent a snapshot in time)
             //(Whereas this delegate is a way of delivering a specific interaction to a specific object in a specific way.)
             //(And as such, that delivery is what should be compared, not the title or descriptor!)
@@ -104,19 +112,7 @@ namespace Little_Choice_Based_RPG.Types.Interactions.InteractionDelegates
         /// This value may reference a room only if it is specifically the room which is the main target of operation.
         /// (Such as in en-masse operations that make sweeping changes to a room.)
         /// </summary>
-       
-
-        /// <summary> The title shown when a player gets listed their choice options. </summary>
-        public string InteractionTitle { get; init; }
-
-        /// <summary> The descriptor shown after a player selected their choice. </summary>
-        public string InteractDescriptor { get; init; }
-
-        /// <summary> Describes how an Interaction should be presented by the User Interface, for example, if it belongs to a context-menu. </summary>
-        public InteractionRole InteractionContext { get; init; }
-
-        /// <summary> Represents the method being invoked, in the specific way designated by delegates' type. 
-        /// Only used for equivalence. Mirrors the delegate in the derived class. </summary>
-        public Delegate DelegateRecord { get; init; }
+        /// 
+        //Where is this?  I must've removed it. In fact, I think I removed it from the IInvokableInteraction, too, since there was a similar comment. Might re-add.
     }
 }

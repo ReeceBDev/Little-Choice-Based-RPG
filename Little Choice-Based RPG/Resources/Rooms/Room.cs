@@ -1,23 +1,7 @@
-﻿using Microsoft.VisualBasic;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Runtime;
-using System.Runtime.Serialization.Formatters;
-using System.Runtime.Serialization;
-using System.ComponentModel;
-using System.Xml;
-using Little_Choice_Based_RPG.Resources.Entities.Conceptual;
-using System.Security.Principal;
-using System.Runtime.InteropServices.Marshalling;
-using System.Collections.Immutable;
-using System.Collections;
-using System.Runtime.ConstrainedExecution;
+﻿using Little_Choice_Based_RPG.Resources.Entities.Conceptual;
 using Little_Choice_Based_RPG.Types.EntityProperties;
-using Little_Choice_Based_RPG.Types;
 using Little_Choice_Based_RPG.Types.DescriptorConditions;
+using Little_Choice_Based_RPG.Resources.Entities;
 
 namespace Little_Choice_Based_RPG.Resources.Rooms
 {

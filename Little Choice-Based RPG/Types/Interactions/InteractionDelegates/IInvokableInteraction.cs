@@ -1,26 +1,10 @@
-﻿using Little_Choice_Based_RPG.Managers.Player_Manager;
-using Little_Choice_Based_RPG.Managers.Player_Manager.Frontend.UserInterface;
-using Little_Choice_Based_RPG.Resources;
-using Little_Choice_Based_RPG.Types.EntityProperties;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Little_Choice_Based_RPG.Managers.PlayerControl;
 
 namespace Little_Choice_Based_RPG.Types.Interactions.InteractionDelegates
 {
     /// <summary> Provides a point to invoke delegates inheriting the abstract class InteractDelegate. </summary>
     public interface IInvokableInteraction
     {
-        /// <summary> Invokes the delegate using its required parameters. </summary>
-        public void AttemptInvoke(PlayerController sourceInvocationMutexIdentity);
-        public abstract void ResetInteraction(PlayerController sourceInvocationMutexIdentity);
-        public void GiveRequiredParameter(object newParameter, PlayerController sourceInvocationMutexIdentity);
-
-        /// <summary> The originating PropertyContainer </summary>
-        
-
         /// <summary> The title shown when a player gets listed their choice options. </summary>
         public string InteractionTitle { get; init; }
 
@@ -33,5 +17,15 @@ namespace Little_Choice_Based_RPG.Types.Interactions.InteractionDelegates
         /// <summary> Represents the method being invoked, in the specific way designated by delegates' type. 
         /// Only used for equivalence. Mirrors the delegate in the derived class.</summary>
         public Delegate DelegateRecord { get; init; }
+
+        /// <summary> Allocates an identity to one specific instance. Must be unique. Should not be used in equivalence. </summary>
+        public ulong UniqueInstanceID { get; init; }
+
+        /// <summary> Invokes the delegate using its required parameters. </summary>
+        public void AttemptInvoke(PlayerController sourceInvocationMutexIdentity);
+        public abstract void ResetInteraction(PlayerController sourceInvocationMutexIdentity);
+        public void GiveRequiredParameter(object newParameter, PlayerController sourceInvocationMutexIdentity);
+
+
     }
 }

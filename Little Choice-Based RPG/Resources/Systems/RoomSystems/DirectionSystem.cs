@@ -1,20 +1,14 @@
-﻿using Little_Choice_Based_RPG.Resources.Entities.Conceptual;
+﻿using Little_Choice_Based_RPG.Resources.Entities;
+using Little_Choice_Based_RPG.Resources.Entities.Conceptual;
 using Little_Choice_Based_RPG.Resources.Entities.Physical.Living.Players;
 using Little_Choice_Based_RPG.Resources.PropertyContainerEventArgs;
 using Little_Choice_Based_RPG.Resources.Rooms;
-using Little_Choice_Based_RPG.Resources.Systems.ContainerSystems.Inventory;
 using Little_Choice_Based_RPG.Resources.Systems.ContainerSystems.Inventory.InventoryExtensions;
-using Little_Choice_Based_RPG.Resources.Systems.ContainerSystems.Weightbearing;
 using Little_Choice_Based_RPG.Resources.Systems.InteractionSystems.PrivateInteractionsSystems.PrivateInteractionsExtensions;
 using Little_Choice_Based_RPG.Resources.Systems.RoomSystems.DirectionExtensions;
 using Little_Choice_Based_RPG.Resources.Systems.SystemEventBus;
 using Little_Choice_Based_RPG.Types.EntityProperties;
 using Little_Choice_Based_RPG.Types.Navigation;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Little_Choice_Based_RPG.Resources.Systems.RoomSystems
 {
@@ -91,7 +85,7 @@ namespace Little_Choice_Based_RPG.Resources.Systems.RoomSystems
                         {
                             //Try to give every player movement using it
                             foreach (Player eachPlayer in roomContents)
-                                PrivateInteractions.GiveNew(eachPlayer, room, DirectionDelegation.NewChangeRoom(room, targetDirection.Direction));
+                                PrivateInteractions.TryAddPrivateInteraction(eachPlayer, room, DirectionDelegation.NewChangeRoom(room, targetDirection.Direction));
                         }
                         break;
 
@@ -100,7 +94,7 @@ namespace Little_Choice_Based_RPG.Resources.Systems.RoomSystems
                         {
                             //Remove any movement every player has for it
                             foreach (Player eachPlayer in roomContents)
-                                PrivateInteractions.TryRemove(eachPlayer, room, DirectionDelegation.NewChangeRoom(room, targetDirection.Direction));
+                                PrivateInteractions.TryRemovePrivateInteraction(eachPlayer, room, DirectionDelegation.NewChangeRoom(room, targetDirection.Direction));
                         }
                         break;
 
@@ -112,7 +106,7 @@ namespace Little_Choice_Based_RPG.Resources.Systems.RoomSystems
                             foreach (var eachDirection in roomDirections)
                             {
                                 if (eachDirection.IsVisible is true)
-                                    PrivateInteractions.GiveNew(newPlayer, room, DirectionDelegation.NewChangeRoom(room, eachDirection.Direction));
+                                    PrivateInteractions.TryAddPrivateInteraction(newPlayer, room, DirectionDelegation.NewChangeRoom(room, eachDirection.Direction));
                             }
                         }
                         break;
@@ -123,7 +117,7 @@ namespace Little_Choice_Based_RPG.Resources.Systems.RoomSystems
                             //Remove from the player all of their old room's travel interactions, if they have any left.
                             foreach (var eachDirection in roomDirections)
                             {
-                                PrivateInteractions.TryRemove(lostPlayer, room, DirectionDelegation.NewChangeRoom(room, eachDirection.Direction));
+                                PrivateInteractions.TryRemovePrivateInteraction(lostPlayer, room, DirectionDelegation.NewChangeRoom(room, eachDirection.Direction));
                             }
                             break;
                         }

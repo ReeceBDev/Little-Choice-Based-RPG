@@ -1,18 +1,5 @@
-﻿using Little_Choice_Based_RPG.Resources.Entities.ImmaterialEntities;
-using Little_Choice_Based_RPG.Resources.Entities.Physical.Furniture;
-using Little_Choice_Based_RPG.Resources.Rooms;
-using Little_Choice_Based_RPG.Resources.Systems.ContainerSystems.Inventory;
-using Little_Choice_Based_RPG.Types;
+﻿using Little_Choice_Based_RPG.Resources.Systems.ContainerSystems.Inventory;
 using Little_Choice_Based_RPG.Types.EntityProperties;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Mail;
-using System.Numerics;
-using System.Runtime.CompilerServices;
-using System.Security.Cryptography.X509Certificates;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Little_Choice_Based_RPG.Resources.Entities.Conceptual
 {

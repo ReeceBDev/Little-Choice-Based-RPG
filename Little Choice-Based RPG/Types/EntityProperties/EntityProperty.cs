@@ -1,13 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics.Contracts;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Little_Choice_Based_RPG.Types.EntityProperties 
+﻿namespace Little_Choice_Based_RPG.Types.EntityProperties 
 {
-    /// <summary> Represents a string key and its associated value. The keys and values must match their schema in PropertyValidation. </summary>s
+    /// <summary> Represents a string key and its associated 
+    /// . The keys and values must match their schema in PropertyValidation. </summary>s
     public struct EntityProperty
     {
         /// <summary> Represents a string key and its associated value. The keys and values must match their schema in PropertyValidation. </summary>
