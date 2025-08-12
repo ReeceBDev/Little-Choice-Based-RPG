@@ -1,6 +1,6 @@
 ﻿namespace Little_Choice_Based_RPG.Types
 {
-    public class SanitizedString
+    internal class SanitizedString
     {
         string output;
         public SanitizedString(string input)

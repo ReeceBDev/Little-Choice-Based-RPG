@@ -2,7 +2,7 @@
 
 namespace Little_Choice_Based_RPG.Resources.Entities.ImmaterialEntities
 {
-    public class Immaterial : PropertyContainer
+    internal class Immaterial : PropertyContainer
     {
         private readonly static Dictionary<string, PropertyType> requiredProperties = new Dictionary<string, PropertyType>()
         {

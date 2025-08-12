@@ -7,7 +7,7 @@ using Little_Choice_Based_RPG.Types.Navigation;
 namespace Little_Choice_Based_RPG.Managers.World
 {
     /// <summary> Generates Rooms and the connections between them, cardinally. </summary>
-    public static class EnvironmentMapper
+    internal static class EnvironmentMapper
     {
         /// <summary> Creates an interconnected 3D space of Rooms. Uses predefinedRooms where possible. Auto-generates new Rooms where needed. </summary>
         public static RoomPositions AutoGenerate(RoomPositions predefinedRooms, Coordinates minimumMapPoint, Coordinates maximumMapPoint)

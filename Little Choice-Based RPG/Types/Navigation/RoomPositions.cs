@@ -4,7 +4,7 @@ using System.Collections;
 namespace Little_Choice_Based_RPG.Types.Navigation
 {
     /// <summary> Represents a list of Rooms which may be accessed by ID or Coordinates. </summary>
-    public class RoomPositions : IEnumerable
+    internal class RoomPositions : IEnumerable
     {
         /// <summary> Parameterless constructor as this class needs nothing for instantisation. </summary>
         public RoomPositions() 

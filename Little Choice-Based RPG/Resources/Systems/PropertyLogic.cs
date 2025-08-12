@@ -1,12 +1,12 @@
 ﻿using Little_Choice_Based_RPG.Resources.Entities;
-using Little_Choice_Based_RPG.Resources.PropertyContainerEventArgs;
 using Little_Choice_Based_RPG.Resources.Systems.SystemEventBus;
 using Little_Choice_Based_RPG.Types.EntityProperties;
+using Little_Choice_Based_RPG.Types.TypedEventArgs.PropertyContainerEventArgs;
 
 namespace Little_Choice_Based_RPG.Resources.Systems
 {
     /// <summary> Provide basic access to property logic contained within systems derived from this class. </summary>
-    public abstract class PropertyLogic
+    internal abstract class PropertyLogic
     {
         public PropertyLogic()
         {

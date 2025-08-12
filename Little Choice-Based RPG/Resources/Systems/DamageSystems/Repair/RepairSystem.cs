@@ -1,12 +1,13 @@
 ﻿using Little_Choice_Based_RPG.Types.EntityProperties;
-using Little_Choice_Based_RPG.Resources.PropertyContainerEventArgs;
 using Little_Choice_Based_RPG.Resources.Entities;
-using Little_Choice_Based_RPG.Resources.Systems.InteractionSystems.PublicInteractionsSystems.PublicInteractionsExtensions;
+using Little_Choice_Based_RPG.Resources.Systems.InteractionSystems.PublicInteractionsSystems;
+using Little_Choice_Based_RPG.Resources.Systems.InteractionSystems;
+using Little_Choice_Based_RPG.Types.TypedEventArgs.PropertyContainerEventArgs;
 
 namespace Little_Choice_Based_RPG.Resources.Systems.DamageSystems.Repair
 {
     /// <summary> Allows repairs to occur on this object. Requires DamageLogic. </summary>
-    public class RepairSystem : PropertyLogic
+    internal class RepairSystem : PropertyLogic
     {
         static RepairSystem()
         {
@@ -34,12 +35,12 @@ namespace Little_Choice_Based_RPG.Resources.Systems.DamageSystems.Repair
                 if (propertyChangedData.Property == "Damage.Broken" && propertyChangedData.Change.Equals(true))
                 {
                     if (sourceProperties.HasPropertyAndValue("Repairable.ByChoice", true))
-                        PublicInteractions.AddPublicInteractionz(sourceContainer, RepairDelegation.GetRepairChoice(sourceContainer, sourceProperties));
+                        InteractionRegistrar.TryAddPublicInteraction(sourceContainer, RepairDelegation.GetRepairChoice(sourceContainer, sourceProperties));
                 }
 
                 // When something repairable is repaired
                 if (propertyChangedData.Property == "Damage.Broken" && propertyChangedData.Change.Equals(false))
-                    PublicInteractions.TryRemovePublicInteraction(sourceContainer, RepairDelegation.GetRepairChoice(sourceContainer, sourceProperties));
+                    InteractionRegistrar.TryRemovePublicInteraction(sourceContainer, RepairDelegation.GetRepairChoice(sourceContainer, sourceProperties));
             }
         }
 
@@ -49,7 +50,7 @@ namespace Little_Choice_Based_RPG.Resources.Systems.DamageSystems.Repair
             if (sourceProperties.HasPropertyAndValue("Damage.Broken", true))
             {
                 if (sourceProperties.HasPropertyAndValue("Repairable.ByChoice", true))
-                    PublicInteractions.TryAddPublicInteraction(sourceContainer, RepairDelegation.GetRepairChoice(sourceContainer, sourceProperties));
+                    InteractionRegistrar.TryAddPublicInteraction(sourceContainer, RepairDelegation.GetRepairChoice(sourceContainer, sourceProperties));
             }
 
             // If the object is already repaired

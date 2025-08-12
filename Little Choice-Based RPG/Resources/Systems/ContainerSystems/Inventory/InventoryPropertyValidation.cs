@@ -6,7 +6,7 @@ using Little_Choice_Based_RPG.Resources.Rooms;
 
 namespace Little_Choice_Based_RPG.Resources.Systems.ContainerSystems.Inventory
 {
-    public static class InventoryPropertyValidation
+    internal static class InventoryPropertyValidation
     {
         public static void ValidateInventoryDescriptors(GameObject target)
         {

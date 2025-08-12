@@ -2,7 +2,7 @@
 
 namespace Little_Choice_Based_RPG.Managers.PlayerControl
 {
-    public class UserCommands
+    internal class UserCommands
     {
         private static PlayerController playerController;
         public static bool TryCommand(string userInput, PlayerController setCurrentPlayerController, out string? errorMessage)

@@ -1,6 +1,6 @@
 ﻿namespace Little_Choice_Based_RPG.Types.Interactions
 {
-    public static class InteractionValidation
+    internal static class InteractionValidation
     {
         private static Dictionary<string, List<InteractionParameter>> validDelegates = new Dictionary<string, List<InteractionParameter>>();
 

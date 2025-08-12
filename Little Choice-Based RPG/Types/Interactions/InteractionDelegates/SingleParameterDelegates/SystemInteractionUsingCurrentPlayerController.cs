@@ -1,9 +1,10 @@
-﻿using Little_Choice_Based_RPG.Managers.PlayerControl;
+﻿using Little_Choice_Based_RPG.External.Types;
+using Little_Choice_Based_RPG.Managers.PlayerControl;
 
 namespace Little_Choice_Based_RPG.Types.Interactions.InteractionDelegates.SingleParameterDelegates
 {
     /// <summary> Provides a way to present options and choices to the player by exposing a delegate with pre-defined parameters. </summary>
-    public class SystemInteractionUsingCurrentPlayerController : Interaction
+    internal class SystemInteractionUsingCurrentPlayerController : Interaction
     {
         private PlayerController? invocationParameter1 = null;
 

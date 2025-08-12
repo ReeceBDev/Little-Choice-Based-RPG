@@ -1,6 +1,6 @@
 ﻿namespace Little_Choice_Based_RPG.Managers.World
 {
-    public static class GameWorld
+    internal static class GameWorld
     {
         public static List<GameEnvironment> environments = new List<GameEnvironment>();
 

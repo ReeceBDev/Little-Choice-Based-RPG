@@ -1,9 +1,10 @@
-﻿using Little_Choice_Based_RPG.Managers.PlayerControl;
+﻿using Little_Choice_Based_RPG.External.Types;
+using Little_Choice_Based_RPG.Managers.PlayerControl;
 
 namespace Little_Choice_Based_RPG.Types.Interactions.InteractionDelegates
 {
     /// <summary> Provides a way to present options and choices to the player by exposing a delegate with pre-defined parameters. </summary>
-    public class InteractionUsingNothing : Interaction
+    internal class InteractionUsingNothing : Interaction
     {
          /// <summary> Stores the delegate to be invoked later with Invoke(). </summary>
         public InteractionUsingNothingDelegate storedDelegate;

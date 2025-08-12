@@ -4,7 +4,7 @@ using Little_Choice_Based_RPG.Resources.Systems.InformationalSystems.Descriptor;
 
 namespace Little_Choice_Based_RPG.Resources.Systems.DamageSystems.Break
 {
-    public static class BreakLogic
+    internal static class BreakLogic
     {
         /// <summary> Sets Damage.Broken to true. </summary>
         public static void Break(PlayerController mutexHolder, PropertyContainer target)

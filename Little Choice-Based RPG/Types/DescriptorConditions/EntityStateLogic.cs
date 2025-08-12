@@ -3,7 +3,7 @@ using Little_Choice_Based_RPG.Types.EntityProperties;
 
 namespace Little_Choice_Based_RPG.Types.DescriptorConditions
 {
-    public static class EntityStateLogic
+    internal static class EntityStateLogic
     {
         public static bool CheckEntityStateIsValid(EntityState testState, GameObject currentState)
         {

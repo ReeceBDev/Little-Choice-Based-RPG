@@ -5,7 +5,7 @@ using Little_Choice_Based_RPG.Resources.Entities;
 
 namespace Little_Choice_Based_RPG.Resources.Rooms
 {
-    public class Room : PropertyContainer
+    internal class Room : PropertyContainer
     {
         private protected List<GameObject> roomEntities = new List<GameObject>();
         private protected List<IDescriptorCondition> localConditionalDescriptors = new List<IDescriptorCondition>();

@@ -3,7 +3,7 @@ using Little_Choice_Based_RPG.Types.EntityProperties;
 
 namespace Little_Choice_Based_RPG.Resources.Entities.Physical.Furniture
 {
-    public class Chair : GameObject
+    internal class Chair : GameObject
     {
 
         private readonly static Dictionary<string, PropertyType> requiredProperties = new Dictionary<string, PropertyType>()

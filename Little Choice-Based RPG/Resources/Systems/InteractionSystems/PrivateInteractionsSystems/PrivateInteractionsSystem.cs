@@ -1,12 +1,11 @@
 ﻿using Little_Choice_Based_RPG.Resources.Entities;
-using Little_Choice_Based_RPG.Resources.PropertyContainerEventArgs;
-using Little_Choice_Based_RPG.Resources.Systems.InteractionSystems.PrivateInteractionsSystems.PrivateInteractionsExtensions;
 using Little_Choice_Based_RPG.Types.EntityProperties;
+using Little_Choice_Based_RPG.Types.TypedEventArgs.PropertyContainerEventArgs;
 
 namespace Little_Choice_Based_RPG.Resources.Systems.InteractionSystems.PrivateInteractionsSystems
 {
     /// <summary> Implements the logic for interactions only meant to be seen by the player. This isn't currently enforced in any way.</summary>
-    public class PublicInteractionsSystem : PropertyLogic
+    internal class PublicInteractionsSystem : PropertyLogic
     {
         protected override void InitialiseNewSubscriber(PropertyContainer sourceContainer, PropertyHandler sourceProperties)
         {

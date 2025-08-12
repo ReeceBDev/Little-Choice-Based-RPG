@@ -1,10 +1,10 @@
 ﻿using Little_Choice_Based_RPG.Resources.Entities;
-using Little_Choice_Based_RPG.Resources.PropertyContainerEventArgs;
 using Little_Choice_Based_RPG.Types.EntityProperties;
+using Little_Choice_Based_RPG.Types.TypedEventArgs.PropertyContainerEventArgs;
 
 namespace Little_Choice_Based_RPG.Resources.Systems.DamageSystems.Flammability
 {
-    public class FlammabilitySystem : PropertyLogic
+    internal class FlammabilitySystem : PropertyLogic
     {
         static FlammabilitySystem()
         {

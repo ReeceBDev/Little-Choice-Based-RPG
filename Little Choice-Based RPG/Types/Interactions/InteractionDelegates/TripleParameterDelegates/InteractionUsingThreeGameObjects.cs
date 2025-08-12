@@ -1,4 +1,5 @@
-﻿using Little_Choice_Based_RPG.Managers.PlayerControl;
+﻿using Little_Choice_Based_RPG.External.Types;
+using Little_Choice_Based_RPG.Managers.PlayerControl;
 using Little_Choice_Based_RPG.Resources.Entities.Conceptual;
 using Little_Choice_Based_RPG.Types.EntityProperties;
 using Little_Choice_Based_RPG.Types.TypedEventArgs;
@@ -7,7 +8,7 @@ using static Little_Choice_Based_RPG.Types.Interactions.InteractionDelegates.Int
 namespace Little_Choice_Based_RPG.Types.Interactions.InteractionDelegates.TripleParameterDelegates
 {
     /// <summary> Provides a way to present options and choices to the player by exposing a delegate with pre-defined parameters. </summary>
-    public class InteractionUsingThreeGameObjects : Interaction
+    internal class InteractionUsingThreeGameObjects : Interaction
     {
         /// <summary> Delegate to be invoked later with Invoke(). </summary>
         public InteractUsingThreeGameObjectsDelegate storedDelegate;

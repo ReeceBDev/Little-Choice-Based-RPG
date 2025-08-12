@@ -1,9 +1,10 @@
-﻿using Little_Choice_Based_RPG.Managers.PlayerControl;
+﻿using Little_Choice_Based_RPG.External.Types;
+using Little_Choice_Based_RPG.Managers.PlayerControl;
 
 namespace Little_Choice_Based_RPG.Types.Interactions.InteractionDelegates
 {
     /// <summary> Provides a point to invoke delegates inheriting the abstract class InteractDelegate. </summary>
-    public interface IInvokableInteraction
+    internal interface IInvokableInteraction
     {
         /// <summary> The title shown when a player gets listed their choice options. </summary>
         public string InteractionTitle { get; init; }
@@ -25,7 +26,5 @@ namespace Little_Choice_Based_RPG.Types.Interactions.InteractionDelegates
         public void AttemptInvoke(PlayerController sourceInvocationMutexIdentity);
         public abstract void ResetInteraction(PlayerController sourceInvocationMutexIdentity);
         public void GiveRequiredParameter(object newParameter, PlayerController sourceInvocationMutexIdentity);
-
-
     }
 }

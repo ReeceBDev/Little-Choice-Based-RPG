@@ -3,7 +3,7 @@ using Little_Choice_Based_RPG.Types.Navigation;
 
 namespace Little_Choice_Based_RPG.Managers.World
 {
-    public static class EnvironmentGeneration
+    internal static class EnvironmentGeneration
     {
         public static Room GenerateRoom(Coordinates location)
         {

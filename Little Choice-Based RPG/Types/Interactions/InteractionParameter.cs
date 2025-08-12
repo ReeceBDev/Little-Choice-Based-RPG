@@ -1,7 +1,7 @@
 ﻿namespace Little_Choice_Based_RPG.Types.Interactions
 {
     /// <summary> Describes parameters and what they should be sourced from. </summary>
-    public enum InteractionParameter
+    internal enum InteractionParameter
     {
         //Syntax: Target_Type -- The type will be used by the delegate/method. The target tells the ChoiceHandler where to retrieve that type. 
         // i.e. AllNearby_MetalCabinets_List_GameObject should return a list of gameobject that match the target description (List<GameObject>).

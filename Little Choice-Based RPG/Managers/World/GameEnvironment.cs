@@ -9,7 +9,7 @@ using Little_Choice_Based_RPG.Types.Navigation;
 
 namespace Little_Choice_Based_RPG.Managers.World
 {
-    public class GameEnvironment
+    internal class GameEnvironment
     {
         private readonly Coordinates minimumMapPoint = new Coordinates(-5, 0, -5);
         private readonly Coordinates maximumMapPoint = new Coordinates(5, 0, 5);

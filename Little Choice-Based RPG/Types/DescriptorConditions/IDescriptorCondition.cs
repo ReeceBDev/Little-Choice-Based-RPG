@@ -2,7 +2,7 @@
 
 namespace Little_Choice_Based_RPG.Types.DescriptorConditions
 {
-    public interface IDescriptorCondition
+    internal interface IDescriptorCondition
     {
         public string GetDescriptor();
         public bool CheckConditionIsValid(PropertyContainer targetEntity, IDescriptorCondition targetStateDescriptor);

@@ -1,13 +1,13 @@
 ﻿using Little_Choice_Based_RPG.Resources.Entities;
 using Little_Choice_Based_RPG.Resources.Entities.Conceptual;
-using Little_Choice_Based_RPG.Resources.PropertyContainerEventArgs;
 using Little_Choice_Based_RPG.Resources.Rooms;
 using Little_Choice_Based_RPG.Types.EntityProperties;
+using Little_Choice_Based_RPG.Types.TypedEventArgs.PropertyContainerEventArgs;
 
 namespace Little_Choice_Based_RPG.Resources.Systems.ContainerSystems.Weightbearing
 {
     /// <summary> Gives objects strength to hold weight. Decides if further objects may be carried. Requires something to use it, i.e. InventorySystem, GearSystem. All weight and strength is in KG (Kilogrammes). </summary>
-    public class WeightbearingSystem : PropertyLogic
+    internal class WeightbearingSystem : PropertyLogic
     {
         static WeightbearingSystem()
         {

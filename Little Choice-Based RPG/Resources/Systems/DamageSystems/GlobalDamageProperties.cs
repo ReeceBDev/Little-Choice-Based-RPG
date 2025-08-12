@@ -2,7 +2,7 @@
 
 namespace Little_Choice_Based_RPG.Resources.Systems.DamageSystems
 {
-    public static class GlobalDamageProperties
+    internal static class GlobalDamageProperties
     {
         static GlobalDamageProperties()
         {

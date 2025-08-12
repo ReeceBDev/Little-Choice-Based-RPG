@@ -1,11 +1,11 @@
 ﻿using Little_Choice_Based_RPG.Resources.Entities;
 using Little_Choice_Based_RPG.Resources.Entities.Conceptual;
-using Little_Choice_Based_RPG.Resources.PropertyContainerEventArgs;
 using Little_Choice_Based_RPG.Types.EntityProperties;
+using Little_Choice_Based_RPG.Types.TypedEventArgs.PropertyContainerEventArgs;
 
 namespace Little_Choice_Based_RPG.Types.Navigation
 {
-    public struct RoomConnection
+    internal struct RoomConnection
     {
         /// <summary> The origin point. This is where the connection may be accessed. </summary>
         public PropertyContainer Source { get; init; }

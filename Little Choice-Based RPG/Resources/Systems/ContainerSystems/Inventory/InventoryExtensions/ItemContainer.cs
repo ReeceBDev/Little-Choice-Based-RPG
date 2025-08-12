@@ -4,7 +4,7 @@ using Little_Choice_Based_RPG.Types.PropertyExtensions.PropertyExtensionEventArg
 
 namespace Little_Choice_Based_RPG.Resources.Systems.ContainerSystems.Inventory.InventoryExtensions
 {
-    public class ItemContainer : IPropertyExtension
+    internal class ItemContainer : IPropertyExtension
     {
         public string UniqueIdentifier { get; init; } = "ItemContainer";
         public List<GameObject> Inventory { get; private set; } = new List<GameObject>();

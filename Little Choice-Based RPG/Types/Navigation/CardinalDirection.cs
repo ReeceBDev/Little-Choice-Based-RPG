@@ -1,6 +1,6 @@
 ﻿namespace Little_Choice_Based_RPG.Types.Navigation
 {
-    public enum CardinalDirection
+    internal enum CardinalDirection
     {
         North,
         Northeast,

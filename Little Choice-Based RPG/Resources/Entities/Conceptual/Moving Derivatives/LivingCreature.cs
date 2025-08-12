@@ -2,7 +2,7 @@
 
 namespace Little_Choice_Based_RPG.Resources.Entities.Conceptual.Weightbearing_Derivatives
 {
-    public class LivingCreature : GameObject
+    internal class LivingCreature : GameObject
     {
         private readonly static Dictionary<string, PropertyType> requiredProperties = new Dictionary<string, PropertyType>()
         {

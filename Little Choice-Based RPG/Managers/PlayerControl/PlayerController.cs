@@ -11,11 +11,11 @@ using Little_Choice_Based_RPG.Types.TypedEventArgs;
 namespace Little_Choice_Based_RPG.Managers.PlayerControl
 {
     /// <summary> One controller is made per active player. Holds information about its player. Provides a central point of access to the entire application. Requires InventorySystem. </summary>
-    public class PlayerController
+    internal class PlayerController
     {
-        public Player CurrentPlayer { get; private set; } 
-        public HistoryLogElement CurrentHistoryLog { get; private set; } = new();
-        public InteractionCache CurrentInteractionCache { get; private set; } = new(this);
+        public Player CurrentPlayer { get; init; } 
+        public HistoryLogElement CurrentHistoryLog { get; init; } = new();
+        public InteractionCache CurrentInteractionCache { get; init; }
         public ConsoleEndpoint CurrentConsoleEndpoint { get; private set; }
 
         public GameEnvironment CurrentEnvironment { get; private set; }
@@ -45,6 +45,7 @@ namespace Little_Choice_Based_RPG.Managers.PlayerControl
             //Set current room, environment and player on this controller
             CurrentRoom = setCurrentRoom;
             CurrentEnvironment = setCurrentEnvironment;
+            CurrentInteractionCache = new InteractionCache(this);
 
             //Generate the player properties
             //Set player spawn position

@@ -1,6 +1,6 @@
 ﻿namespace Little_Choice_Based_RPG.Types.PropertyExtensions
 {
-    public class PropertyExtensionHandler
+    internal class PropertyExtensionHandler
     {
         private List<IPropertyExtension> localExtensions = new List<IPropertyExtension>();
 

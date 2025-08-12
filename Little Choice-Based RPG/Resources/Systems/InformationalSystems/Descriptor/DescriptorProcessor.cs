@@ -6,7 +6,7 @@ using Little_Choice_Based_RPG.Types.DescriptorConditions;
 
 namespace Little_Choice_Based_RPG.Resources.Systems.InformationalSystems.Descriptor
 {
-    public static class DescriptorProcessor
+    internal static class DescriptorProcessor
     {
         /// <summary> Create a new EntityStateDescriptor on the target object. Uses a CreateDescriptorStateList to define the conditions. </summary>
         public static void CreateDescriptor(PropertyContainer target, CreateDescriptorStateList conditions)

@@ -6,7 +6,7 @@ namespace Little_Choice_Based_RPG.Resources.Systems.RoomSystems.DirectionExtensi
 {
     /// <summary> Defines the traversible links between ItemContainers. 
     /// Note: This class is intended for use on Rooms. </summary>
-    public class RoomConnections : IPropertyExtension
+    internal class RoomConnections : IPropertyExtension
     {
         public void Add(RoomConnection target)
         {

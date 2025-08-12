@@ -3,7 +3,7 @@ using System.Collections;
 
 namespace Little_Choice_Based_RPG.Types.Navigation
 {
-    public class RoomPositionsEnumerator : IEnumerator
+    internal class RoomPositionsEnumerator : IEnumerator
     {
         private int enmerationPosition = -1; //This must be -1 as enumeration begins when running MoveNext() once.
 

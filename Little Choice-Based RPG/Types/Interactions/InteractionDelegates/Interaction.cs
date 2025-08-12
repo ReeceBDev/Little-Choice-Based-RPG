@@ -1,9 +1,10 @@
-﻿using Little_Choice_Based_RPG.Managers.PlayerControl;
+﻿using Little_Choice_Based_RPG.External.Types;
+using Little_Choice_Based_RPG.Managers.PlayerControl;
 
 namespace Little_Choice_Based_RPG.Types.Interactions.InteractionDelegates
 {
     /// <summary> Provides a way to present options and choices to the player by exposing a delegate with pre-defined parameters. </summary>
-    public abstract class Interaction : IInvokableInteraction
+    internal abstract class Interaction : IInvokableInteraction
     {
         static private ulong UniqueInstanceIDCounter;
 

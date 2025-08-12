@@ -10,7 +10,7 @@ using Little_Choice_Based_RPG.Resources.Entities;
 
 namespace Little_Choice_Based_RPG.Resources.Systems.DamageSystems.Repair
 {
-    public static class RepairDelegation
+    internal static class RepairDelegation
     {
         public static IInvokableInteraction GetRepairChoice(PropertyContainer sourceContainer, PropertyHandler sourceProperties)
         {

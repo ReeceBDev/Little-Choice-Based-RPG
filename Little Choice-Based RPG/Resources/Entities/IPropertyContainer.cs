@@ -2,7 +2,7 @@
 
 namespace Little_Choice_Based_RPG.Resources.Entities
 {
-    public interface IPropertyContainer
+    internal interface IPropertyContainer
     {
         public PropertyHandler Properties { get; set; }
     }

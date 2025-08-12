@@ -7,7 +7,7 @@ using static Little_Choice_Based_RPG.Types.Interactions.InteractionDelegates.Sin
 
 namespace Little_Choice_Based_RPG.Resources.Systems.DamageSystems.Break
 {
-    public static class BreakDelegation
+    internal static class BreakDelegation
     {
         public static InteractionUsingGameObject GetBreakUsingNothing(PropertyContainer target, PropertyHandler sourceProperties)
         {

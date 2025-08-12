@@ -1,13 +1,13 @@
-﻿using Little_Choice_Based_RPG.Resources.PropertyContainerEventArgs;
-using Little_Choice_Based_RPG.Types.EntityProperties;
+﻿using Little_Choice_Based_RPG.Types.EntityProperties;
 using Little_Choice_Based_RPG.Types.Interactions.InteractionDelegates;
 using Little_Choice_Based_RPG.Types.PropertyExtensions;
 using Little_Choice_Based_RPG.Types.PropertyExtensions.PropertyExtensionEventArgs;
+using Little_Choice_Based_RPG.Types.TypedEventArgs.PropertyContainerEventArgs;
 using System.Collections.Concurrent;
 
 namespace Little_Choice_Based_RPG.Resources.Entities
 {
-    public abstract class PropertyContainer : IPropertyContainer
+    internal abstract class PropertyContainer : IPropertyContainer
     {
         public static uint globalCounter;
 

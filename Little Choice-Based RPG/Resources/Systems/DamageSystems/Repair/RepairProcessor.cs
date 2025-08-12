@@ -5,7 +5,7 @@ using Little_Choice_Based_RPG.Resources.Systems.InformationalSystems.Descriptor;
 
 namespace Little_Choice_Based_RPG.Resources.Systems.DamageSystems.Repair
 {
-    public static class RepairProcessor
+    internal static class RepairProcessor
     {
         /// <summary> Sets Damage.Broken to false, from the BreakSystem. </summary>
         public static void InvokeRepair(PlayerController mutexHolder, PropertyContainer target) => InvokeRepair(mutexHolder, target, null);

@@ -4,7 +4,7 @@ using Little_Choice_Based_RPG.Resources.Systems.ContainerSystems.Inventory.Inven
 
 namespace Little_Choice_Based_RPG.Types.DescriptorConditions
 {
-    public class EntityStateDescriptor(string setDescriptorIdentity, string setDescriptor, List < EntityState> setRequiredEntityStates, uint setPriority = 6)
+    internal class EntityStateDescriptor(string setDescriptorIdentity, string setDescriptor, List < EntityState> setRequiredEntityStates, uint setPriority = 6)
         : IDescriptorCondition
     {
         public string GetDescriptor() => Descriptor;

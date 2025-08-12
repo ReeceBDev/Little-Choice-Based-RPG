@@ -3,7 +3,7 @@ using Little_Choice_Based_RPG.Types.EntityProperties;
 
 namespace Little_Choice_Based_RPG.Resources.Entities.Physical.Plants
 {
-    public class Tree : GameObject
+    internal class Tree : GameObject
     {
         private readonly static Dictionary<string, PropertyType> requiredProperties = new Dictionary<string, PropertyType>()
         {

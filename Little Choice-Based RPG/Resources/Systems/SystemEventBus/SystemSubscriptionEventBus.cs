@@ -2,7 +2,7 @@
 
 namespace Little_Choice_Based_RPG.Resources.Systems.SystemEventBus
 {
-    public static class SystemSubscriptionEventBus
+    internal static class SystemSubscriptionEventBus
     {
         public static event EventHandler<SystemSubscriptionRequestEventArgs> SystemSubcriptionRequest;
         public static event EventHandler<SystemSubscriptionRequestEventArgs> SystemUnsubscriptionRequest;

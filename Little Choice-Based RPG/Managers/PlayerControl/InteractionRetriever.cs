@@ -1,17 +1,17 @@
-﻿using Little_Choice_Based_RPG.Resources.Entities;
+﻿using Little_Choice_Based_RPG.External.Types;
+using Little_Choice_Based_RPG.Resources.Entities;
 using Little_Choice_Based_RPG.Resources.Entities.Conceptual;
 using Little_Choice_Based_RPG.Resources.Entities.Physical.Living.Players;
 using Little_Choice_Based_RPG.Resources.Rooms;
 using Little_Choice_Based_RPG.Resources.Systems.ContainerSystems.Inventory;
-using Little_Choice_Based_RPG.Resources.Systems.InteractionSystems.PrivateInteractionsSystems.PrivateInteractionsExtensions;
-using Little_Choice_Based_RPG.Resources.Systems.InteractionSystems.PublicInteractionsSystems.PublicInteractionsExtensions;
+using Little_Choice_Based_RPG.Resources.Systems.InteractionSystems.PrivateInteractionsSystems;
+using Little_Choice_Based_RPG.Resources.Systems.InteractionSystems.PublicInteractionsSystems;
 using Little_Choice_Based_RPG.Types.EntityProperties;
-using Little_Choice_Based_RPG.Types.Interactions;
 using Little_Choice_Based_RPG.Types.Interactions.InteractionDelegates;
 
 namespace Little_Choice_Based_RPG.Managers.PlayerControl
 {
-    public static class InteractionRetriever
+    internal static class InteractionRetriever
     {
         /// <summary> Returns a dictionary of public interactions in a room, and their IDs, by each entity in that room.
         /// Interactions may be optionally filtered by a required InteractionRole. Results may additionally be filtered by matching properties. </summary>
@@ -23,7 +23,7 @@ namespace Little_Choice_Based_RPG.Managers.PlayerControl
             foreach (GameObject target in targetObjects)
             {
                 if (target.Extensions.Contains("PublicInteractions"))
-                    foreach (var interactionKeyValuePair in ((PublicInteractions) target.Extensions.Get("PublicInteractions")).PublicInteractionsList)
+                    foreach (var interactionKeyValuePair in ((PublicInteractions) target.Extensions.Get("PublicInteractions")).RecentInteractions)
                     {
                         //If an interaction context has been set. but does not match, skip.
                         if (role is not null && interactionKeyValuePair.Key.InteractionContext != role)
@@ -42,7 +42,7 @@ namespace Little_Choice_Based_RPG.Managers.PlayerControl
             List<IInvokableInteraction> relevantInteractions = new();
 
             if (targetObject.Extensions.Contains("PublicInteractions"))
-                foreach (var interactionKeyValuePair in ((PublicInteractions)targetObject.Extensions.Get("PublicInteractions")).PublicInteractionsList)
+                foreach (var interactionKeyValuePair in ((PublicInteractions)targetObject.Extensions.Get("PublicInteractions")).RecentInteractions)
                 {
                     relevantInteractions.Add(interactionKeyValuePair.Key);
                 }                

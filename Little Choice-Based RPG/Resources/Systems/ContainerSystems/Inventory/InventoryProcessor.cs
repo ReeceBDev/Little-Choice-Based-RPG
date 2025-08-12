@@ -11,7 +11,7 @@ using Little_Choice_Based_RPG.Types.EntityProperties;
 
 namespace Little_Choice_Based_RPG.Resources.Systems.ContainerSystems.Inventory
 {
-    public static class InventoryProcessor
+    internal static class InventoryProcessor
     {
         public static void StoreInInventory(PlayerController mutexHolder, PropertyContainer targetContainer, GameObject targetEntity)
         {

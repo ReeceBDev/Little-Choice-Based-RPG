@@ -3,7 +3,7 @@ using Little_Choice_Based_RPG.Types.EntityProperties;
 
 namespace Little_Choice_Based_RPG.Resources.Entities.Conceptual
 {
-    public abstract class GameObject : PropertyContainer
+    internal abstract class GameObject : PropertyContainer
     {
         private readonly static Dictionary<string, PropertyType> requiredProperties = new Dictionary<string, PropertyType>()
         {

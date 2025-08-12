@@ -11,7 +11,7 @@ using static Little_Choice_Based_RPG.Types.Interactions.InteractionDelegates.Tri
 
 namespace Little_Choice_Based_RPG.Resources.Systems.ContainerSystems.Inventory
 {
-    public static class InventoryDelegation
+    internal static class InventoryDelegation
     {
         public static IInvokableInteraction GenerateMoveIntoGameObjectContainer(Player targetPlayer, PropertyContainer targetContainer)
         {

@@ -3,7 +3,7 @@
 
     internal class GearManager
     {
-        public GearManager()
+        internal GearManager()
         {
             // DavodianMkIHelmet helmet1 = new DavodianMkIHelmet(); -- Not needed right now
         }

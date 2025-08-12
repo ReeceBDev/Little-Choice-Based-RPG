@@ -3,7 +3,7 @@ using Little_Choice_Based_RPG.Types.EntityProperties;
 
 namespace Little_Choice_Based_RPG.Resources.Systems.InformationalSystems
 {
-    public class CreateDescriptorStateList(uint setPriority)
+    internal class CreateDescriptorStateList(uint setPriority)
     {
         public CreateDescriptorStateList(string descriptorIdentifier, string descriptorValue, uint priority = 6) 
             : this (priority)

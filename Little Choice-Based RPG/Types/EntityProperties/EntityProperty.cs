@@ -2,8 +2,17 @@
 {
     /// <summary> Represents a string key and its associated 
     /// . The keys and values must match their schema in PropertyValidation. </summary>s
-    public struct EntityProperty
+    internal struct EntityProperty
     {
+        /// <summary> The name of the property. This must match an valid property name in PropertyValidation. </summary>
+        public string PropertyName { get; private set; }
+
+        /// <summary> The value of the property. This must match the PropertyName's correlated value in PropertyValidation. </summary>
+        public Object PropertyValue { get; private set; }
+
+        /// <summary> Declares if a property is modifiable and deletable. </summary>
+        public bool ReadOnly { get; private set; }
+
         /// <summary> Represents a string key and its associated value. The keys and values must match their schema in PropertyValidation. </summary>
         public EntityProperty(string setPropertyName, Object setPropertyValue, bool setIsFrozen = false)
         {
@@ -41,14 +50,5 @@
             else
                 throw new ArgumentException($"Name {setPropertyName} not valid. Tried to name an EntityProperty without a matching ValidProperty name! \n\nNote: If this was a Component, make sure: \n1. The name matched a real component class type. \n2. The class inherits from PropertyLogic, where the Component.Type ValidProperties are created. \n3. The required component system is running its static constructor before being called!");
         }
-
-        /// <summary> The name of the property. This must match an valid property name in PropertyValidation. </summary>
-        public string PropertyName { get; private set; }
-
-        /// <summary> The value of the property. This must match the PropertyName's correlated value in PropertyValidation. </summary>
-        public Object PropertyValue { get; private set; }
-
-        /// <summary> Declares if a property is modifiable and deletable. </summary>
-        public bool ReadOnly { get; private set; }
     }
 }

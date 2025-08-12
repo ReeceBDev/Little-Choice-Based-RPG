@@ -1,9 +1,9 @@
-﻿using Little_Choice_Based_RPG.Resources.PropertyContainerEventArgs;
-using Little_Choice_Based_RPG.Types.EntityProperties;
+﻿using Little_Choice_Based_RPG.Types.EntityProperties;
+using Little_Choice_Based_RPG.Types.TypedEventArgs.PropertyContainerEventArgs;
 
 namespace Little_Choice_Based_RPG.Resources.Systems
 {
-    public interface IPropertyLogic
+    internal interface IPropertyLogic
     {
         /// <summary> Provide logic for co-ordinating property changes with their relevant methods. </summary>
         public static abstract void OnObjectChanged(object sender, ObjectChangedEventArgs propertyChangedData);

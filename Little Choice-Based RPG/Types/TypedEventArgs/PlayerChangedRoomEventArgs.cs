@@ -2,7 +2,7 @@
 
 namespace Little_Choice_Based_RPG.Types.TypedEventArgs
 {
-    public class PlayerChangedRoomEventArgs : EventArgs
+    internal class PlayerChangedRoomEventArgs : EventArgs
     {
         public PlayerChangedRoomEventArgs(Room oldRoom, Room newRoom)
         {

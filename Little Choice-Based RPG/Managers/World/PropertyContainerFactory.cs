@@ -5,7 +5,7 @@ using System.Text.RegularExpressions;
 namespace Little_Choice_Based_RPG.Managers.World
 {
     /// <summary> Manufactures PropertyContainers of any type based on its properties. Gets allocated an outline of each object from JSONs. </summary>
-    public static class PropertyContainerFactory
+    internal static class PropertyContainerFactory
     {
         public static PropertyContainer New(Dictionary<string, object> properties)
         {

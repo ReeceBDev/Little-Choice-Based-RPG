@@ -1,12 +1,12 @@
 ﻿using Little_Choice_Based_RPG.Resources.Entities;
-using Little_Choice_Based_RPG.Resources.PropertyContainerEventArgs;
 using Little_Choice_Based_RPG.Resources.Systems.SystemEventBus;
 using Little_Choice_Based_RPG.Types.EntityProperties;
+using Little_Choice_Based_RPG.Types.TypedEventArgs.PropertyContainerEventArgs;
 
 namespace Little_Choice_Based_RPG.Resources.Systems.PlayerSystems
 {
     /// <summary> Implements player-specific logic.</summary>
-    public class PlayerSystem : PropertyLogic
+    internal class PlayerSystem : PropertyLogic
     {
         static PlayerSystem()
         {

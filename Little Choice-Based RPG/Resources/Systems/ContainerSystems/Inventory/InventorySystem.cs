@@ -3,17 +3,18 @@ using Little_Choice_Based_RPG.Resources.Entities.Physical.Living.Players;
 using Little_Choice_Based_RPG.Resources.Rooms;
 using Little_Choice_Based_RPG.Resources.Systems.SystemEventBus;
 using Little_Choice_Based_RPG.Types.EntityProperties;
-using Little_Choice_Based_RPG.Resources.PropertyContainerEventArgs;
 using Little_Choice_Based_RPG.Resources.Systems.ContainerSystems.Weightbearing;
 using Little_Choice_Based_RPG.Resources.Systems.ContainerSystems.Inventory.InventoryExtensions;
-using Little_Choice_Based_RPG.Resources.Systems.InteractionSystems.PrivateInteractionsSystems.PrivateInteractionsExtensions;
 using Little_Choice_Based_RPG.Resources.Entities;
-using Little_Choice_Based_RPG.Resources.Systems.InteractionSystems.PublicInteractionsSystems.PublicInteractionsExtensions;
+using Little_Choice_Based_RPG.Resources.Systems.InteractionSystems.PublicInteractionsSystems;
+using Little_Choice_Based_RPG.Resources.Systems.InteractionSystems.PrivateInteractionsSystems;
+using Little_Choice_Based_RPG.Resources.Systems.InteractionSystems;
+using Little_Choice_Based_RPG.Types.TypedEventArgs.PropertyContainerEventArgs;
 
 namespace Little_Choice_Based_RPG.Resources.Systems.ContainerSystems.Inventory
 {
     /// <summary> Allows PropertyContainers to contain other GameObject. This takes them out of the Rooms' own contents. Requires WeightbearingLogic. </GameObject> </summary>
-    public class InventorySystem : PropertyLogic
+    internal class InventorySystem : PropertyLogic
     {
         static InventorySystem()
         {
@@ -68,7 +69,7 @@ namespace Little_Choice_Based_RPG.Resources.Systems.ContainerSystems.Inventory
 
             //if the subscriber is not a player or room, then give them an Open interaction.
             if ((sourceContainer is not Player) && (sourceContainer is not Room))
-                PublicInteractions.TryAddPublicInteraction(sourceContainer, InventoryDelegation.GenerateOpenInteraction((GameObject)sourceContainer));
+                InteractionRegistrar.TryAddPublicInteraction(sourceContainer, InventoryDelegation.GenerateOpenInteraction((GameObject)sourceContainer));
         }
 
         protected override void OnObjectChanged(object sender, ObjectChangedEventArgs the)
@@ -82,18 +83,18 @@ namespace Little_Choice_Based_RPG.Resources.Systems.ContainerSystems.Inventory
                     case ("ItemContainer.Added", GameObject item):
                         {
                             //Add a new putdown for this item
-                            PrivateInteractions.TryAddPrivateInteraction(player, item, InventoryDelegation.NewPutdown(item));
+                            InteractionRegistrar.TryAddPrivateInteraction(player, item, InventoryDelegation.NewPutdown(item));
 
                             //Reassess their other pickups, to see if they can still carry it all.
-                            foreach (var interactionKeyValuePair in ((PrivateInteractions)player.Extensions.Get("PrivateInteractions")).PrivateInteractionsList.ToList())
+                            foreach (var interactionKeyValuePair in ((PrivateInteractions)player.Extensions.Get("PrivateInteractions")).RecentInteractions.ToList())
                             {
                                 //If the interaction target is any GameObject and is a PickUp interaction.
-                                if (interactionKeyValuePair.Key.Key is GameObject targetItem &&
-                                    interactionKeyValuePair.Key.Value.DelegateRecord.Method.Equals(InventoryDelegation.NewPickup(targetItem).DelegateRecord.Method))
+                                if (interactionKeyValuePair.Key is GameObject targetItem &&
+                                    interactionKeyValuePair.Value.DelegateRecord.Method.Equals(InventoryDelegation.NewPickup(targetItem).DelegateRecord.Method))
                                 {
                                     //If the player can't carry it any longer, remove the interaction.
                                     if (!WeightbearingProcessor.TargetCanCarry(player, targetItem))
-                                        switch (PrivateInteractions.TryRemovePrivateInteraction(player, targetItem, interactionKeyValuePair.Key.Value))
+                                        switch (InteractionRegistrar.TryRemovePrivateInteraction(player, targetItem, interactionKeyValuePair.Value))
                                         {
                                             case 1: throw new Exception($"TryRemovePrivateInteraction() Returned error code: 1. Tried to remove an interaction but the player {player} did not have the extension \"PrivateInteractions\" to begin with!");
                                             case 2: throw new Exception($"TryRemovePrivateInteraction() Returned error code: 2. Tried to remove an interaction but it did not exist on the player {player}!");
@@ -109,7 +110,7 @@ namespace Little_Choice_Based_RPG.Resources.Systems.ContainerSystems.Inventory
                     case ("ItemContainer.Removed", GameObject item):
                         {
                             //Remove the old putdown
-                            PrivateInteractions.TryRemovePrivateInteraction(player, item, InventoryDelegation.NewPutdown(item));                          
+                            InteractionRegistrar.TryRemovePrivateInteraction(player, item, InventoryDelegation.NewPutdown(item));                          
                             break;
                         }
                 }
@@ -137,7 +138,7 @@ namespace Little_Choice_Based_RPG.Resources.Systems.ContainerSystems.Inventory
                             foreach (var eachItem in roomContents)
                             {
                                 if (WeightbearingProcessor.TargetCanCarry(newPlayer, eachItem))
-                                    PrivateInteractions.TryAddPrivateInteraction(newPlayer, eachItem, InventoryDelegation.NewPickup(eachItem));
+                                    InteractionRegistrar.TryAddPrivateInteraction(newPlayer, eachItem, InventoryDelegation.NewPickup(eachItem));
                             }
                         }
                         break;
@@ -148,7 +149,7 @@ namespace Little_Choice_Based_RPG.Resources.Systems.ContainerSystems.Inventory
                             //Remove from every player in the room their pickups, if they have any.
                             foreach (var eachItem in roomContents)
                             {
-                                PrivateInteractions.TryRemovePrivateInteraction(lostPlayer, eachItem, InventoryDelegation.NewPickup(eachItem));
+                                InteractionRegistrar.TryRemovePrivateInteraction(lostPlayer, eachItem, InventoryDelegation.NewPickup(eachItem));
                             }
                         }
                         break;
@@ -163,7 +164,7 @@ namespace Little_Choice_Based_RPG.Resources.Systems.ContainerSystems.Inventory
                                 if (eachItem is Player eachPlayer)
                                 {
                                     if (WeightbearingProcessor.TargetCanCarry(eachPlayer, newItem))
-                                        PrivateInteractions.TryAddPrivateInteraction(eachPlayer, newItem, InventoryDelegation.NewPickup(newItem));
+                                        InteractionRegistrar.TryAddPrivateInteraction(eachPlayer, newItem, InventoryDelegation.NewPickup(newItem));
 
                                     //Reassess their other pickups, to see if they can carry more, now.
                                     foreach (GameObject testItem in roomContents)
@@ -177,14 +178,14 @@ namespace Little_Choice_Based_RPG.Resources.Systems.ContainerSystems.Inventory
                                             continue;
 
                                         //Make sure the player doesn't have an existing pickup for the item already.
-                                        var currentPlayerInteractions = ((PrivateInteractions)eachPlayer.Extensions.Get("PrivateInteractions")).privateInteractionsList;
+                                        var currentPlayerInteractions = ((PrivateInteractions)eachPlayer.Extensions.Get("PrivateInteractions")).RecentInteractions;
 
-                                        if (!currentPlayerInteractions.Any(interaction => (interaction.Key.Key == testItem) &&
-                                            interaction.Key.Value.DelegateRecord.Method.Equals(InventoryDelegation.NewPickup(testItem).DelegateRecord.Method)))
+                                        if (!currentPlayerInteractions.Any(interaction => (interaction.Key == testItem) &&
+                                            interaction.Value.DelegateRecord.Method.Equals(InventoryDelegation.NewPickup(testItem).DelegateRecord.Method)))
                                             continue;
 
                                         //if all tests were successful, give the player a pick - up for it.
-                                        PrivateInteractions.TryAddPrivateInteraction(eachPlayer, testItem, InventoryDelegation.NewPickup(testItem));
+                                        InteractionRegistrar.TryAddPrivateInteraction(eachPlayer, testItem, InventoryDelegation.NewPickup(testItem));
                                     }
                                 }
                             }
@@ -198,7 +199,7 @@ namespace Little_Choice_Based_RPG.Resources.Systems.ContainerSystems.Inventory
                             foreach (var eachItem in roomContents)
                             {
                                 if (eachItem is Player eachPlayer)
-                                    PrivateInteractions.TryRemovePrivateInteraction(eachPlayer, itemLost, InventoryDelegation.NewPickup(itemLost));
+                                    InteractionRegistrar.TryRemovePrivateInteraction(eachPlayer, itemLost, InventoryDelegation.NewPickup(itemLost));
                             }
                         }
                         break;

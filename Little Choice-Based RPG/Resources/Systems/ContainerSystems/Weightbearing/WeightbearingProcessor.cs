@@ -4,7 +4,7 @@ using Little_Choice_Based_RPG.Resources.Rooms;
 
 namespace Little_Choice_Based_RPG.Resources.Systems.ContainerSystems.Weightbearing
 {
-    public static class WeightbearingProcessor
+    internal static class WeightbearingProcessor
     {
         public static void AddWeight(PropertyContainer target, GameObject subject)
         {

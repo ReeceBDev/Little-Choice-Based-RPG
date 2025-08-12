@@ -14,7 +14,7 @@ using static System.Net.Mime.MediaTypeNames;
 
 namespace Little_Choice_Based_RPG
 {
-    public class Introduction
+    internal class Introduction
     {
         public static string currentDialogue = string.Empty;
         public static void Begin()

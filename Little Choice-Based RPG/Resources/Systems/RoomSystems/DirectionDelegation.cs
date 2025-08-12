@@ -8,7 +8,7 @@ using static Little_Choice_Based_RPG.Types.Interactions.InteractionDelegates.Tri
 
 namespace Little_Choice_Based_RPG.Resources.Systems.RoomSystems
 {
-    public static class DirectionDelegation
+    internal static class DirectionDelegation
     {
         public static InteractionUsingCurrentPlayerAndCurrentRoomAndPreassignedRoom NewChangeRoom(PropertyContainer destination, CardinalDirection? direction)
         {

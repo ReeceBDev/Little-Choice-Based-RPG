@@ -1,6 +1,6 @@
 ﻿namespace Little_Choice_Based_RPG.Types.EntityProperties
 {
-    public class PropertyHandler
+    internal class PropertyHandler
     {
         /// <summary> Creates a new property on this object. </summary>
         public void CreateProperty(string setPropertyName, object setPropertyValue, bool isReadOnly = false)
