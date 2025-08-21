@@ -1,5 +1,7 @@
 ﻿using LCBRPG_User_Console.ConsoleUtilities;
-using LCBRPG_User_Console.Types.DisplayDataEntries;
+using LCBRPG_User_Console.MenuResource;
+using LCBRPG_User_Console.Types.ConsoleElements;
+using LCBRPG_User_Console.Types.DisplayData;
 using Little_Choice_Based_RPG.External.EndpointServices;
 using System;
 using System.Collections.Generic;
@@ -9,7 +11,7 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace LCBRPG_User_Console.Types.ActualElements.TransitionalActions
+namespace LCBRPG_User_Console.Types.ConsoleElements.TransitionalActions
 {
     internal class TransitionalActionBoxElement : ElementLogic
     {
@@ -17,12 +19,12 @@ namespace LCBRPG_User_Console.Types.ActualElements.TransitionalActions
             $"A tsunami of a thousand glass-like reflections tear open reality with a roar.\n" +
             $"When they close, you are left standing in their place.";
 
-        private LocalPlayerSession playerSession;
+        private HistoryLogCache localHistoryLog;
 
 
-        public TransitionalActionBoxElement(ElementIdentities setUniqueIdentity, LocalPlayerSession currentPlayerSession) : base(setUniqueIdentity)
+        public TransitionalActionBoxElement(ElementIdentities setUniqueIdentity, HistoryLogCache setLocalHistoryLog) : base(setUniqueIdentity)
         {
-            playerSession = currentPlayerSession;
+            localHistoryLog = setLocalHistoryLog;
         }
 
         protected override string GenerateContent()
@@ -56,8 +58,12 @@ namespace LCBRPG_User_Console.Types.ActualElements.TransitionalActions
             string bottomEnding = "";
             string bottomEndingSuffix = "══════-=════-=═=-=--=-=-- - - -";
 
+            List<string> transitionalActionLines;
+            HistoryLogDisplayData? recentHistoryLogData = localHistoryLog.PeekCache();
+            string transitionalAction = recentHistoryLogData?.Body.ToString() ?? defaultTransitionalAction;
 
-            List<string> transitionalActionLines = WritelineUtilities.SplitIntoLines(transitionalAction, transitionalMidPrefix, transitionalMidPrefix, transitionalMidPrefix, 84);
+
+            transitionalActionLines = WritelineUtilities.SplitIntoLines(transitionalAction, transitionalMidPrefix, transitionalMidPrefix, transitionalMidPrefix, 84);
 
             foreach (string line in transitionalActionLines)
             {

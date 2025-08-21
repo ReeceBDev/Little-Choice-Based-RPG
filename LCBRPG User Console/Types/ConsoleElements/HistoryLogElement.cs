@@ -1,8 +1,8 @@
 ﻿using LCBRPG_User_Console.ConsoleUtilities;
 using LCBRPG_User_Console.MenuResource;
-using LCBRPG_User_Console.Types.DisplayDataEntries;
+using LCBRPG_User_Console.Types.DisplayData;
 
-namespace LCBRPG_User_Console.Types.ActualElements
+namespace LCBRPG_User_Console.Types.ConsoleElements
 {
     internal class HistoryLogElement : ElementLogic
     {

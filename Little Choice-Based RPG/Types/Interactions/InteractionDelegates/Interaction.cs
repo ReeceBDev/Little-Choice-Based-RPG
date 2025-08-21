@@ -22,6 +22,18 @@ namespace Little_Choice_Based_RPG.Types.Interactions.InteractionDelegates
         /// <summary> Describes how an Interaction should be presented by the User Interface, for example, if it belongs to a context-menu. </summary>
         public InteractionRole InteractionContext { get; init; }
 
+        /// <summary> The ID of the object which this interaction relates to. (Note: This is probably the item which spawned the interaction.)
+        /// If none apply, it should be defaulted to the player.
+        /// 
+        /// For public interactions, this is the source. 
+        /// For private interactions, this might be different, as private interactions don't necessarily sit on the object which spawned that interaction.
+        /// 
+        /// For example, the ID of the gun which fires the "Shoot" interaction should be used, instead of its actual target. 
+        /// As another example, the ID of the device whose use is private to a particular player, as the interaction is via the "player using the device".
+        /// 
+        /// In other words, imagine whatever the player "reaches out to touch" as they are "interacting" - this is the associated object.</summary>
+        public uint AssociatedObjectID { get; init; }
+
         /// <summary> Represents the method being invoked, in the specific way designated by delegates' type. 
         /// Only used for equivalence. Mirrors the delegate in the derived class. </summary>
         public Delegate DelegateRecord { get; init; }
@@ -32,7 +44,7 @@ namespace Little_Choice_Based_RPG.Types.Interactions.InteractionDelegates
         }
 
         /// <summary> Creates a new interaction for players to be presented with in ChoiceHandler. </summary>
-        public Interaction(Delegate setDelegateRecord, string setInteractTitle, string setInteractDescriptor, InteractionRole setInteractRole = InteractionRole.Explore)
+        public Interaction(Delegate setDelegateRecord, string setInteractTitle, string setInteractDescriptor, uint? setAssociatedObjectID, InteractionRole setInteractRole = InteractionRole.Explore)
         {
             DelegateRecord = setDelegateRecord; // Mirrors the delegate set in the derived class.
 
@@ -40,6 +52,7 @@ namespace Little_Choice_Based_RPG.Types.Interactions.InteractionDelegates
             InteractionContext = setInteractRole;
             InteractionTitle = setInteractTitle;
             InteractDescriptor = setInteractDescriptor;
+            AssociatedObjectID = setAssociatedObjectID ?? (uint) invocationMutexIdentity.CurrentPlayer.Properties.GetPropertyValue("ID");
         }
 
         private static void AddSelfIntoDelegateValidation()
@@ -95,6 +108,10 @@ namespace Little_Choice_Based_RPG.Types.Interactions.InteractionDelegates
             if (this.DelegateRecord != target.DelegateRecord)
                 return false;
 
+            //AssociatedObject equivalence
+            if (this.AssociatedObjectID != target.AssociatedObjectID)
+                return false;
+
             //Note:
             //Explicitly avoid invocationMutexIdentity, InteractionTitle and InteractionDescriptor checks as these
             //s may change, yet the delegate should still be the same.
@@ -115,5 +132,6 @@ namespace Little_Choice_Based_RPG.Types.Interactions.InteractionDelegates
         /// </summary>
         /// 
         //Where is this?  I must've removed it. In fact, I think I removed it from the IInvokableInteraction, too, since there was a similar comment. Might re-add.
+        //Note 2: I think I re-added this. See the AssociatedObjectID property.
     }
 }

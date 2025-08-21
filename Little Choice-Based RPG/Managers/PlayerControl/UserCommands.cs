@@ -2,8 +2,20 @@
 
 namespace Little_Choice_Based_RPG.Managers.PlayerControl
 {
-    internal class UserCommands
+    internal static class UserCommands
     {
+        public static List<string> AllowedUserCommands { get; } = new() { "SAY", "ADVERT", "OOC", "RAINBOW", "HELP" };
+        public static List<string> AllowedAdminCommands
+        {
+            get
+            {
+                List<string> totalCommands = field;
+                totalCommands.AddRange(AllowedUserCommands);
+                return totalCommands;
+            }
+            set { }
+        } = new List<string> { "TELEPORT", "SPAWN", "KILL", "KICK" };
+
         private static PlayerController playerController;
         public static bool TryCommand(string userInput, PlayerController setCurrentPlayerController, out string? errorMessage)
         {

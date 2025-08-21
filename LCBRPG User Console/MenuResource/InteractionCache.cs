@@ -1,4 +1,4 @@
-﻿using LCBRPG_User_Console.Types;`
+﻿using LCBRPG_User_Console.Types;
 using Little_Choice_Based_RPG.External.Types.Services;
 using Little_Choice_Based_RPG.External.Types.TypedEventArgs.InteractionService;
 using System;
@@ -43,7 +43,8 @@ namespace LCBRPG_User_Console.MenuResource
             InteractionServiceData interaction = e.NewInteractionData;
 
             //Transmute the interaction from the other assemblies data type into the local data type for displaying that data
-            InteractionDisplayData displayData = new InteractionDisplayData(interaction.InteractionID, interaction.InteractionTitle, interaction.PresentationContext);
+            InteractionDisplayData displayData = new InteractionDisplayData(interaction.InteractionID, interaction.InteractionTitle, 
+                interaction.PresentationContext, interaction.AssociatedObjectID);
 
             AddInteraction(displayData);
         }

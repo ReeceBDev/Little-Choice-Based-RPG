@@ -7,5 +7,5 @@ using System.Threading.Tasks;
 
 namespace LCBRPG_User_Console.Types
 {
-    internal readonly record struct InteractionDisplayData(ulong InteractionID, string InteractionTitle, string PresentationContext);
+    internal readonly record struct InteractionDisplayData(ulong InteractionID, string InteractionTitle, string PresentationContext, uint AssociatedObjectID);
 }

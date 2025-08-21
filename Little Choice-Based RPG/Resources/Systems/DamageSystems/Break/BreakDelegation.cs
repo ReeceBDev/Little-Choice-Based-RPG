@@ -23,6 +23,7 @@ namespace Little_Choice_Based_RPG.Resources.Systems.DamageSystems.Break
 
             InteractionUsingGameObject breakUsingGameObject = new InteractionUsingGameObject(
                 breakUsingGameObjectDelegate,
+                (uint)sourceProperties.GetPropertyValue("ID"),
                 DescriptorProcessor.GetDescriptor(target, "Breakable.Interaction.Title"),
                 DescriptorProcessor.GetDescriptor(target, "Breakable.Interaction.Invoking"),
                 (GameObject)target

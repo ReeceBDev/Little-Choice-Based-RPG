@@ -1,4 +1,4 @@
-﻿namespace LCBRPG_User_Console.Types.DisplayDataEntries
+﻿namespace LCBRPG_User_Console.Types.DisplayData
 {
     internal enum ElementIdentities
     {

@@ -15,11 +15,9 @@ namespace Little_Choice_Based_RPG.Resources.Systems.InteractionSystems.PrivateIn
 {
     internal class PrivateInteractions : IPropertyExtension
     {
-
-
         private ReaderWriterLockSlim writeLock = new();
         private KeyValuePair<ImmutableArray<KeyValuePair<PropertyContainer, IInvokableInteraction>>, long> lastKnownState = new(); // KVP<Last Known State Array<KVP<subject, interaction>>, Timestamp when last modified>
-
+        
         public string UniqueIdentifier { get; init; }
         protected string interactionAddedEventID { get; init; }
         protected string interactionRemovedEventID { get; init; }
@@ -34,6 +32,8 @@ namespace Little_Choice_Based_RPG.Resources.Systems.InteractionSystems.PrivateIn
             interactionRemovedEventID = $"{UniqueIdentifier}.Removed";
 
         }
+        public IEnumerable<object> GetAllEntries() => RecentInteractions.Cast<object>();
+
         /// <summary> Concurrently provides a technically-historical aggregated snapshot of the interactions list, at least as recent as when this property was called.
         /// For the most up to date information, subscribe to notifications from this class to listen for changes first, before getting this historical data. </summary>
         public ImmutableArray<KeyValuePair<PropertyContainer, IInvokableInteraction>> RecentInteractions

@@ -1,6 +1,7 @@
 ﻿using LCBRPG_User_Console.Types;
-using LCBRPG_User_Console.Types.DisplayDataEntries;
+using LCBRPG_User_Console.Types.DisplayData;
 using Little_Choice_Based_RPG.External.EndpointServices;
+using Little_Choice_Based_RPG.External.Types;
 using Microsoft.VisualBasic;
 
 namespace LCBRPG_User_Console.ConsoleUtilities
@@ -10,13 +11,15 @@ namespace LCBRPG_User_Console.ConsoleUtilities
         private const int choiceIndexOffset = 1;
 
         public static void HandleUserInput(UserInputService inputService, List<InteractionDisplayData> availableInteractions, 
-            DrawMenuCallbackDelegate drawUserInterfaceDelegate, DisplayDataList callbackArgs, int inputLockCounter, List<string> allowedCommands)
+            DrawMenuCallbackDelegate drawUserInterfaceDelegate, DisplayDataList callbackArgs, int inputLockCounter, List<string> allowedCommands,
+            Dictionary<ulong, Action> seededSystemInteractions)
         {
-            AwaitUserInputLoop(availableInteractions, drawUserInterfaceDelegate, callbackArgs, inputLockCounter, inputService, allowedCommands);
+            AwaitUserInputLoop(availableInteractions, drawUserInterfaceDelegate, callbackArgs, inputLockCounter, inputService, allowedCommands, seededSystemInteractions);
         }
 
         private static void AwaitUserInputLoop(List<InteractionDisplayData> availableInteractions, DrawMenuCallbackDelegate drawUserInterfaceDelegate, 
-            DisplayDataList callbackArgs, int inputLockCounter, UserInputService inputService, List<string> allowedCommands)
+            DisplayDataList callbackArgs, int inputLockCounter, UserInputService inputService, List<string> allowedCommands, 
+            Dictionary<ulong, Action> seededSystemInteractions)
         {
             string sanitisedInput;
 
@@ -37,14 +40,15 @@ namespace LCBRPG_User_Console.ConsoleUtilities
                 //Reset error message flag.
                 errorMessageAvailable = false;
 
-                if (!ValidateInput(Console.ReadLine().Trim(), availableInteractions, inputLockCounter, inputService, allowedCommands, out validatedInput, 
-                    out errorMessage))
+                if (!ValidateInput(Console.ReadLine().Trim(), availableInteractions, inputLockCounter, inputService, allowedCommands, seededSystemInteractions, 
+                    out validatedInput, out errorMessage))
                     errorMessageAvailable = true;
             }
         }
 
         private static bool ValidateInput(string? userInput, List<InteractionDisplayData> availableInteractions, int inputLockCounter, 
-            UserInputService inputService, List<string> allowedCommands, out object? validatedUserInput, out string? errorMessage)
+            UserInputService inputService, List<string> allowedCommands, Dictionary<ulong, Action> seededSystemInteractions, 
+            out object? validatedUserInput, out string? errorMessage)
         {
             const int userIndexOffset = -1;
 
@@ -83,14 +87,24 @@ namespace LCBRPG_User_Console.ConsoleUtilities
                 errorMessage = "Please choose a number from the available choices. Trying a number not listed will have nothing to do!";
                 return false;
             }
-            else
-            {
-                //Fire the valid interaction selection, then return as true.
-                interactionID = interactionFrozenCache[userSelection].InteractionID;
-                inputService.HandleUserInteraction(interactionID);
 
-                return true;
+            //Fire the valid interaction selection, then return as true.
+            interactionID = interactionFrozenCache[userSelection].InteractionID;
+
+            //Check if system interaction or game interaction and fire accordingly.
+            if (interactionFrozenCache[userSelection].PresentationContext.Equals(SystemInteractionContext.UserConsole.ToString())) //UserConsole interaction
+            {
+                if (!seededSystemInteractions.TryGetValue(interactionID, out var seededDelegate))
+                    throw new Exception("Selection not found within seededSystemInteractions.");
+
+                seededDelegate();
             }
+            else //Game Interaction
+            {
+                inputService.HandleUserInteraction(interactionID);
+            }
+
+            return true;
         }
 
         private static void WriteUserEntry()

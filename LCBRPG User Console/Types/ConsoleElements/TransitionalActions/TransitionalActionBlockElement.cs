@@ -1,5 +1,7 @@
 ﻿using LCBRPG_User_Console.ConsoleUtilities;
-using LCBRPG_User_Console.Types.DisplayDataEntries;
+using LCBRPG_User_Console.MenuResource;
+using LCBRPG_User_Console.Types.ConsoleElements;
+using LCBRPG_User_Console.Types.DisplayData;
 using Little_Choice_Based_RPG.External.EndpointServices;
 using System;
 using System.Collections.Generic;
@@ -9,7 +11,7 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace LCBRPG_User_Console.Types.ActualElements.TransitionalActions
+namespace LCBRPG_User_Console.Types.ConsoleElements.TransitionalActions
 {
     internal class TransitionalActionBlockElement : ElementLogic
     {
@@ -17,12 +19,12 @@ namespace LCBRPG_User_Console.Types.ActualElements.TransitionalActions
             $"A tsunami of a thousand glass-like reflections tear open reality with a roar.\n" +
             $"When they close, you are left standing in their place.";
 
-        private LocalPlayerSession playerSession;
+        private HistoryLogCache localHistoryLog;
 
 
-        public TransitionalActionBlockElement(ElementIdentities setUniqueIdentity, LocalPlayerSession currentPlayerSession) : base(setUniqueIdentity)
+        public TransitionalActionBlockElement(ElementIdentities setUniqueIdentity, HistoryLogCache setHistoryLogCache) : base(setUniqueIdentity)
         {
-            playerSession = currentPlayerSession;
+            localHistoryLog = setHistoryLogCache;
         }
 
         protected override string GenerateContent()
@@ -35,11 +37,10 @@ namespace LCBRPG_User_Console.Types.ActualElements.TransitionalActions
             string designSuffix = "\n ╚═════════════════════════════════════════════════════════════════════════════════" + "══════-=════-=═=-=--=-=-- - - -";
 
             List<string> formattedTransitionalAction;
+            HistoryLogDisplayData? recentHistoryLogData = localHistoryLog.PeekCache();
 
+            transitionalAction = recentHistoryLogData?.Body.ToString() ?? defaultTransitionalAction;
 
-            transitionalAction = playerSession.CurrentHistoryLog.HistoryLogCache.Peek();
-
-            transitionalAction ??= defaultTransitionalAction;
             formattedTransitionalAction = WritelineUtilities.SplitIntoLines(transitionalAction, "\n ╠├ ", "\n ╠├ ", "\n ╠├ ");
 
             foreach (string line in formattedTransitionalAction)

@@ -9,5 +9,6 @@
     /// PresentationContext is an InteractionRole used to tell endpoints where to ideally show a role. This is discressionary and may be exclusionary. For more details see existing implementions for a given role.
     /// IsAdded is a boolean used to tell endpoints if an interaction is to be added or removed. True is add, false is remove.
     /// </summary>
-    public readonly record struct InteractionServiceData(ulong InteractionID, string InteractionTitle, string PresentationContext, bool IsAdded);
+    public readonly record struct InteractionServiceData(ulong InteractionID, string InteractionTitle, string PresentationContext, bool IsAdded, 
+        uint AssociatedObjectID);
 }

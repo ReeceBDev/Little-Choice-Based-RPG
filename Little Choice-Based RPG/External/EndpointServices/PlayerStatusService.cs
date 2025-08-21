@@ -13,7 +13,7 @@ namespace Little_Choice_Based_RPG.External.EndpointServices
         }
 
         public string GetPlayerName() => (string)currentPlayerData.CurrentPlayer.Properties.GetPropertyValue("Name");
-        public int GetPlayerID() => (int)currentPlayerData.CurrentPlayer.Properties.GetPropertyValue("ID");
+        public uint GetPlayerID() => (uint)currentPlayerData.CurrentPlayer.Properties.GetPropertyValue("ID");
         public string GetPlayerLocation() => (string)currentPlayerData.CurrentRoom.Properties.GetPropertyValue("Name");
         public string GetPlayerLocationDescription() => DescriptorProcessor.GetDescriptor(currentPlayerData.CurrentRoom, "Descriptor.Generic.Current");
         public int GetPlayerHealth() => (int)currentPlayerData.CurrentPlayer.Properties.GetPropertyValue("Health");

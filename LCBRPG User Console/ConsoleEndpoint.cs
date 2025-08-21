@@ -25,19 +25,21 @@ namespace LCBRPG_User_Console
         // Handle the logic and the errors
         private LocalPlayerSession playerSession = new();
         private InteractionCache interactionCache;
-        private List<HistoryLogDisplayData> historyLog = new();
-
-        public delegate void ChangeInterfaceStyleCallback(IConsoleMenu newUserInterfaceStyle);
+        private HistoryLogCache historyLogCache;
 
         bool exitGame = false;
 
         public ConsoleEndpoint()
         {
+            //Initialise callbacks
+            ChangeInterfaceCallback changeInterfaceCallback = ChangeInterface;
+
             //Initialise resources
             interactionCache = new InteractionCache(playerSession);
+            historyLogCache = new HistoryLogCache(playerSession);
 
             //Call the first menu
-            CurrentMenu = new ExploreMenu(playerSession, interactionCache, historyLog);
+            CurrentMenu = new ExploreMenu(playerSession, interactionCache, historyLogCache, changeInterfaceCallback);
         }
 
         public void GenerateOutput()

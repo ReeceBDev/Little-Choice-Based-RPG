@@ -6,5 +6,6 @@ namespace Little_Choice_Based_RPG.Types.PropertyExtensions
     {
         public string UniqueIdentifier { get; init; }
         public event EventHandler<PropertyExtensionChangedArgs> PropertyExtensionChanged;
+        public IEnumerable<object> GetAllEntries();
     }
 }

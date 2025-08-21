@@ -1,11 +1,11 @@
-﻿using LCBRPG_User_Console.Types.DisplayDataEntries;
+﻿using LCBRPG_User_Console.Types.DisplayData;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace LCBRPG_User_Console.Types.ActualElements
+namespace LCBRPG_User_Console.Types.ConsoleElements
 {
     internal abstract class ElementLogic : IElement
     {
@@ -16,7 +16,7 @@ namespace LCBRPG_User_Console.Types.ActualElements
         
         public ElementLogic(ElementIdentities setElementIdentity)
         {
-            ElementIdentity = (setElementIdentity != default) ? 
+            ElementIdentity = setElementIdentity != default ? 
                 setElementIdentity : throw new ArgumentNullException("setElementIdentity was default! The ElementIdentity property must be set to a non-default value by each derived class.");
 
             //Initalise content for the first time

@@ -15,6 +15,17 @@ namespace Little_Choice_Based_RPG.Types.Interactions.InteractionDelegates
         /// <summary> Describes how an Interaction should be presented by the User Interface, for example, if it belongs to a context-menu. </summary>
         public InteractionRole InteractionContext { get; init; }
 
+        /// <summary> The ID of the object which this interaction relates to. (Note: This is probably the item which spawned the interaction.)
+        /// 
+        /// For public interactions, this is the source. 
+        /// For private interactions, this might be different, as private interactions don't necessarily sit on the object which spawned that interaction.
+        /// 
+        /// For example, the ID of the gun which fires the "Shoot" interaction should be used, instead of its actual target. 
+        /// As another example, the ID of the device whose use is private to a particular player, as the interaction is via the "player using the device".
+        /// 
+        /// In other words, imagine whatever the player "reaches out to touch" as they are "interacting" - this is the associated object.</summary>
+        public uint AssociatedObjectID { get; init; }
+
         /// <summary> Represents the method being invoked, in the specific way designated by delegates' type. 
         /// Only used for equivalence. Mirrors the delegate in the derived class.</summary>
         public Delegate DelegateRecord { get; init; }

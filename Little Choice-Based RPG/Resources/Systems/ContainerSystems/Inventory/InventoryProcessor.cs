@@ -1,6 +1,4 @@
-﻿using Little_Choice_Based_RPG.External.ConsoleEndpoint.ConsoleMenus;
-using Little_Choice_Based_RPG.External.ConsoleEndpoint.ConsoleMenus.ConsoleSubMenus;
-using Little_Choice_Based_RPG.Managers.PlayerControl;
+﻿using Little_Choice_Based_RPG.Managers.PlayerControl;
 using Little_Choice_Based_RPG.Resources.Entities;
 using Little_Choice_Based_RPG.Resources.Entities.Conceptual;
 using Little_Choice_Based_RPG.Resources.Entities.Physical.Living.Players;

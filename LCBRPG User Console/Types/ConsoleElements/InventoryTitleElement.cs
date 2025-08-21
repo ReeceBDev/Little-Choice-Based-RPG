@@ -1,4 +1,4 @@
-﻿using LCBRPG_User_Console.Types.DisplayDataEntries;
+﻿using LCBRPG_User_Console.Types.DisplayData;
 using Little_Choice_Based_RPG.External.EndpointServices;
 using System;
 using System.Collections.Generic;
@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace LCBRPG_User_Console.Types.ActualElements
+namespace LCBRPG_User_Console.Types.ConsoleElements
 {
     internal class InventoryTitleElement : ElementLogic
     {

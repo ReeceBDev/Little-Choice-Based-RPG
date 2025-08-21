@@ -32,8 +32,8 @@ namespace Little_Choice_Based_RPG.Types.Interactions.InteractionDelegates.Double
             //InteractionValidation.CreateValidDelegate("InteractUsingTargetObject", [InteractionParameter.Target_GameObject]);
         }
         /// <summary> Creates a new interaction for players to be presented with in ChoiceHandler. Requests two GameObject from the player. Each GameObjectRequest may be filtered. </summary>
-        public InteractionUsingTwoGameObjects(InteractUsingTwoGameObjectsDelegate setDelegate, string setInteractTitle, string setInteractDescriptor, string firstRequestDescription, string secondRequestDescription, List<EntityProperty>? setFirstGameObjectFilter = null, List<EntityProperty>? setSecondGameObjectFilter = null, InteractionRole setInteractRole = InteractionRole.Explore)
-            : base(setDelegate, setInteractTitle, setInteractDescriptor, setInteractRole)
+        public InteractionUsingTwoGameObjects(InteractUsingTwoGameObjectsDelegate setDelegate, uint? setAssociatedObjectID, string setInteractTitle, string setInteractDescriptor, string firstRequestDescription, string secondRequestDescription, List<EntityProperty>? setFirstGameObjectFilter = null, List<EntityProperty>? setSecondGameObjectFilter = null, InteractionRole setInteractRole = InteractionRole.Explore)
+            : base(setDelegate, setInteractTitle, setInteractDescriptor, setAssociatedObjectID, setInteractRole)
         {
             storedDelegate = setDelegate;
 
@@ -48,8 +48,8 @@ namespace Little_Choice_Based_RPG.Types.Interactions.InteractionDelegates.Double
         }
 
         /// <summary> Creates a new interaction for players to be presented with in ChoiceHandler. The first GameObject is pre-assigned. Requests a second GameObject from the player. The GameObjectRequest may be filtered. </summary>
-        public InteractionUsingTwoGameObjects(InteractUsingTwoGameObjectsDelegate setDelegate, string setInteractTitle, string setInteractDescriptor, GameObject preassignedParameter1, string requestDescription, List<EntityProperty>? gameObjectRequestFilter = null, InteractionRole setInteractRole = InteractionRole.Explore)
-            : base(setDelegate, setInteractTitle, setInteractDescriptor, setInteractRole)
+        public InteractionUsingTwoGameObjects(InteractUsingTwoGameObjectsDelegate setDelegate, uint? setAssociatedObjectID, string setInteractTitle, string setInteractDescriptor, GameObject preassignedParameter1, string requestDescription, List<EntityProperty>? gameObjectRequestFilter = null, InteractionRole setInteractRole = InteractionRole.Explore)
+            : base(setDelegate, setInteractTitle, setInteractDescriptor, setAssociatedObjectID, setInteractRole)
         {
             storedDelegate = setDelegate;
 
@@ -64,8 +64,8 @@ namespace Little_Choice_Based_RPG.Types.Interactions.InteractionDelegates.Double
         }
 
         /// <summary> Creates a new interaction for players to be presented with in ChoiceHandler. Requests the first GameObject from the player. The second GameObject is pre-assigned.  The GameObjectRequest may be filtered. </summary>
-        public InteractionUsingTwoGameObjects(InteractUsingTwoGameObjectsDelegate setDelegate, string setInteractTitle, string setInteractDescriptor, string requestDescription, GameObject preassignedParameter2, List<EntityProperty>? gameObjectRequestFilter = null, InteractionRole setInteractRole = InteractionRole.Explore)
-            : base(setDelegate, setInteractTitle, setInteractDescriptor, setInteractRole)
+        public InteractionUsingTwoGameObjects(InteractUsingTwoGameObjectsDelegate setDelegate, uint? setAssociatedObjectID, string setInteractTitle, string setInteractDescriptor, string requestDescription, GameObject preassignedParameter2, List<EntityProperty>? gameObjectRequestFilter = null, InteractionRole setInteractRole = InteractionRole.Explore)
+            : base(setDelegate, setInteractTitle, setInteractDescriptor, setAssociatedObjectID, setInteractRole)
         {
             storedDelegate = setDelegate;
 
@@ -102,7 +102,7 @@ namespace Little_Choice_Based_RPG.Types.Interactions.InteractionDelegates.Double
 
             //Create abort delegate using this invocationMutexIdentity
             InteractionUsingNothingDelegate abortInteractionDelegate = new InteractionUsingNothingDelegate(ResetInteraction);
-            abortInteraction = new InteractionUsingNothing(abortInteractionDelegate, "Cancel selection", "Cancelling this interaction...", InteractionRole.System);
+            abortInteraction = new InteractionUsingNothing(abortInteractionDelegate, (uint)sourceInvocationMutexIdentity.CurrentPlayer.Properties.GetPropertyValue("ID"), "Cancel selection", "Cancelling this interaction...", InteractionRole.System);
 
             if (invocationParameter1 != null)
             {

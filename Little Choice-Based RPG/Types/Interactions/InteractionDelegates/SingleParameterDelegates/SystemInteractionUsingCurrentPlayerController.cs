@@ -17,8 +17,8 @@ namespace Little_Choice_Based_RPG.Types.Interactions.InteractionDelegates.Single
         }
 
         /// <summary> Creates a new interaction for players to be presented with in ChoiceHandler. </summary>
-        public SystemInteractionUsingCurrentPlayerController(SystemInteractionUsingCurrentPlayerControllerDelegate setDelegate, string setInteractTitle, string setInteractDescriptor, InteractionRole setInteractRole = InteractionRole.Explore)
-            : base(setDelegate, setInteractTitle, setInteractDescriptor, setInteractRole)
+        public SystemInteractionUsingCurrentPlayerController(SystemInteractionUsingCurrentPlayerControllerDelegate setDelegate, uint? setAssociatedObjectID, string setInteractTitle, string setInteractDescriptor, InteractionRole setInteractRole = InteractionRole.Explore)
+            : base(setDelegate, setInteractTitle, setInteractDescriptor, setAssociatedObjectID, setInteractRole)
         {
             storedDelegate = setDelegate;
         }

@@ -25,8 +25,8 @@ namespace Little_Choice_Based_RPG.Types.Interactions.InteractionDelegates.Triple
             //InteractionValidation.CreateValidDelegate("InteractUsingTargetObject", [InteractionParameter.Target_GameObject]);
         }
         /// <summary> Creates a new interaction for players to be presented with in ChoiceHandler. Requests a GameObject from the player. </summary>
-        public InteractionUsingCurrentPlayerAndCurrentRoomAndPreassignedRoom(InteractionUsingCurrentPlayerAndCurrentRoomAndPreassignedRoomDelegate setDelegate, string setInteractTitle, string setInteractDescriptor, Room setPredefinedRoom, InteractionRole setInteractRole = InteractionRole.Explore)
-            : base(setDelegate, setInteractTitle, setInteractDescriptor, setInteractRole)
+        public InteractionUsingCurrentPlayerAndCurrentRoomAndPreassignedRoom(InteractionUsingCurrentPlayerAndCurrentRoomAndPreassignedRoomDelegate setDelegate, uint? setAssociatedObjectID, string setInteractTitle, string setInteractDescriptor, Room setPredefinedRoom, InteractionRole setInteractRole = InteractionRole.Explore)
+            : base(setDelegate, setInteractTitle, setInteractDescriptor, setAssociatedObjectID, setInteractRole)
         {
             storedDelegate = setDelegate;
 

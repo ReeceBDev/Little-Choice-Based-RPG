@@ -25,6 +25,7 @@ namespace Little_Choice_Based_RPG.Resources.Systems.ContainerSystems.Inventory
             var pickupTargetFromRoom = new InteractionUsingGameObjectAndCurrentPlayerAndCurrentRoom
             (
                 pickupFromRoomDelegate,
+                (uint)targetObject.Properties.GetPropertyValue("ID"),
                 DescriptorProcessor.GetDescriptor(targetObject, "InventorySystem.Interaction.Pickup.Title"),
                 DescriptorProcessor.GetDescriptor(targetObject, "InventorySystem.Interaction.Pickup.Invoking"),
                 targetObject
@@ -40,6 +41,7 @@ namespace Little_Choice_Based_RPG.Resources.Systems.ContainerSystems.Inventory
             var putdownTargetIntoRoom = new InteractionUsingGameObjectAndCurrentPlayerAndCurrentRoom
             (
                 dropIntoRoomDelegate,
+                (uint) targetObject.Properties.GetPropertyValue("ID"),
                 DescriptorProcessor.GetDescriptor(targetObject, "InventorySystem.Interaction.Drop.Title"),
                 DescriptorProcessor.GetDescriptor(targetObject, "InventorySystem.Interaction.Drop.Invoking"),
                 targetObject
@@ -55,6 +57,7 @@ namespace Little_Choice_Based_RPG.Resources.Systems.ContainerSystems.Inventory
             var putdownTargetIntoRoom = new InteractionUsingGameObjectAndCurrentPlayer
             (
                 openContainerDelegate,
+                (uint)targetObject.Properties.GetPropertyValue("ID"),
                 DescriptorProcessor.GetDescriptor(targetObject, "InventorySystem.Interaction.Open.Title"),
                 DescriptorProcessor.GetDescriptor(targetObject, "InventorySystem.Interaction.Open.Invoking"),
                 targetObject
@@ -71,6 +74,7 @@ namespace Little_Choice_Based_RPG.Resources.Systems.ContainerSystems.Inventory
             var moveIntoContainer = new InteractionUsingTwoGameObjectsAndCurrentPlayer
             (
                 moveIntoContainerDelegate,
+                null, //Defaults to player, as the player's target is ambiguous. The interaction itself is directly an in-a-sense player-centric action.
                 DescriptorProcessor.GetDescriptor(targetContainer, "InventorySystem.Interaction.LoadIntoInventory.Title"),
                 DescriptorProcessor.GetDescriptor(targetContainer, "InventorySystem.Interaction.LoadIntoInventory.Invoking"),
                 $"Select an object to put inside the {targetContainer}",

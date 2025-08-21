@@ -20,6 +20,7 @@ namespace Little_Choice_Based_RPG.Resources.Systems.RoomSystems
             var changeRoom = new InteractionUsingCurrentPlayerAndCurrentRoomAndPreassignedRoom
             (
                 changeRoomDelegate,
+                (uint)destination.Properties.GetPropertyValue("ID"),
                 $"{directionName} - {DescriptorProcessor.GetDescriptor(destination, "DirectionSystem.Interaction.Travel.Title")}",
                 DescriptorProcessor.GetDescriptor(destination, "DirectionSystem.Interaction.Travel.Description"),
                 (Room) destination

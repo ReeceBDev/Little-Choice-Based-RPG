@@ -1,15 +1,17 @@
-﻿using Little_Choice_Based_RPG.Types.Interactions.InteractionDelegates;
-using Little_Choice_Based_RPG.Resources.Systems.ContainerSystems.Inventory.InventoryExtensions;
-using Little_Choice_Based_RPG.Managers.PlayerControl;
-using LCBRPG_User_Console.ConsoleUtilities;
-using LCBRPG_User_Console.Types;
-using Little_Choice_Based_RPG.External.Types.Services;
-using Little_Choice_Based_RPG.External.Types;
+﻿using LCBRPG_User_Console.ConsoleUtilities;
 using LCBRPG_User_Console.MenuResource;
-using LCBRPG_User_Console.Types.DisplayDataEntries;
-using LCBRPG_User_Console.Types.ActualElements.StatusBars;
-using LCBRPG_User_Console.Types.ActualElements.TransitionalActions;
-using LCBRPG_User_Console.Types.ActualElements;
+using LCBRPG_User_Console.Types;
+using LCBRPG_User_Console.Types.ConsoleElements;
+using LCBRPG_User_Console.Types.ConsoleElements.ChoiceDisplays;
+using LCBRPG_User_Console.Types.ConsoleElements.StatusBars;
+using LCBRPG_User_Console.Types.ConsoleElements.TransitionalActions;
+using LCBRPG_User_Console.Types.DisplayData;
+using Little_Choice_Based_RPG.External.Types;
+using Little_Choice_Based_RPG.External.Types.Services;
+using Little_Choice_Based_RPG.Managers.PlayerControl;
+using Little_Choice_Based_RPG.Resources.Systems.ContainerSystems.Inventory.InventoryExtensions;
+using Little_Choice_Based_RPG.Types.Interactions.InteractionDelegates;
+using System.Security.Principal;
 using System.Threading.Tasks;
 using static LCBRPG_User_Console.ConsoleUtilities.UserInputUtilities;
 
@@ -18,11 +20,13 @@ namespace LCBRPG_User_Console.ConsoleMenus
     /// <summary> Outlines a menu which provides numbered choices to the player. This menu uses the console. </summary>
     internal abstract class NumberedConsoleMenu : IConsoleMenu
     {
+        protected ChangeInterfaceCallback ChangeInterfaceCallbackInstance;
+        protected DrawMenuCallbackDelegate DrawMenuElementsCallback;
+
         protected InteractionCache interactionCacheResource;
         protected HistoryLogCache historyLogCacheResource;
         protected List<string> allowedCommands;
-
-        protected DrawMenuCallbackDelegate DrawMenuElementsCallback;
+        protected Dictionary<ulong, Action> seededSystemInteractions = new(); //ID, pre-defined args)
 
         private DisplayDataList menuElements;
         private List<InteractionDisplayData> concatenatedInteractions;
@@ -34,11 +38,15 @@ namespace LCBRPG_User_Console.ConsoleMenus
         public bool ExitMenu { get; set; } = false;
         protected LocalPlayerSession PlayerSession { get; }
 
-        protected NumberedConsoleMenu(LocalPlayerSession setPlayerSession, InteractionCache setInteractionCache, HistoryLogCache setHistoryLogCache)
+        protected NumberedConsoleMenu(LocalPlayerSession setPlayerSession, InteractionCache setInteractionCache, 
+            HistoryLogCache setHistoryLogCache, ChangeInterfaceCallback setChangeInterfaceCallback)
         {
+            ChangeInterfaceCallbackInstance = setChangeInterfaceCallback;
             PlayerSession = setPlayerSession;
             interactionCacheResource = setInteractionCache;
             historyLogCacheResource = setHistoryLogCache;
+
+            allowedCommands = PlayerSession.UserInputServiceInstance.GetAllowedUserCommands();
         }
 
         /// <summary> Provides the main logic for this menu and keeps the player here until ready to leave. </summary>
@@ -71,26 +79,37 @@ namespace LCBRPG_User_Console.ConsoleMenus
         protected virtual List<InteractionDisplayData> InitialiseSystemChoices()
         {
             List<InteractionDisplayData> newSystemChoices = new();
+            ulong systemInteractionID = 0;
 
             //Add a choice which returns to the main menu.
-            newSystemChoices.Add(SystemChoices.ReturnToMainMenu);
+            newSystemChoices.Add(new InteractionDisplayData(++systemInteractionID, "Go back to main menu.", InteractionRole.System.ToString()
+                , PlayerSession.PlayerStatusServiceInstance.GetPlayerID()));
+
+            seededSystemInteractions.Add(
+                systemInteractionID, //Must be the same as its respective display data above
+                () => SystemChoices.SwitchMenuLogic(
+                    this, 
+                    ChangeInterfaceCallbackInstance, 
+                    new MainMenu(PlayerSession, interactionCacheResource, historyLogCacheResource, ChangeInterfaceCallbackInstance))
+             );
 
             return newSystemChoices;
         }
+
         protected virtual DisplayDataList InitialiseMenuElements(List<InteractionDisplayData> displayedInteractions)
         {
             DisplayDataList newElements = new();
 
             newElements.UpsertElement(1, new StatusBarExploreElement(ElementIdentities.TopStatusBar, PlayerSession), this);
-            newElements.UpsertElement(2, new TransitionalActionBlockElement(ElementIdentities.TransitionalAction, PlayerSession), this);
-            newElements.UpsertElement(6, new UserInputElement(ElementIdentities.AvailableChoices, displayedInteractions, interactionCacheResource), this);
+            newElements.UpsertElement(2, new TransitionalActionBlockElement(ElementIdentities.TransitionalAction, historyLogCacheResource), this);
+            newElements.UpsertElement(6, new NearbyChoicesElement(ElementIdentities.AvailableChoices, displayedInteractions, interactionCacheResource), this);
 
             return newElements;
         }
 
         protected virtual void OnElementUpdating(object? sender, EventArgs e)
         {
-            if (sender is UserInputElement)
+            if (sender is NearbyChoicesElement)
                 inputLockCounter++; //Freeze user input, stacks multiple times for multiple updates
         }
         protected virtual void OnElementUpdated(object? sender, EventArgs e)
@@ -98,7 +117,7 @@ namespace LCBRPG_User_Console.ConsoleMenus
             if (sender is IElement element)
             {
                 //Initialise
-                if (sender is UserInputElement) //Initialise specifically for UserInputElements
+                if (sender is NearbyChoicesElement) //Initialise specifically for UserInputElements
                     concatenatedInteractions = ConcatenateInteractions(); //Refresh interactions
 
                 //Update this element, if it exists in menuElements
@@ -114,7 +133,7 @@ namespace LCBRPG_User_Console.ConsoleMenus
                 }
 
                 //Finalise
-                if (sender is UserInputElement) //Finalise specifically for UserInputElements
+                if (sender is NearbyChoicesElement) //Finalise specifically for UserInputElements
                     inputLockCounter--; //Thaw user input by one stack
             }
         }
@@ -122,7 +141,7 @@ namespace LCBRPG_User_Console.ConsoleMenus
         private void HandleUserInput(List<InteractionDisplayData> interactions, int inputLockCounter)
         {
             UserInputUtilities.HandleUserInput(PlayerSession.UserInputServiceInstance, interactions, DrawMenuElementsCallback, menuElements, inputLockCounter, 
-                allowedCommands);
+                allowedCommands, seededSystemInteractions);
         }
 
         /// <summary> Draw the User Interface. This writes all assigned text entries to the interface </summary>

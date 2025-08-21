@@ -6,6 +6,7 @@ using Little_Choice_Based_RPG.Managers.Server;
 using Little_Choice_Based_RPG.Types.Interactions.InteractionDelegates;
 using Little_Choice_Based_RPG.Types.Interactions.InteractionDelegates.SingleParameterDelegates;
 using Little_Choice_Based_RPG.Types.TypedEventArgs.InteractionCache;
+using Microsoft.VisualBasic;
 using System.Collections.Concurrent;
 using System.Runtime.CompilerServices;
 using System.Threading.Channels;
@@ -122,7 +123,8 @@ namespace Little_Choice_Based_RPG.External.EndpointServices
             {
                 var interaction = interactionData[i];
 
-                transposedCache[i] = new InteractionServiceData(interaction.UniqueInstanceID, interaction.InteractionTitle, interaction.InteractionContext.ToString(), true);
+                transposedCache[i] = new InteractionServiceData(interaction.UniqueInstanceID, interaction.InteractionTitle, 
+                    interaction.InteractionContext.ToString(), true, interaction.AssociatedObjectID);
             }
 
             return transposedCache;
@@ -133,7 +135,8 @@ namespace Little_Choice_Based_RPG.External.EndpointServices
             IInvokableInteraction newInteraction = e.NewInteraction;
 
             InteractionServiceData interactionData = 
-                new InteractionServiceData(newInteraction.UniqueInstanceID, newInteraction.InteractionTitle, newInteraction.InteractionContext.ToString(), true);
+                new InteractionServiceData(newInteraction.UniqueInstanceID, newInteraction.InteractionTitle, newInteraction.InteractionContext.ToString(), true,
+                newInteraction.AssociatedObjectID);
 
             if (clientRefreshOngoing)
             {
@@ -147,7 +150,8 @@ namespace Little_Choice_Based_RPG.External.EndpointServices
         private void OnInteractionRemoved(object? sender, InteractionRemovedEventArgs e)
         {
             InteractionServiceData interactionData = 
-                new InteractionServiceData(e.OldInteraction.UniqueInstanceID, e.OldInteraction.InteractionTitle, e.OldInteraction.InteractionContext.ToString(), false);
+                new InteractionServiceData(e.OldInteraction.UniqueInstanceID, e.OldInteraction.InteractionTitle, e.OldInteraction.InteractionContext.ToString(), 
+                false, e.OldInteraction.AssociatedObjectID);
 
             if (clientRefreshOngoing)
             {

@@ -1,28 +1,39 @@
-﻿using Little_Choice_Based_RPG.Types.Interactions.InteractionDelegates;
-using Little_Choice_Based_RPG.Types.Interactions;
-using Little_Choice_Based_RPG.External.EndpointServices;
-using Little_Choice_Based_RPG.Managers.PlayerControl;
-using LCBRPG_User_Console.ConsoleUtilities;
-using LCBRPG_User_Console.Types;
+﻿using LCBRPG_User_Console.ConsoleUtilities;
 using LCBRPG_User_Console.MenuResource;
-using LCBRPG_User_Console.Types.DisplayDataEntries;
-using LCBRPG_User_Console.Types.ActualElements;
+using LCBRPG_User_Console.Types;
+using LCBRPG_User_Console.Types.ConsoleElements;
+using LCBRPG_User_Console.Types.DisplayData;
+using Little_Choice_Based_RPG.External.EndpointServices;
+using Little_Choice_Based_RPG.External.Types;
+using Little_Choice_Based_RPG.Managers.PlayerControl;
+using Little_Choice_Based_RPG.Types.Interactions;
+using Little_Choice_Based_RPG.Types.Interactions.InteractionDelegates;
 
 namespace LCBRPG_User_Console.ConsoleMenus
 {
     internal class ExploreMenu : NumberedConsoleMenu
     {
-        public ExploreMenu(LocalPlayerSession setPlayerSession, InteractionCache setInteractionCache, HistoryLogCache setHistoryLogCache) 
-            : base(setPlayerSession, setInteractionCache, setHistoryLogCache)
+        public ExploreMenu(LocalPlayerSession setPlayerSession, InteractionCache setInteractionCache, HistoryLogCache setHistoryLogCache, 
+            ChangeInterfaceCallback changeMenuCallback) : base(setPlayerSession, setInteractionCache, setHistoryLogCache, changeMenuCallback)
         {
         }
 
         protected override List<InteractionDisplayData> InitialiseSystemChoices()
         {
             List<InteractionDisplayData> newSystemChoices = base.InitialiseSystemChoices();
+            ulong systemInteractionID = 0;
 
-            //Add a choice which opens the player's inventory
-            newSystemChoices.Add(SystemChoices.SwitchToInventoryMenu);
+            // Add a choice which opens the player's inventory
+            newSystemChoices.Add(new InteractionDisplayData(++systemInteractionID, "Open your inventory.", InteractionRole.System.ToString(), 
+                PlayerSession.PlayerStatusServiceInstance.GetPlayerID()));
+
+            seededSystemInteractions.Add(
+                systemInteractionID, //Must be the same as its respective display data above
+                () => SystemChoices.SwitchMenuLogic(
+                    this,
+                    ChangeInterfaceCallbackInstance,
+                    new InventoryMenu(PlayerSession, interactionCacheResource, historyLogCacheResource, ChangeInterfaceCallbackInstance))
+                );
 
             return newSystemChoices;
         }

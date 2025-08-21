@@ -30,8 +30,8 @@ namespace Little_Choice_Based_RPG.Types.Interactions.InteractionDelegates.Triple
             //InteractionValidation.CreateValidDelegate("InteractUsingTargetObject", [InteractionParameter.Target_GameObject]);
         }
         /// <summary> Creates a new interaction for players to be presented with in ChoiceHandler. Requests a GameObject from the player. </summary>
-        public InteractionUsingGameObjectAndCurrentPlayerAndCurrentRoom(InteractionUsingGameObjectAndCurrentPlayerAndCurrentRoomDelegate setDelegate, string setInteractTitle, string setInteractDescriptor, string setGameObjectRequestDescription, List<EntityProperty>? setGameObjectFilter = null, InteractionRole setInteractRole = InteractionRole.Explore)
-            : base(setDelegate, setInteractTitle, setInteractDescriptor, setInteractRole)
+        public InteractionUsingGameObjectAndCurrentPlayerAndCurrentRoom(InteractionUsingGameObjectAndCurrentPlayerAndCurrentRoomDelegate setDelegate, uint? setAssociatedObjectID, string setInteractTitle, string setInteractDescriptor, string setGameObjectRequestDescription, List<EntityProperty>? setGameObjectFilter = null, InteractionRole setInteractRole = InteractionRole.Explore)
+            : base(setDelegate, setInteractTitle, setInteractDescriptor, setAssociatedObjectID, setInteractRole)
         {
             storedDelegate = setDelegate;
 
@@ -42,8 +42,8 @@ namespace Little_Choice_Based_RPG.Types.Interactions.InteractionDelegates.Triple
         }
 
         /// <summary> Creates a new interaction with a pre-assigned GameObject for players to be presented with in ChoiceHandler. </summary>
-        public InteractionUsingGameObjectAndCurrentPlayerAndCurrentRoom(InteractionUsingGameObjectAndCurrentPlayerAndCurrentRoomDelegate setDelegate, string setInteractTitle, string setInteractDescriptor, GameObject preassignedParameter1, InteractionRole setInteractRole = InteractionRole.Explore)
-            : base(setDelegate, setInteractTitle, setInteractDescriptor, setInteractRole)
+        public InteractionUsingGameObjectAndCurrentPlayerAndCurrentRoom(InteractionUsingGameObjectAndCurrentPlayerAndCurrentRoomDelegate setDelegate, uint? setAssociatedObjectID, string setInteractTitle, string setInteractDescriptor, GameObject preassignedParameter1, InteractionRole setInteractRole = InteractionRole.Explore)
+            : base(setDelegate, setInteractTitle, setInteractDescriptor, setAssociatedObjectID, setInteractRole)
         {
             storedDelegate = setDelegate;
 
@@ -81,7 +81,7 @@ namespace Little_Choice_Based_RPG.Types.Interactions.InteractionDelegates.Triple
             {
                 //Create abort delegate using this invocationMutexIdentity
                 InteractionUsingNothingDelegate abortInteractionDelegate = new InteractionUsingNothingDelegate(ResetInteraction);
-                abortInteraction = new InteractionUsingNothing(abortInteractionDelegate, "Cancel selection", "Cancelling this interaction...", InteractionRole.System);
+                abortInteraction = new InteractionUsingNothing(abortInteractionDelegate, (uint)sourceInvocationMutexIdentity.CurrentPlayer.Properties.GetPropertyValue("ID"), "Cancel selection", "Cancelling this interaction...", InteractionRole.System);
 
                 var gameObjectRequest = new FilterableRequestEventArgs(invocationParameter1Description, abortInteraction);
 

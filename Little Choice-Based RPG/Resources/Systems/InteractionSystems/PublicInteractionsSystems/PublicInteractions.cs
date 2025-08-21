@@ -24,6 +24,8 @@ namespace Little_Choice_Based_RPG.Resources.Systems.InteractionSystems.PublicInt
 
         public event EventHandler<PropertyExtensionChangedArgs> PropertyExtensionChanged;
 
+        public IEnumerable<object> GetAllEntries() => RecentInteractions.Cast<object>();
+
         public PublicInteractions()
         {
             UniqueIdentifier = "PublicInteractions";

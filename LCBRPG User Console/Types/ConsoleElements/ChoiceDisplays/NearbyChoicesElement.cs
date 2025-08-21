@@ -1,6 +1,6 @@
 ﻿using LCBRPG_User_Console.ConsoleUtilities;
 using LCBRPG_User_Console.MenuResource;
-using LCBRPG_User_Console.Types.DisplayDataEntries;
+using LCBRPG_User_Console.Types.DisplayData;
 using Little_Choice_Based_RPG.External.EndpointServices;
 using Little_Choice_Based_RPG.External.Types;
 using System;
@@ -9,16 +9,16 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace LCBRPG_User_Console.Types.ActualElements
+namespace LCBRPG_User_Console.Types.ConsoleElements.ChoiceDisplays
 {
-    internal class UserInputElement : ElementLogic
+    internal class NearbyChoicesElement : ElementLogic
     {
-        private const int choiceIndexOffset = 1;
+        protected const int choiceIndexOffset = 1;
 
-        private List<InteractionDisplayData> playerInteractions;
-        private InteractionCache interactionAuthority;
+        protected List<InteractionDisplayData> playerInteractions;
+        protected InteractionCache interactionAuthority;
 
-        public UserInputElement(ElementIdentities setUniqueIdentity, List<InteractionDisplayData> initialInteractions, InteractionCache setInteractionAuthority) 
+        public NearbyChoicesElement(ElementIdentities setUniqueIdentity, List<InteractionDisplayData> initialInteractions, InteractionCache setInteractionAuthority) 
             : base(setUniqueIdentity)
         {
             playerInteractions = initialInteractions;
@@ -33,13 +33,11 @@ namespace LCBRPG_User_Console.Types.ActualElements
 
         protected override string GenerateContent()
         {
-            List<InteractionDisplayData> orderedInteractions = new();
-
             return FormatChoices(playerInteractions);
         }
 
         /// <summary> Returns a formatted string describing every available interaction, in a numbered list. </summary>
-        private string FormatChoices(List<InteractionDisplayData> interactions)
+        protected virtual string FormatChoices(List<InteractionDisplayData> interactions)
         {
             string createdChoiceList = "";
             int choiceIndex = 0;

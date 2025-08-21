@@ -20,6 +20,5 @@ namespace Little_Choice_Based_RPG.External.EndpointServices
 
         public event EventHandler<HistoryLogServiceAdditionEventArgs> LogAdded; //Pushes a new history log to an endpoint.
         public event EventHandler LogCacheRefreshRequired; //Instructs endpoints to re-request their cache.
-
     }
 }

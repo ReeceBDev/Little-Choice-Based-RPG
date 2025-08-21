@@ -8,6 +8,11 @@ namespace Little_Choice_Based_RPG.Resources.Systems.RoomSystems.DirectionExtensi
     /// Note: This class is intended for use on Rooms. </summary>
     internal class RoomConnections : IPropertyExtension
     {
+        public string UniqueIdentifier { get; init; } = "RoomConnections";
+        public List<RoomConnection> LocalConnections { get; private set; } = new();
+
+        public IEnumerable<object> GetAllEntries() => LocalConnections.Cast<object>();
+
         public void Add(RoomConnection target)
         {
             //Ensure only one of each source, destination and associated object exists at once
@@ -36,7 +41,5 @@ namespace Little_Choice_Based_RPG.Resources.Systems.RoomSystems.DirectionExtensi
         }
 
         public event EventHandler<PropertyExtensionChangedArgs> PropertyExtensionChanged;
-        public string UniqueIdentifier { get; init; } = "RoomConnections";
-        public List<RoomConnection> LocalConnections { get; private set; } = new();
     }
 }

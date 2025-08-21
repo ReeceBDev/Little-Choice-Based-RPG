@@ -29,6 +29,8 @@ namespace LCBRPG_User_Console.MenuResource
             RefreshCache();
         }
 
+        public HistoryLogDisplayData? PeekCache() => historyLogCache.Count > 0 ? historyLogCache[0] : null;
+
         protected virtual void OnHistoryLogRefreshRequired(object? sender, EventArgs e)
         {
             RefreshCache();

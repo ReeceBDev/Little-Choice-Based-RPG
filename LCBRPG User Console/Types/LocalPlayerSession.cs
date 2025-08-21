@@ -33,11 +33,11 @@ namespace LCBRPG_User_Console.Types
             SessionToken = PlayerSessionServiceInstance.CreateGuestSession();
 
             //Initialise all other required services.
-            UserInputServiceInstance = new();
+            UserInputServiceInstance = new(SessionToken);
             InteractionServiceInstance = new(SessionToken, PlayerServiceWorkerInstance);
             HistoryLogServiceInstance = new(SessionToken);
             PlayerStatusServiceInstance = new(SessionToken);
-            PlayerInventoryServiceInstance = new();
+            PlayerInventoryServiceInstance = new(SessionToken);
             PlayerMapServiceInstance = new();
             TimeServiceInstance = new();
         }

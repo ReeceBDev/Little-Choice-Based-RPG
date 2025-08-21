@@ -41,6 +41,7 @@ namespace Little_Choice_Based_RPG.Resources.Systems.DamageSystems.Repair
 
             InteractionUsingGameObject repairUsingGameObject = new InteractionUsingGameObject(
                 repairUsingGameObjectDelegate,
+                (uint)sourceProperties.GetPropertyValue("ID"),
                 DescriptorProcessor.GetDescriptor(target, "Repair.Interaction.Title"),
                 DescriptorProcessor.GetDescriptor(target, "Repair.Interaction.Invoking"),
                 (GameObject) target
@@ -63,6 +64,7 @@ namespace Little_Choice_Based_RPG.Resources.Systems.DamageSystems.Repair
 
             InteractionUsingTwoGameObjects repairUsingTool = new InteractionUsingTwoGameObjects(
                 repairUsingToolDelegate,
+                (uint)targetRepairee.Properties.GetPropertyValue("ID"), //This should be the target, as it spawns the interaction itself! Looks correct to me!
                 DescriptorProcessor.GetDescriptor(targetRepairee, "Repair.Interaction.Title"),
                 DescriptorProcessor.GetDescriptor(targetRepairee, "Repair.Interaction.Invoking"),
                 (GameObject) targetRepairee,

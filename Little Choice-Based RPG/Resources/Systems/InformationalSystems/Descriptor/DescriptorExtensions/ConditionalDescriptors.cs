@@ -7,6 +7,11 @@ namespace Little_Choice_Based_RPG.Resources.Systems.InformationalSystems.Descrip
     /// <summary> Holds conditional descriptors. Each conditional descriptor is a possible descriptor that applies under a condition. </summary>
     internal class ConditionalDescriptors : IPropertyExtension
     {
+        public string UniqueIdentifier { get; init; } = "ConditionalDescriptors";
+        public List<IDescriptorCondition> Descriptors { get; private set; } = new List<IDescriptorCondition>();
+
+        public IEnumerable<object> GetAllEntries() => Descriptors.Cast<object>();
+
         public void Add(IDescriptorCondition condition)
         {
             PropertyExtensionChanged?.Invoke(this, new PropertyExtensionChangedArgs("ConditionalDescriptor.Added", condition));
@@ -20,7 +25,5 @@ namespace Little_Choice_Based_RPG.Resources.Systems.InformationalSystems.Descrip
         }
 
         public event EventHandler<PropertyExtensionChangedArgs> PropertyExtensionChanged;
-        public string UniqueIdentifier { get; init; } = "ConditionalDescriptors";
-        public List<IDescriptorCondition> Descriptors { get; private set; } = new List<IDescriptorCondition>();
     }
 }

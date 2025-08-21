@@ -1,7 +1,7 @@
 ﻿using LCBRPG_User_Console.ConsoleMenus;
-using LCBRPG_User_Console.Types.ActualElements;
+using LCBRPG_User_Console.Types.ConsoleElements;
 
-namespace LCBRPG_User_Console.Types.DisplayDataEntries
+namespace LCBRPG_User_Console.Types.DisplayData
 {
     /// <summary> Provides a list of Menu Elements with custom functionality. </summary>
     internal class DisplayDataList()

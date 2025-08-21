@@ -13,6 +13,8 @@ namespace Little_Choice_Based_RPG.Resources.Systems.ContainerSystems.Inventory.I
         public event EventHandler<PropertyExtensionChangedArgs> PropertyExtensionChanged;
         public event EventHandler<string> BroadcastLocalUserMessage; //Broadcasts a message to the players within this container.
 
+        public IEnumerable<object> GetAllEntries() => Inventory.Cast<object>();
+
         public void Add(GameObject target)
         {
             Inventory.Add(target);

@@ -1,4 +1,6 @@
-﻿using LCBRPG_User_Console.Types.DisplayDataEntries;
+﻿using LCBRPG_User_Console.MenuResource;
+using LCBRPG_User_Console.Types.ConsoleElements;
+using LCBRPG_User_Console.Types.DisplayData;
 using Little_Choice_Based_RPG.External.EndpointServices;
 using Little_Choice_Based_RPG.External.Types;
 using System;
@@ -7,24 +9,16 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace LCBRPG_User_Console.Types.ActualElements.ChoiceDisplays
+namespace LCBRPG_User_Console.Types.ConsoleElements.ChoiceDisplays
 {
-    internal class InventoryChoicesElement : ElementLogic
+    internal class InventoryChoicesElement : NearbyChoicesElement
     {
-        private const int choiceIndexOffset = 1;
-        private LocalPlayerSession playerSession;
-
-        public InventoryChoicesElement(ElementIdentities setUniqueIdentity, LocalPlayerSession currentPlayerSession) : base(setUniqueIdentity)
+        public InventoryChoicesElement(ElementIdentities setUniqueIdentity, List<InteractionDisplayData> initialInteractions, InteractionCache setInteractionCache) 
+            : base(setUniqueIdentity, initialInteractions, setInteractionCache)
         {
-            playerSession = currentPlayerSession;
         }
 
-        protected override string GenerateContent()
-        {
-            return FormatChoices();
-        }
-
-        private string FormatChoices(List<InteractionDisplayData> targetInteractions, out List<InteractionDisplayData> sortedInteractions)
+        protected override string FormatChoices(List<InteractionDisplayData> targetInteractions)
         {
             const int maximumInventoryLength = 30;
 
@@ -41,16 +35,16 @@ namespace LCBRPG_User_Console.Types.ActualElements.ChoiceDisplays
 
 
             //Split inventory listings.
-            foreach (var interaction in targetInteractions)
+            foreach (var displayData in targetInteractions)
             {
-                if (interaction.InteractionContext.Equals(InteractionRole.SystemInventoryEntry))
-                    inventoryListings.Add(interaction);
+                if (displayData.PresentationContext.Equals(SystemInteractionContext.InventoryEntry.ToString()))
+                    inventoryListings.Add(displayData);
             }
 
             //Split other interactions.
             foreach (var interaction in targetInteractions)
             {
-                if (!interaction.InteractionContext.Equals(InteractionRole.SystemInventoryEntry))
+                if (!interaction.PresentationContext.Equals(SystemInteractionContext.InventoryEntry.ToString()))
                     interactionListings.Add(interaction);
             }
 
@@ -90,7 +84,6 @@ namespace LCBRPG_User_Console.Types.ActualElements.ChoiceDisplays
             //Write Suffix
             createdChoiceList += "\n ╠═════════════════════════════════════════════════════════════════════════════════" + "══════-=════-=═=-=--=-=-- - - -";
 
-            sortedInteractions = orderedInteractions;
             return createdChoiceList;
         }
     }
