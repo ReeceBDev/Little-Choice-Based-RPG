@@ -18,7 +18,7 @@ namespace Little_Choice_Based_RPG.External.EndpointServices
         public void HandleUserCommand(string input) => UserCommands.TryCommand(input, playerReference, out _);
         public void OnThrowErrorMessage(string errorMessage) => ThrowErrorMessage?.Invoke(this, errorMessage);
         public void OnRequestDecisionSubMenu(string submenuTitle, string[] submenuEntries) => RequestDecisionSubMenu?.Invoke(this, new UserDecisionEventArgs(submenuTitle, submenuEntries));
-        public void OnRequestOpenContainerSubMenu(string submenuTitle, string[] submenuEntries) => RequestOpenContainerSubMenu?.Invoke(this, new UserDecisionEventArgs(submenuTitle, submenuEntries)); //Yes, they use the same eventargs for now. It works fine :)
+        public void OnRequestOpenConainerSubMenu(string submenuTitle, string[] submenuEntries) => RequestOpenContainerSubMenu?.Invoke(this, new UserDecisionEventArgs(submenuTitle, submenuEntries)); //Yes, they use the same eventargs for now. It works fine :)
 
         public List<string> GetAllowedUserCommands() => UserCommands.AllowedUserCommands;
 

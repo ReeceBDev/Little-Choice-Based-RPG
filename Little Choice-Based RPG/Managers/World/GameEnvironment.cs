@@ -1,7 +1,7 @@
 ﻿using Little_Choice_Based_RPG.Resources.Entities;
 using Little_Choice_Based_RPG.Resources.Entities.Conceptual;
 using Little_Choice_Based_RPG.Resources.Entities.Physical.Plants;
-using Little_Choice_Based_RPG.Resources.Rooms;
+using Little_Choice_Based_RPG.Resources.Entities.Rooms;
 using Little_Choice_Based_RPG.Resources.Systems.ContainerSystems.Inventory.InventoryExtensions;
 using Little_Choice_Based_RPG.Resources.Systems.InformationalSystems;
 using Little_Choice_Based_RPG.Resources.Systems.InformationalSystems.Descriptor;

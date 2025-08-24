@@ -1,4 +1,4 @@
-﻿using Little_Choice_Based_RPG.Resources.Rooms;
+﻿using Little_Choice_Based_RPG.Resources.Entities.Rooms;
 
 namespace Little_Choice_Based_RPG.Types.TypedEventArgs
 {

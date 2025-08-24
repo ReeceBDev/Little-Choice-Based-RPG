@@ -1,5 +1,4 @@
-﻿using Little_Choice_Based_RPG.Resources.Entities.Conceptual.Weightbearing_Derivatives;
-using Little_Choice_Based_RPG.Types.EntityProperties;
+﻿using Little_Choice_Based_RPG.Types.EntityProperties;
 
 namespace Little_Choice_Based_RPG.Resources.Entities.Physical.Living.Players
 {

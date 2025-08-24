@@ -1,7 +1,7 @@
 ﻿namespace Little_Choice_Based_RPG.Types.EntityProperties 
 {
-    /// <summary> Represents a string key and its associated 
-    /// . The keys and values must match their schema in PropertyValidation. </summary>s
+    /// <summary> Represents a string key and its associated value. The value must match a type within the PropertyType enum.
+    /// Properties are type-checked at compile time, and must be registered to PropertyValidation before being used. </summary>s
     internal struct EntityProperty
     {
         /// <summary> The name of the property. This must match an valid property name in PropertyValidation. </summary>

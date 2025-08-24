@@ -1,6 +1,6 @@
 ﻿using Little_Choice_Based_RPG.Resources.Entities;
 using Little_Choice_Based_RPG.Resources.Entities.Conceptual;
-using Little_Choice_Based_RPG.Resources.Rooms;
+using Little_Choice_Based_RPG.Resources.Entities.Rooms;
 using Little_Choice_Based_RPG.Types.EntityProperties;
 using Little_Choice_Based_RPG.Types.TypedEventArgs.PropertyContainerEventArgs;
 

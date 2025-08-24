@@ -1,6 +1,7 @@
-﻿using Little_Choice_Based_RPG.Types.EntityProperties;
+﻿using Little_Choice_Based_RPG.Resources.Entities.Conceptual;
+using Little_Choice_Based_RPG.Types.EntityProperties;
 
-namespace Little_Choice_Based_RPG.Resources.Entities.Conceptual.Weightbearing_Derivatives
+namespace Little_Choice_Based_RPG.Resources.Entities.Physical.Living
 {
     internal class LivingCreature : GameObject
     {

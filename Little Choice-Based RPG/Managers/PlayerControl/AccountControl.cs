@@ -1,6 +1,6 @@
 ﻿using Little_Choice_Based_RPG.Managers.Server;
 using Little_Choice_Based_RPG.Managers.World;
-using Little_Choice_Based_RPG.Resources.Rooms;
+using Little_Choice_Based_RPG.Resources.Entities.Rooms;
 
 namespace Little_Choice_Based_RPG.Managers.PlayerControl
 {

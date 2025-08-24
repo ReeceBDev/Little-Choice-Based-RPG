@@ -1,4 +1,4 @@
-﻿using Little_Choice_Based_RPG.Resources.Rooms;
+﻿using Little_Choice_Based_RPG.Resources.Entities.Rooms;
 using System.Collections;
 
 namespace Little_Choice_Based_RPG.Types.Navigation

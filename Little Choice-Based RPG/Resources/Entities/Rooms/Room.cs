@@ -3,7 +3,7 @@ using Little_Choice_Based_RPG.Types.EntityProperties;
 using Little_Choice_Based_RPG.Types.DescriptorConditions;
 using Little_Choice_Based_RPG.Resources.Entities;
 
-namespace Little_Choice_Based_RPG.Resources.Rooms
+namespace Little_Choice_Based_RPG.Resources.Entities.Rooms
 {
     internal class Room : PropertyContainer
     {

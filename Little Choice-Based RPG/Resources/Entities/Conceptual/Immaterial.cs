@@ -1,6 +1,6 @@
 ﻿using Little_Choice_Based_RPG.Types.EntityProperties;
 
-namespace Little_Choice_Based_RPG.Resources.Entities.ImmaterialEntities
+namespace Little_Choice_Based_RPG.Resources.Entities.Conceptual
 {
     internal class Immaterial : PropertyContainer
     {
@@ -31,8 +31,8 @@ namespace Little_Choice_Based_RPG.Resources.Entities.ImmaterialEntities
             : base(SetLocalProperties(derivedProperties ??= new Dictionary<string, object>()))
         {
             //Update the default name to contain the type
-            if (this.Properties.HasPropertyAndValue("Name", "Unknown Immaterial"))
-                this.Properties.UpsertProperty("Name", $"Unknown Immaterial of type \"{GetType().Name.ToString()}\"");
+            if (Properties.HasPropertyAndValue("Name", "Unknown Immaterial"))
+                Properties.UpsertProperty("Name", $"Unknown Immaterial of type \"{GetType().Name.ToString()}\"");
 
 
             //Freeze IsImmaterial property.

@@ -2,6 +2,8 @@
 {
     internal class PropertyHandler
     {
+        public List<EntityProperty> EntityProperties { get; private set; } = new List<EntityProperty>();
+
         /// <summary> Creates a new property on this object. </summary>
         public void CreateProperty(string setPropertyName, object setPropertyValue, bool isReadOnly = false)
         {
@@ -98,6 +100,7 @@
         /// <summary> Checks if property is modifiable. </summary>
         public bool IsPropertyReadOnly(string propertyName) => CopyEntityProperty(propertyName).ReadOnly;
 
+        protected private void OnPropertyChanged(EntityProperty updatedProperty) => PropertyChanged?.Invoke(this, updatedProperty);
 
         /// <summary> Returns a reference to an EntityProperty from a matching property name on this object. </summary>
         private EntityProperty CopyEntityProperty(string propertyName)
@@ -126,7 +129,5 @@
         }
 
         public event EventHandler<EntityProperty> PropertyChanged;
-        protected private void OnPropertyChanged(EntityProperty updatedProperty) => PropertyChanged?.Invoke(this, updatedProperty);
-        public List<EntityProperty> EntityProperties { get; private set; } = new List<EntityProperty>();
     }
 }

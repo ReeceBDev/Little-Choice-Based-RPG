@@ -1,5 +1,5 @@
 ﻿using Little_Choice_Based_RPG.Resources.Entities;
-using Little_Choice_Based_RPG.Resources.Rooms;
+using Little_Choice_Based_RPG.Resources.Entities.Rooms;
 using Little_Choice_Based_RPG.Resources.Systems.ContainerSystems.Inventory;
 using Little_Choice_Based_RPG.Resources.Systems.InformationalSystems.Descriptor;
 using Little_Choice_Based_RPG.Types.Interactions.InteractionDelegates.TripleParameterDelegates;
