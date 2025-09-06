@@ -1,6 +1,6 @@
-﻿using Little_Choice_Based_RPG.Resources.Entities;
-using Little_Choice_Based_RPG.Resources.Entities.Conceptual;
+﻿using Little_Choice_Based_RPG.Resources.Entities.Conceptual;
 using Little_Choice_Based_RPG.Resources.Systems.ContainerSystems.Inventory.InventoryExtensions;
+using Little_Choice_Based_RPG.Types.PropertySystem.Entities;
 
 namespace Little_Choice_Based_RPG.Types.DescriptorConditions
 {
@@ -10,7 +10,7 @@ namespace Little_Choice_Based_RPG.Types.DescriptorConditions
         public string GetDescriptor() => Descriptor;
 
         /// <summary> Returns whether the existing entity states match the conditions' required entity states </summary>
-        public bool CheckConditionIsValid(PropertyContainer targetEntity, IDescriptorCondition targetStateDescriptor)
+        public bool CheckConditionIsValid(IPropertyContainer targetEntity, IDescriptorCondition targetStateDescriptor)
         {
             if (!targetEntity.Extensions.Contains("ItemContainer"))
                 throw new Exception($"This descriptors parent {targetEntity} didn't contain a reference for \"ItemContainer\" in its extensions list {targetEntity.Extensions}!");

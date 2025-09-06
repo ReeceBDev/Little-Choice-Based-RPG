@@ -22,7 +22,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LCBRPG User Console", "LCBR
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LCB-RPG-Web-Frontend", "..\LCB-RPG-ASP.NET\LCB-RPG-ASP.NET\LCB-RPG-Web-Frontend.csproj", "{C9E50D3C-5C85-2608-5094-C943F4A8F60C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Test-Properties-V2", "..\Test-Properties-V2\Test-Properties-V2\Test-Properties-V2.csproj", "{5555E379-4239-A062-6216-FC3FA2EB85F1}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Properties-V2-Prototype", "..\Test-Properties-V2\Test-Properties-V2\Properties-V2-Prototype.csproj", "{5555E379-4239-A062-6216-FC3FA2EB85F1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

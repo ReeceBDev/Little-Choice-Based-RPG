@@ -1,10 +1,10 @@
-﻿using Little_Choice_Based_RPG.Resources.Entities;
-using Little_Choice_Based_RPG.Resources.Entities.Conceptual;
+﻿using Little_Choice_Based_RPG.Resources.Entities.Conceptual;
 using Little_Choice_Based_RPG.Resources.Entities.Physical.Living.Players;
 using Little_Choice_Based_RPG.Resources.Systems.InformationalSystems.Descriptor;
 using Little_Choice_Based_RPG.Types.Interactions.InteractionDelegates;
 using Little_Choice_Based_RPG.Types.Interactions.InteractionDelegates.DoubleParameterDelegates;
 using Little_Choice_Based_RPG.Types.Interactions.InteractionDelegates.TripleParameterDelegates;
+using Little_Choice_Based_RPG.Types.PropertySystem.Entities;
 using static Little_Choice_Based_RPG.Types.Interactions.InteractionDelegates.DoubleParameterDelegates.InteractionUsingGameObjectAndCurrentPlayer;
 using static Little_Choice_Based_RPG.Types.Interactions.InteractionDelegates.TripleParameterDelegates.InteractionUsingGameObjectAndCurrentPlayerAndCurrentRoom;
 using static Little_Choice_Based_RPG.Types.Interactions.InteractionDelegates.TripleParameterDelegates.InteractionUsingTwoGameObjectsAndCurrentPlayer;
@@ -13,7 +13,7 @@ namespace Little_Choice_Based_RPG.Resources.Systems.ContainerSystems.Inventory
 {
     internal static class InventoryDelegation
     {
-        public static IInvokableInteraction GenerateMoveIntoGameObjectContainer(Player targetPlayer, PropertyContainer targetContainer)
+        public static IInvokableInteraction GenerateMoveIntoGameObjectContainer(Player targetPlayer, IPropertyContainer targetContainer)
         {
             return GenerateMoveIntoContainerInteraction((GameObject)targetContainer);
         }

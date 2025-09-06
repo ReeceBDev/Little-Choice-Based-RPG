@@ -14,6 +14,5 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\Entities\Physical\Vehicles\" />
-    <Folder Include="Resources\Components\" />
   </ItemGroup>
 </Project>

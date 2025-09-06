@@ -6,8 +6,9 @@ using Little_Choice_Based_RPG.Resources.Entities.Rooms;
 using Little_Choice_Based_RPG.Resources.Systems.ContainerSystems.Inventory;
 using Little_Choice_Based_RPG.Resources.Systems.InteractionSystems.PrivateInteractionsSystems;
 using Little_Choice_Based_RPG.Resources.Systems.InteractionSystems.PublicInteractionsSystems;
-using Little_Choice_Based_RPG.Types.EntityProperties;
+using Little_Choice_Based_RPG.Types.Archive;
 using Little_Choice_Based_RPG.Types.Interactions.InteractionDelegates;
+using Microsoft.VisualBasic;
 
 namespace Little_Choice_Based_RPG.Managers.PlayerControl
 {
@@ -23,13 +24,13 @@ namespace Little_Choice_Based_RPG.Managers.PlayerControl
             foreach (GameObject target in targetObjects)
             {
                 if (target.Extensions.Contains("PublicInteractions"))
-                    foreach (var interactionKeyValuePair in ((PublicInteractions) target.Extensions.Get("PublicInteractions")).RecentInteractions)
+                    foreach (var interaction in ((PublicInteractions) target.Extensions.Get("PublicInteractions")).RecentInteractions)
                     {
                         //If an interaction context has been set. but does not match, skip.
-                        if (role is not null && interactionKeyValuePair.Key.InteractionContext != role)
+                        if (role is not null && interaction.InteractionContext != role)
                             continue;
 
-                        relevantInteractions.Add(interactionKeyValuePair.Key);
+                        relevantInteractions.Add(interaction);
                     }
             }
 
@@ -42,9 +43,9 @@ namespace Little_Choice_Based_RPG.Managers.PlayerControl
             List<IInvokableInteraction> relevantInteractions = new();
 
             if (targetObject.Extensions.Contains("PublicInteractions"))
-                foreach (var interactionKeyValuePair in ((PublicInteractions)targetObject.Extensions.Get("PublicInteractions")).RecentInteractions)
+                foreach (var interaction in ((PublicInteractions)targetObject.Extensions.Get("PublicInteractions")).RecentInteractions)
                 {
-                    relevantInteractions.Add(interactionKeyValuePair.Key);
+                    relevantInteractions.Add(interaction);
                 }                
 
             return relevantInteractions;
@@ -62,13 +63,13 @@ namespace Little_Choice_Based_RPG.Managers.PlayerControl
             PrivateInteractions playerInteractions = (PrivateInteractions)currentPlayer.Extensions.Get("PrivateInteractions");
             
             //Grab each interaction which matches the interaction context
-            foreach (KeyValuePair<KeyValuePair<PropertyContainer, IInvokableInteraction>, ulong> interactionKeyValuePair in playerInteractions.privateInteractionsList)
+            foreach (var interactionKeyValuePair in playerInteractions.RecentInteractions)
             {
                 //If an interaction context has been set. but does not match, skip.
-                if (role is not null && interactionKeyValuePair.Key.Value.InteractionContext != role)
+                if (role is not null && interactionKeyValuePair.Value.InteractionContext != role)
                     continue;
 
-                retrievedInteractions.Add(interactionKeyValuePair.Key.Value, interactionKeyValuePair.Value);
+                retrievedInteractions.Add(interactionKeyValuePair.Value, (ulong)interactionKeyValuePair.Key.Properties.GetPropertyValue("ID"));
             }
 
             return retrievedInteractions;
@@ -84,12 +85,11 @@ namespace Little_Choice_Based_RPG.Managers.PlayerControl
             var retrievedInteractions = new Dictionary<IInvokableInteraction, ulong>();
             PrivateInteractions playerInteractions = (PrivateInteractions)currentPlayer.Extensions.Get("PrivateInteractions");
 
-
             //Grab each interaction which matches the targetObject
-            foreach (KeyValuePair<KeyValuePair<PropertyContainer, IInvokableInteraction>, ulong> interactionKeyValuePair in playerInteractions.privateInteractionsList)
+            foreach (var interactionKeyValuePair in playerInteractions.RecentInteractions)
             {
-                if (interactionKeyValuePair.Key.Key == targetObject)
-                    retrievedInteractions.Add(interactionKeyValuePair.Key.Value, interactionKeyValuePair.Value);
+                if (interactionKeyValuePair.Key == targetObject)
+                    retrievedInteractions.Add(interactionKeyValuePair.Value, (ulong) interactionKeyValuePair.Key.Properties.GetPropertyValue("ID"));
             }
 
             return retrievedInteractions;

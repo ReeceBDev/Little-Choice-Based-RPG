@@ -1,17 +1,17 @@
 ﻿using Little_Choice_Based_RPG.Managers.PlayerControl;
-using Little_Choice_Based_RPG.Resources.Entities;
 using Little_Choice_Based_RPG.Resources.Entities.Conceptual;
 using Little_Choice_Based_RPG.Resources.Systems.InformationalSystems.Descriptor;
+using Little_Choice_Based_RPG.Types.PropertySystem.Entities;
 
 namespace Little_Choice_Based_RPG.Resources.Systems.DamageSystems.Repair
 {
     internal static class RepairProcessor
     {
         /// <summary> Sets Damage.Broken to false, from the BreakSystem. </summary>
-        public static void InvokeRepair(PlayerController mutexHolder, PropertyContainer target) => InvokeRepair(mutexHolder, target, null);
+        public static void InvokeRepair(PlayerController mutexHolder, IPropertyContainer target) => InvokeRepair(mutexHolder, target, null);
 
         /// <summary> Sets Damage.Broken to false, from the BreakSystem. </summary>
-        public static void InvokeRepair(PlayerController mutexHolder, PropertyContainer target, GameObject? repairTool = null)
+        public static void InvokeRepair(PlayerController mutexHolder, IPropertyContainer target, GameObject? repairTool = null)
         {
             //Guard clauses for the values in use.
             if (!target.Properties.HasPropertyAndValue("Damage.Broken", true))
@@ -37,7 +37,7 @@ namespace Little_Choice_Based_RPG.Resources.Systems.DamageSystems.Repair
             Repair(target);
         }
 
-        private static void Repair(PropertyContainer target)
+        private static void Repair(IPropertyContainer target)
         {
             //Main repairing logic
             target.Properties.UpsertProperty("Damage.Broken", false); //Property found in DamageLogic
@@ -45,7 +45,7 @@ namespace Little_Choice_Based_RPG.Resources.Systems.DamageSystems.Repair
             SetRepairDescriptors(target);
         }
 
-        public static void SetRepairDescriptors(PropertyContainer target)
+        public static void SetRepairDescriptors(IPropertyContainer target)
         {
             //Set the generic and inspect descriptors back to default.
             target.Properties.UpsertProperty("Descriptor.Generic.Current", DescriptorProcessor.GetDescriptor(target, "Generic.Default"));

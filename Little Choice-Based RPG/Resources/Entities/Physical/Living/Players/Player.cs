@@ -1,58 +1,40 @@
-﻿using Little_Choice_Based_RPG.Types.EntityProperties;
+﻿using Little_Choice_Based_RPG.Resources.Components.ComponentAccessors;
+using Little_Choice_Based_RPG.Types.PropertySystem.Containers;
+using Little_Choice_Based_RPG.Types.PropertySystem.Properties;
 
 namespace Little_Choice_Based_RPG.Resources.Entities.Physical.Living.Players
 {
     internal class Player : LivingCreature
     {
-        private readonly static Dictionary<string, PropertyType> requiredProperties = new Dictionary<string, PropertyType>()
+        private readonly static List<Func<PropertyContainer, IProperty?>> requiredProperties = new()
         {
-            { "Descriptor.Player.Custom", PropertyType.String }
+            { i => i.Player.Descriptor.Custom }
         };
 
-        private readonly static Dictionary<string, PropertyType> optionalProperties = new Dictionary<string, PropertyType>()
-        {
-
-        };
-
-        private readonly static Dictionary<string, object> defaultProperties = new Dictionary<string, object>()
+        private readonly static List<Action<PropertyContainer>> defaultProperties = new()
         {
             //Components
-            {"Component.PlayerSystem", true },
-            {"Component.InventorySystem", true },
-            {"Component.GearSystem", true },
+            { i => i.Player.UsesSystem = true },
+            { i => i.Inventory.UsesSystem = true },
+            { i => i.Gear.UsesSystem = true },
 
             //Capabilities
-            {"Player.CanHear", true},
-            {"Player.CanSee", true },
+            { i => i.Player.CanHear = true},
+            { i => i.Player.CanSee = true },
 
             //Stats
-            {"Weightbearing.StrengthInKG",  32.0m},
-            {"WeightInKG", 78.4m},
+            { i => i.Weightbearing.StrengthInKG = 32.0m},
+            { i => i.Weight.WeightInKG = 78.4m},
 
             //Custom descriptor
-            {"Descriptor.Player.Custom", "A man falls from a tear in reality, thrown forwards without footing and clipped at by cold, sharp airs and a stomach-pit of sudden peril. Darkly dressed without a sliver of skin, behind his jacket a nictation of the lapel reveals a dark silver-grey gunmetal contraption branded with one of the traditional marks of the Potsun Burran, meaning scavenger. He is you.\n\nOut of the void of glass, ensnared in whispers of iridescent whisps of near translucent smoke, white whispers of reality fluttering away having been dragged out of the mirror-esque and clinging with futility to the edges of your self. You stagger clear of the rupture and catch yourself, your boots hitting the ground with a thud, grains of sand thrown from the edges of your boots."}
+            { i => i.Player.Descriptor.Custom = "A man falls from a tear in reality, thrown forwards without footing and clipped at by cold, sharp airs and a stomach-pit of sudden peril. Darkly dressed without a sliver of skin, behind his jacket a nictation of the lapel reveals a dark silver-grey gunmetal contraption branded with one of the traditional marks of the Potsun Burran, meaning scavenger. He is you.\n\nOut of the void of glass, ensnared in whispers of iridescent whisps of near translucent smoke, white whispers of reality fluttering away having been dragged out of the mirror-esque and clinging with futility to the edges of your self. You stagger clear of the rupture and catch yourself, your boots hitting the ground with a thud, grains of sand thrown from the edges of your boots."}
         };
 
-        static Player()
-        {
-            //Define new required and optional ValidProperties for this class
-            DeclareNewPropertyTypes(requiredProperties);
-            DeclareNewPropertyTypes(optionalProperties);
-        }
-
-        public Player(Dictionary<string, object>? derivedProperties = null)
-            : base(SetLocalProperties(derivedProperties ??= new Dictionary<string, object>()))
+        public Player(List<Action<PropertyContainer>>? derivedProperties = null)
+            : base(ConcatenateProperties(derivedProperties, defaultProperties))
         {
             //Validate required properties have been set on entityProperties
             ValidateRequiredProperties(requiredProperties);
-        }
-
-        private static Dictionary<string, object> SetLocalProperties(Dictionary<string, object> derivedProperties)
-        {
-            //Apply default properties for this class to the current list of derivedProperties
-            ApplyDefaultProperties(derivedProperties, defaultProperties);
-
-            return derivedProperties; //Return is required to give (base) the derived list.
         }
 
         /*

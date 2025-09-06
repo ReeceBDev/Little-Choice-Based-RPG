@@ -1,20 +1,15 @@
-﻿using Little_Choice_Based_RPG.Resources.Entities;
-using Little_Choice_Based_RPG.Resources.Systems.SystemEventBus;
-using Little_Choice_Based_RPG.Types.EntityProperties;
+﻿using Little_Choice_Based_RPG.Types.PropertySystem.Archive;
+using Little_Choice_Based_RPG.Types.PropertySystem.Entities;
+using Little_Choice_Based_RPG.Types.PropertySystem.Systems;
+using Little_Choice_Based_RPG.Types.PropertySystem.Systems.SystemEventBus;
 using Little_Choice_Based_RPG.Types.TypedEventArgs.PropertyContainerEventArgs;
 
 namespace Little_Choice_Based_RPG.Resources.Systems.PlayerSystems
 {
     /// <summary> Implements player-specific logic.</summary>
-    internal class PlayerSystem : PropertyLogic
+    internal class PlayerSystem : PropertySystem
     {
-        static PlayerSystem()
-        {
-            PropertyValidation.CreateValidProperty("Player.CanHear", PropertyType.Boolean);
-            PropertyValidation.CreateValidProperty("Player.CanSee", PropertyType.Boolean);
-        }
-
-        protected override void InitialiseNewSubscriber(PropertyContainer sourceContainer, PropertyHandler sourceProperties)
+        public override void InitialiseNewSubscriber(IPropertyContainer sourceContainer, PropertyStore sourceProperties)
         {
             //The subscriber requires Component.PrivateInteractionsSystem.
             if (!sourceProperties.HasExistingPropertyName("Component.PrivateInteractionsSystem"))

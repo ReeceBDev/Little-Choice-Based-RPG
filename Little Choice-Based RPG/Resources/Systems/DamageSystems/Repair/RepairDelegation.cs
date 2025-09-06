@@ -1,18 +1,19 @@
-﻿using Little_Choice_Based_RPG.Types.EntityProperties;
-using Little_Choice_Based_RPG.Types.Interactions.InteractionDelegates.SingleParameterDelegates;
+﻿using Little_Choice_Based_RPG.Types.Interactions.InteractionDelegates.SingleParameterDelegates;
 using Little_Choice_Based_RPG.Types.Interactions.InteractionDelegates;
 using static Little_Choice_Based_RPG.Types.Interactions.InteractionDelegates.SingleParameterDelegates.InteractionUsingGameObject;
 using Little_Choice_Based_RPG.Resources.Systems.InformationalSystems.Descriptor;
 using Little_Choice_Based_RPG.Resources.Entities.Conceptual;
 using Little_Choice_Based_RPG.Types.Interactions.InteractionDelegates.DoubleParameterDelegates;
 using static Little_Choice_Based_RPG.Types.Interactions.InteractionDelegates.DoubleParameterDelegates.InteractionUsingTwoGameObjects;
-using Little_Choice_Based_RPG.Resources.Entities;
+using Little_Choice_Based_RPG.Types.Archive;
+using Little_Choice_Based_RPG.Types.PropertySystem.Archive;
+using Little_Choice_Based_RPG.Types.PropertySystem.Entities;
 
 namespace Little_Choice_Based_RPG.Resources.Systems.DamageSystems.Repair
 {
     internal static class RepairDelegation
     {
-        public static IInvokableInteraction GetRepairChoice(PropertyContainer sourceContainer, PropertyHandler sourceProperties)
+        public static IInvokableInteraction GetRepairChoice(IPropertyContainer sourceContainer, PropertyStore sourceProperties)
         {
             IInvokableInteraction? newInteraction = null;
 
@@ -27,7 +28,7 @@ namespace Little_Choice_Based_RPG.Resources.Systems.DamageSystems.Repair
             return newInteraction ?? throw new Exception($"No repair interaction was chosen as valid, but one was requested for {sourceContainer}!");
         }
 
-        public static InteractionUsingGameObject InitialiseRepairUsingNothing(PropertyContainer target, PropertyHandler sourceProperties)
+        public static InteractionUsingGameObject InitialiseRepairUsingNothing(IPropertyContainer target, PropertyStore sourceProperties)
         {
             //Guard clauses for interaction descriptors
             if (!sourceProperties.HasExistingPropertyName("Descriptor.Repair.Interaction.Title"))
@@ -50,7 +51,7 @@ namespace Little_Choice_Based_RPG.Resources.Systems.DamageSystems.Repair
             return repairUsingGameObject;
         }
 
-        public static InteractionUsingTwoGameObjects InitialiseRepairUsingTool(PropertyContainer targetRepairee, PropertyHandler sourceProperties)
+        public static InteractionUsingTwoGameObjects InitialiseRepairUsingTool(IPropertyContainer targetRepairee, PropertyStore sourceProperties)
         {
             //Guard clauses for interaction descriptors
             if (!sourceProperties.HasExistingPropertyName("Descriptor.Repair.Interaction.Title"))

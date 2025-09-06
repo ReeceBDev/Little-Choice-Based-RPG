@@ -1,11 +1,10 @@
-﻿using Little_Choice_Based_RPG.External.ConsoleEndpoint;
-using Little_Choice_Based_RPG.External.ConsoleEndpoint.ConsoleFunctionalities;
-using Little_Choice_Based_RPG.Managers.World;
+﻿using Little_Choice_Based_RPG.Managers.World;
 using Little_Choice_Based_RPG.Resources.Entities.Conceptual;
 using Little_Choice_Based_RPG.Resources.Entities.Physical.Living.Players;
 using Little_Choice_Based_RPG.Resources.Entities.Rooms;
 using Little_Choice_Based_RPG.Resources.Systems.ContainerSystems.Inventory;
 using Little_Choice_Based_RPG.Resources.Systems.ContainerSystems.Inventory.InventoryExtensions;
+using Little_Choice_Based_RPG.Types.PropertySystem.Entities;
 using Little_Choice_Based_RPG.Types.TypedEventArgs;
 
 namespace Little_Choice_Based_RPG.Managers.PlayerControl

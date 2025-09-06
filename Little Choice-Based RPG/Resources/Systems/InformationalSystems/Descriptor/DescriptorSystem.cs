@@ -1,28 +1,13 @@
-﻿using Little_Choice_Based_RPG.Resources.Entities;
-using Little_Choice_Based_RPG.Types.EntityProperties;
+﻿using Little_Choice_Based_RPG.Types.PropertySystem.Archive;
+using Little_Choice_Based_RPG.Types.PropertySystem.Entities;
+using Little_Choice_Based_RPG.Types.PropertySystem.Systems;
 using Little_Choice_Based_RPG.Types.TypedEventArgs.PropertyContainerEventArgs;
 
 namespace Little_Choice_Based_RPG.Resources.Systems.InformationalSystems.Descriptor
 {
-    internal class DescriptorSystem : PropertyLogic
+    internal sealed class DescriptorSystem : PropertySystem
     {
-        static DescriptorSystem()
-        {
-            PropertyValidation.CreateValidProperty("Descriptor.Generic.Current", PropertyType.String); //Generic Descriptor the object is currently using
-            PropertyValidation.CreateValidProperty("Descriptor.Inspect.Current", PropertyType.String); //Inspect Descriptor the object is currently using
-
-            PropertyValidation.CreateValidProperty("Descriptor.Generic.Default", PropertyType.String);
-            PropertyValidation.CreateValidProperty("Descriptor.Inspect.Default", PropertyType.String);
-
-
-            PropertyValidation.CreateValidProperty("Descriptor.Inspect.Default.IsAdditive", PropertyType.Boolean);
-            PropertyValidation.CreateValidProperty("Descriptor.Inspect.Default.Additive.Suffix", PropertyType.String);
-            PropertyValidation.CreateValidProperty("Descriptor.Inspect.Default.Additive.Infix", PropertyType.String);
-            PropertyValidation.CreateValidProperty("Descriptor.Inspect.Default.Additive.Prefix", PropertyType.String);
-            PropertyValidation.CreateValidProperty("Descriptor.Inspect.Default.Additive.Empty", PropertyType.String);
-        }
-
-        protected override void InitialiseNewSubscriber(PropertyContainer targetContainer, PropertyHandler sourceProperties)
+        public override void InitialiseNewSubscriber(IPropertyContainer targetContainer, PropertyStore sourceProperties)
         {
             //Freeze default descriptors.
             sourceProperties.FreezeProperty("Descriptor.Generic.Default");

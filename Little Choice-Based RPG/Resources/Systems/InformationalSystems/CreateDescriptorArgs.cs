@@ -1,5 +1,5 @@
 ﻿using Little_Choice_Based_RPG.Types;
-using Little_Choice_Based_RPG.Types.EntityProperties;
+using Little_Choice_Based_RPG.Types.PropertySystem.EntityProperties;
 
 namespace Little_Choice_Based_RPG.Resources.Systems.InformationalSystems
 {

@@ -1,5 +1,4 @@
-﻿using Little_Choice_Based_RPG.Resources.Entities;
-using Little_Choice_Based_RPG.Resources.Entities.Conceptual;
+﻿using Little_Choice_Based_RPG.Resources.Entities.Conceptual;
 using Little_Choice_Based_RPG.Resources.Systems.ContainerSystems.Inventory;
 using Little_Choice_Based_RPG.Resources.Systems.ContainerSystems.Inventory.InventoryExtensions;
 using Little_Choice_Based_RPG.Resources.Systems.InteractionSystems.PrivateInteractionsSystems;
@@ -7,6 +6,7 @@ using Little_Choice_Based_RPG.Resources.Systems.InteractionSystems.PublicInterac
 using Little_Choice_Based_RPG.Types;
 using Little_Choice_Based_RPG.Types.Interactions.InteractionDelegates;
 using Little_Choice_Based_RPG.Types.PlayerControl;
+using Little_Choice_Based_RPG.Types.PropertySystem.Entities;
 using Little_Choice_Based_RPG.Types.TypedEventArgs;
 using Little_Choice_Based_RPG.Types.TypedEventArgs.InteractionCache;
 using Little_Choice_Based_RPG.Types.TypedEventArgs.PropertyContainerEventArgs;
@@ -27,7 +27,7 @@ namespace Little_Choice_Based_RPG.Managers.PlayerControl
         private ConcurrentQueue<PendingInteractionCacheUpdate> pendingInteractionUpdates = new(); //The boolean is 1 for add, 0 for remove.
 
         private PlayerController currentPlayerController;
-        private HashSet<PropertyContainer> subscribedTargets = new(); //Unique set of every item listened to. Targets should be subscribed to when added, and unsubscribed upon removing - preserving one-off subscriptions.
+        private HashSet<IPropertyContainer> subscribedTargets = new(); //Unique set of every item listened to. Targets should be subscribed to when added, and unsubscribed upon removing - preserving one-off subscriptions.
 
         public event EventHandler<InteractionAddedEventArgs> InteractionAdded; //Fired upon an interaction being added to the cache.
         public event EventHandler<InteractionRemovedEventArgs> InteractionRemoved; //Fired upon an interaction being removed from the cache.
@@ -40,13 +40,13 @@ namespace Little_Choice_Based_RPG.Managers.PlayerControl
             currentPlayerController = setPlayerController;
 
             //Subscribe to changes to the Player's Private Interactions
-            currentPlayerController.CurrentPlayer.ObjectChanged += OnPlayerChanged;
+            currentPlayerController.CurrentPlayer.ContainerChanged += OnPlayerChanged;
 
             //Subscribe to changes to the Player's Position
             currentPlayerController.PlayerChangedRoom += OnPlayerChangedRoom;
 
             //Subscribe to changes to that Room's Inventory
-            currentPlayerController.CurrentRoom.ObjectChanged += OnRoomChanged;
+            currentPlayerController.CurrentRoom.ContainerChanged += OnRoomChanged;
 
             //Subscribe to changes to that Inventory's items' Public Interactions
             localObjects = InventoryProcessor.GetInventoryEntities(currentPlayerController.CurrentRoom);
@@ -54,7 +54,7 @@ namespace Little_Choice_Based_RPG.Managers.PlayerControl
             foreach (GameObject item in localObjects)
             {
                 if (subscribedTargets.Add(item)) //If the item has been added, and is therefore the only unique instance of it being added (Hashsets are unique, being sets)
-                    item.ObjectChanged += OnItemChanged; //Subscribe to that item, only once, since it was only just added :)
+                    item.ContainerChanged += OnItemChanged; //Subscribe to that item, only once, since it was only just added :)
             }
         }
 
@@ -198,25 +198,25 @@ namespace Little_Choice_Based_RPG.Managers.PlayerControl
         private void OnPlayerChangedRoom(object sender, PlayerChangedRoomEventArgs e)
         {
             //Stop listening to the old Room.
-            e.OldRoom.ObjectChanged -= OnRoomChanged;
+            e.OldRoom.ContainerChanged -= OnRoomChanged;
 
             //Stop listening to old items
             foreach (var target in subscribedTargets.ToList())
             {
                 //Try to remove from the subscriptions, and then unsubscribe if it was listed as listened-to.
                 if (subscribedTargets.Remove(target))
-                    target.ObjectChanged -= OnItemChanged;
+                    target.ContainerChanged -= OnItemChanged;
             }
 
             //Start listening to the new Room.
-            e.NewRoom.ObjectChanged += OnRoomChanged;
+            e.NewRoom.ContainerChanged += OnRoomChanged;
 
             //Start listening to the new rooms' items
             foreach (GameObject item in InventoryProcessor.GetInventoryEntities(e.NewRoom))
             {
                 //Subscribe to that item, only once, since it was only just added, uniquely, and wont be re-added, making double-subscriptions impossible.
                 if (subscribedTargets.Add(item)) 
-                    item.ObjectChanged += OnItemChanged; 
+                    item.ContainerChanged += OnItemChanged; 
             }
 
             //Refresh cache.
@@ -232,7 +232,7 @@ namespace Little_Choice_Based_RPG.Managers.PlayerControl
                     {
                         ///Listen for changes to its Public Interactions list
                         if (subscribedTargets.Add(itemGained)) //Subscribe to that item only once
-                            itemGained.ObjectChanged += OnItemChanged;
+                            itemGained.ContainerChanged += OnItemChanged;
                     }
                     break;
 
@@ -242,7 +242,7 @@ namespace Little_Choice_Based_RPG.Managers.PlayerControl
                         //Stop listening to changes in its Public Interactions list
                         //Try to remove from the subscription list, and then unsubscribe if needed.
                         if (subscribedTargets.Remove(itemLost))
-                            itemLost.ObjectChanged -= OnItemChanged;  
+                            itemLost.ContainerChanged -= OnItemChanged;  
                     }
                     break;
             }

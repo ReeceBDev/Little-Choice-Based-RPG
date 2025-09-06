@@ -12,7 +12,7 @@ namespace Little_Choice_Based_RPG.Managers.PlayerControl
         {
             //Generate a new player at the default spawn location
             GameEnvironment currentEnvironment = GameWorld.FindEnvironmentByID(1);
-            Room spawnRoom = currentEnvironment.Rooms.GetRoom(0, 0, 0); //Select the room to spawn the player in
+            Room spawnRoom = currentEnvironment.RoomRegistry.GetRoom(0, 0, 0); //Select the room to spawn the player in
             PlayerController player1 = new PlayerController(spawnRoom, currentEnvironment); //Create the player in that room
 
             //Assign them a session

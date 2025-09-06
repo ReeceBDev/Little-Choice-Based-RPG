@@ -1,33 +1,23 @@
 ﻿using Little_Choice_Based_RPG.Resources.Systems.ContainerSystems.Inventory;
-using Little_Choice_Based_RPG.Types.EntityProperties;
+using Little_Choice_Based_RPG.Types.PropertySystem.Containers;
+using Little_Choice_Based_RPG.Types.PropertySystem.Properties;
+using Little_Choice_Based_RPG.Resources.Components.ComponentAccessors;
 
 namespace Little_Choice_Based_RPG.Resources.Entities.Conceptual
 {
     internal abstract class GameObject : PropertyContainer
     {
-        private readonly static Dictionary<string, PropertyType> requiredProperties = new Dictionary<string, PropertyType>()
+        private readonly static List<Func<PropertyContainer, IProperty?>> requiredProperties = new()
         {
-            {"WeightInKG", PropertyType.Decimal}
+            { i => i.Weight.WeightInKG }
         };
 
-        private readonly static Dictionary<string, PropertyType> optionalProperties = new Dictionary<string, PropertyType>()
-        {
-
-        };
-
-        private readonly static Dictionary<string, object> defaultProperties = new Dictionary<string, object>()
+        private readonly static List<Action<PropertyContainer>> defaultProperties = new()
         {
         };
 
-        static GameObject()
-        {
-            //Define new required and optional ValidProperties for this class
-            DeclareNewPropertyTypes(requiredProperties);
-            DeclareNewPropertyTypes(optionalProperties);
-        }
-
-        private protected GameObject(Dictionary<string, object>? derivedProperties = null)
-            : base(SetLocalProperties(derivedProperties ??= new Dictionary<string, object>()))
+        private protected GameObject(List<Action<PropertyContainer>>? derivedProperties = null)
+            : base(ConcatenateProperties(derivedProperties, defaultProperties))
         {
             //Validate required properties have been set on entityProperties
             ValidateRequiredProperties(requiredProperties);
@@ -35,33 +25,5 @@ namespace Little_Choice_Based_RPG.Resources.Entities.Conceptual
             //Validate that pickup and putdown descriptors have been set if it falls under the current max-strength.
             InventoryPropertyValidation.ValidateInventoryDescriptors(this);
         }
-
-        private static Dictionary<string, object> SetLocalProperties(Dictionary<string, object> derivedProperties)
-        {
-            //Apply default properties for this class to the current list of derivedProperties
-            ApplyDefaultProperties(derivedProperties, defaultProperties);
-
-            return derivedProperties; //Return is required to give (base) the derived list.
-        }
-
-        /*
-        private protected void Attach(GameObject attachee) // Cojoin together with another object
-        {
-            AttachedObjects.Add(attachee);
-            attachee.Attach(this);
-        }
-        private protected void Unattach(GameObject attachee) // Unattach self from another object and unattach the other object from self
-        {
-            AttachedObjects.Remove(attachee);
-            attachee.Unattach(this);
-        }
-
-        public string TakeDamage(uint healthToLose)
-        {
-            return $"you lose {healthToLose}";
-        }
-        
-        public HashSet<GameObject> AttachedObjects { get; private protected set; } = [];
-        */
     }
 }

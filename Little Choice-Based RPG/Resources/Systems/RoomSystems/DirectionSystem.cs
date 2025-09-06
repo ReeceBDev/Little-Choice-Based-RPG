@@ -1,28 +1,21 @@
-﻿using Little_Choice_Based_RPG.Resources.Entities;
-using Little_Choice_Based_RPG.Resources.Entities.Conceptual;
+﻿using Little_Choice_Based_RPG.Resources.Entities.Conceptual;
 using Little_Choice_Based_RPG.Resources.Entities.Physical.Living.Players;
 using Little_Choice_Based_RPG.Resources.Entities.Rooms;
 using Little_Choice_Based_RPG.Resources.Systems.ContainerSystems.Inventory.InventoryExtensions;
 using Little_Choice_Based_RPG.Resources.Systems.InteractionSystems;
 using Little_Choice_Based_RPG.Resources.Systems.InteractionSystems.PrivateInteractionsSystems;
 using Little_Choice_Based_RPG.Resources.Systems.RoomSystems.DirectionExtensions;
-using Little_Choice_Based_RPG.Resources.Systems.SystemEventBus;
-using Little_Choice_Based_RPG.Types.EntityProperties;
 using Little_Choice_Based_RPG.Types.Navigation;
+using Little_Choice_Based_RPG.Types.PropertySystem.Entities;
+using Little_Choice_Based_RPG.Types.PropertySystem.Systems;
+using Little_Choice_Based_RPG.Types.PropertySystem.Systems.SystemEventBus;
 using Little_Choice_Based_RPG.Types.TypedEventArgs.PropertyContainerEventArgs;
 
 namespace Little_Choice_Based_RPG.Resources.Systems.RoomSystems
 {
-    internal class DirectionSystem : PropertyLogic
+    internal sealed class DirectionSystem : PropertySystem
     {
-        static DirectionSystem()
-        {
-            PropertyValidation.CreateValidProperty("DirectionSystem.Interaction.Travel.Description", PropertyType.String);
-            PropertyValidation.CreateValidProperty("DirectionSystem.Interaction.Travel.Title", PropertyType.String);
-        }
-
-
-        protected override void InitialiseNewSubscriber(PropertyContainer sourceContainer, PropertyHandler sourceProperties)
+        public override void InitialiseNewSubscriber(IPropertyContainer sourceContainer, PropertyStore sourceProperties)
         {
             //The subscriber requires Component.InventorySystem.
             if (!sourceProperties.HasExistingPropertyName("Component.InventorySystem"))

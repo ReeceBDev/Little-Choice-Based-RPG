@@ -1,12 +1,12 @@
 ﻿using System.Runtime.CompilerServices;
 using Little_Choice_Based_RPG.Managers.PlayerControl;
 using Little_Choice_Based_RPG.Managers.World;
+using Little_Choice_Based_RPG.Resources.Components.CommonComponents;
 using Little_Choice_Based_RPG.Resources.Rooms;
 using Little_Choice_Based_RPG.Resources.Systems.ContainerSystems.Attach;
 using Little_Choice_Based_RPG.Resources.Systems.ContainerSystems.Gear;
 using Little_Choice_Based_RPG.Resources.Systems.ContainerSystems.Inventory;
 using Little_Choice_Based_RPG.Resources.Systems.ContainerSystems.Weightbearing;
-using Little_Choice_Based_RPG.Resources.Systems.DamageSystems;
 using Little_Choice_Based_RPG.Resources.Systems.DamageSystems.Break;
 using Little_Choice_Based_RPG.Resources.Systems.DamageSystems.Flammability;
 using Little_Choice_Based_RPG.Resources.Systems.DamageSystems.Repair;
@@ -20,7 +20,7 @@ internal class Program
     private static void Main(string[] args)
     {
         //Initialise the current systems:        
-        RuntimeHelpers.RunClassConstructor(typeof(GlobalDamageProperties).TypeHandle);
+        RuntimeHelpers.RunClassConstructor(typeof(DamagableComponent).TypeHandle);
         new FlammabilitySystem();
         new RepairSystem();
         new BreakSystem();

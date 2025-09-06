@@ -1,5 +1,5 @@
 ﻿using Little_Choice_Based_RPG.Resources.Entities.Conceptual;
-using Little_Choice_Based_RPG.Types.EntityProperties;
+using Little_Choice_Based_RPG.Types.Archive;
 
 namespace Little_Choice_Based_RPG.Resources.Entities.Physical.Equippables.Armour
 {

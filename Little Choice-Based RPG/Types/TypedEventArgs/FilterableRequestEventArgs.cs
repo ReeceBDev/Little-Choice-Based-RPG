@@ -1,4 +1,4 @@
-﻿using Little_Choice_Based_RPG.Types.EntityProperties;
+﻿using Little_Choice_Based_RPG.Types.Archive;
 
 namespace Little_Choice_Based_RPG.Types.TypedEventArgs
 {

@@ -1,15 +1,15 @@
-﻿using Little_Choice_Based_RPG.Resources.Entities;
-using Little_Choice_Based_RPG.Resources.Systems.ContainerSystems.Inventory.InventoryExtensions;
+﻿using Little_Choice_Based_RPG.Resources.Systems.ContainerSystems.Inventory.InventoryExtensions;
 using Little_Choice_Based_RPG.Resources.Systems.InformationalSystems.Descriptor.DescriptorExtensions;
 using Little_Choice_Based_RPG.Types;
 using Little_Choice_Based_RPG.Types.DescriptorConditions;
+using Little_Choice_Based_RPG.Types.PropertySystem.Entities;
 
 namespace Little_Choice_Based_RPG.Resources.Systems.InformationalSystems.Descriptor
 {
     internal static class DescriptorProcessor
     {
         /// <summary> Create a new EntityStateDescriptor on the target object. Uses a CreateDescriptorStateList to define the conditions. </summary>
-        public static void CreateDescriptor(PropertyContainer target, CreateDescriptorStateList conditions)
+        public static void CreateDescriptor(IPropertyContainer target, CreateDescriptorStateList conditions)
         {
             if (!target.Extensions.Contains("ItemContainer"))
                 throw new ArgumentException($"The target {target} didn't contain an extension of the identifier \"ItemContainer\"! " +
@@ -29,7 +29,7 @@ namespace Little_Choice_Based_RPG.Resources.Systems.InformationalSystems.Descrip
 
         /// <summary> Takes a target and the name of a descriptor to retrieve it. Considers conditional descriptors of the same identity before returning. 
         /// "Descriptor." may be omitted for the descriptorIdentity.
-        public static string GetDescriptor(PropertyContainer targetContainer, string descriptorPartialIdentity)
+        public static string GetDescriptor(IPropertyContainer targetContainer, string descriptorPartialIdentity)
         {
             string? currentDescriptor = null;
             string descriptorName = descriptorPartialIdentity.StartsWith("Descriptor.") ? descriptorPartialIdentity : $"Descriptor.{descriptorPartialIdentity}";
@@ -75,7 +75,7 @@ namespace Little_Choice_Based_RPG.Resources.Systems.InformationalSystems.Descrip
             return false;
         }
 
-        private static bool TryGetRegularDescriptor(PropertyContainer targetContainer, string descriptorName, out string? descriptor)
+        private static bool TryGetRegularDescriptor(IPropertyContainer targetContainer, string descriptorName, out string? descriptor)
         {
             descriptor = null;
 
@@ -85,7 +85,7 @@ namespace Little_Choice_Based_RPG.Resources.Systems.InformationalSystems.Descrip
             return (descriptor is not null);
         }
 
-        private static bool TryGetConditionalDescriptor(PropertyContainer targetContainer, string descriptorName, out string? concatenatedDescriptor)
+        private static bool TryGetConditionalDescriptor(IPropertyContainer targetContainer, string descriptorName, out string? concatenatedDescriptor)
         {
             concatenatedDescriptor = null;
 
@@ -167,7 +167,7 @@ namespace Little_Choice_Based_RPG.Resources.Systems.InformationalSystems.Descrip
             return concatenatedValidDescriptors;
         }
         
-        public static string GenerateAdditiveDescription(string descriptorName, PropertyContainer targetContainer, List<uint> remainingIDs,
+        public static string GenerateAdditiveDescription(string descriptorName, IPropertyContainer targetContainer, List<uint> remainingIDs,
             List<IDescriptorCondition>? prioritisedDescriptors = null)
         {
             if (!targetContainer.Extensions.Contains("ItemContainer"))

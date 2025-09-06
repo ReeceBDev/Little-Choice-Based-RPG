@@ -1,12 +1,12 @@
-﻿using Little_Choice_Based_RPG.Resources.Entities;
-using Little_Choice_Based_RPG.Resources.Entities.Conceptual;
+﻿using Little_Choice_Based_RPG.Resources.Entities.Conceptual;
 using Little_Choice_Based_RPG.Resources.Entities.Rooms;
+using Little_Choice_Based_RPG.Types.PropertySystem.Entities;
 
 namespace Little_Choice_Based_RPG.Resources.Systems.ContainerSystems.Weightbearing
 {
     internal static class WeightbearingProcessor
     {
-        public static void AddWeight(PropertyContainer target, GameObject subject)
+        public static void AddWeight(IPropertyContainer target, GameObject subject)
         {
             //Guard Clauses for properties used in this method.
             if (target is not Room)
@@ -28,7 +28,7 @@ namespace Little_Choice_Based_RPG.Resources.Systems.ContainerSystems.Weightbeari
             target.Properties.ReplaceProperty("Weightbearing.WeightHeldInKG", weightHeld + targetWeight);
         }
 
-        public static void DropWeight(PropertyContainer target, GameObject subject)
+        public static void DropWeight(IPropertyContainer target, GameObject subject)
         {
             //Guard Clauses for properties used in this method.
             if (target is not Room)
@@ -49,7 +49,7 @@ namespace Little_Choice_Based_RPG.Resources.Systems.ContainerSystems.Weightbeari
             target.Properties.ReplaceProperty("Weightbearing.WeightHeldInKG", weightHeld - subjectWeight);
         }
 
-        public static bool TargetCanCarry(PropertyContainer target, GameObject subject)
+        public static bool TargetCanCarry(IPropertyContainer target, GameObject subject)
         {
             //Guard Clauses for properties used in this method.
             if (target is Room)

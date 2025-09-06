@@ -1,8 +1,8 @@
 ﻿using Little_Choice_Based_RPG.Managers.World;
-using Little_Choice_Based_RPG.Resources.Entities;
 using Little_Choice_Based_RPG.Resources.Entities.Conceptual;
 using Little_Choice_Based_RPG.Resources.Entities.Physical.Living.Players;
 using Little_Choice_Based_RPG.Resources.Entities.Rooms;
+using Little_Choice_Based_RPG.Types.PropertySystem.Entities;
 
 namespace Little_Choice_Based_RPG.Resources.Systems.ContainerSystems.Inventory
 {
@@ -30,7 +30,7 @@ namespace Little_Choice_Based_RPG.Resources.Systems.ContainerSystems.Inventory
                 throw new Exception($"The GameObject or derivative {target}, weighed less than the maximum strength limit, but didn't have a Pickup Invoking descriptor!");
         }
 
-        public static void ValidateOpenInventoryDescriptors(PropertyContainer target)
+        public static void ValidateOpenInventoryDescriptors(IPropertyContainer target)
         {
             if ((target is not Room) && (target is not Player))
             {

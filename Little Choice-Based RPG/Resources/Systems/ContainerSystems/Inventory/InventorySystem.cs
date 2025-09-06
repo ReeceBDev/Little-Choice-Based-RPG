@@ -1,35 +1,22 @@
 ﻿using Little_Choice_Based_RPG.Resources.Entities.Conceptual;
 using Little_Choice_Based_RPG.Resources.Entities.Physical.Living.Players;
-using Little_Choice_Based_RPG.Resources.Systems.SystemEventBus;
-using Little_Choice_Based_RPG.Types.EntityProperties;
 using Little_Choice_Based_RPG.Resources.Systems.ContainerSystems.Weightbearing;
 using Little_Choice_Based_RPG.Resources.Systems.ContainerSystems.Inventory.InventoryExtensions;
-using Little_Choice_Based_RPG.Resources.Entities;
 using Little_Choice_Based_RPG.Resources.Systems.InteractionSystems.PublicInteractionsSystems;
 using Little_Choice_Based_RPG.Resources.Systems.InteractionSystems.PrivateInteractionsSystems;
 using Little_Choice_Based_RPG.Resources.Systems.InteractionSystems;
 using Little_Choice_Based_RPG.Types.TypedEventArgs.PropertyContainerEventArgs;
 using Little_Choice_Based_RPG.Resources.Entities.Rooms;
+using Little_Choice_Based_RPG.Types.PropertySystem.Entities;
+using Little_Choice_Based_RPG.Types.PropertySystem.Systems;
+using Little_Choice_Based_RPG.Types.PropertySystem.Systems.SystemEventBus;
 
 namespace Little_Choice_Based_RPG.Resources.Systems.ContainerSystems.Inventory
 {
     /// <summary> Allows PropertyContainers to contain other GameObject. This takes them out of the Rooms' own contents. Requires WeightbearingLogic. </GameObject> </summary>
-    internal class InventorySystem : PropertyLogic
+    internal sealed class InventorySystem : PropertySystem
     {
-        static InventorySystem()
-        {
-            PropertyValidation.CreateValidProperty("Descriptor.InventorySystem.Interaction.Pickup.Title", PropertyType.String);
-            PropertyValidation.CreateValidProperty("Descriptor.InventorySystem.Interaction.Pickup.Invoking", PropertyType.String);
-            PropertyValidation.CreateValidProperty("Descriptor.InventorySystem.Interaction.Drop.Title", PropertyType.String);
-            PropertyValidation.CreateValidProperty("Descriptor.InventorySystem.Interaction.Drop.Invoking", PropertyType.String);
-
-            PropertyValidation.CreateValidProperty("Descriptor.InventorySystem.Interaction.Open.Title", PropertyType.String);
-            PropertyValidation.CreateValidProperty("Descriptor.InventorySystem.Interaction.Open.Invoking", PropertyType.String);
-            PropertyValidation.CreateValidProperty("Descriptor.InventorySystem.Interaction.LoadIntoInventory.Title", PropertyType.String);
-            PropertyValidation.CreateValidProperty("Descriptor.InventorySystem.Interaction.LoadIntoInventory.Invoking", PropertyType.String);
-        }
-
-        protected override void InitialiseNewSubscriber(PropertyContainer sourceContainer, PropertyHandler sourceProperties)
+        public override void InitialiseNewSubscriber(IPropertyContainer sourceContainer, PropertyStore sourceProperties)
         {
             //The subscriber requires Component.Weightbearing. This then checks for the required weightbearing values itself :)
             if (!sourceProperties.HasExistingPropertyName("Component.WeightbearingSystem"))
@@ -68,7 +55,7 @@ namespace Little_Choice_Based_RPG.Resources.Systems.ContainerSystems.Inventory
             InventoryPropertyValidation.ValidateOpenInventoryDescriptors(sourceContainer);
 
             //if the subscriber is not a player or room, then give them an Open interaction.
-            if ((sourceContainer is not Player) && (sourceContainer is not Room))
+            if (sourceContainer is not Player && sourceContainer is not Room)
                 InteractionRegistrar.TryAddPublicInteraction(sourceContainer, InventoryDelegation.GenerateOpenInteraction((GameObject)sourceContainer));
         }
 
@@ -180,7 +167,7 @@ namespace Little_Choice_Based_RPG.Resources.Systems.ContainerSystems.Inventory
                                         //Make sure the player doesn't have an existing pickup for the item already.
                                         var currentPlayerInteractions = ((PrivateInteractions)eachPlayer.Extensions.Get("PrivateInteractions")).RecentInteractions;
 
-                                        if (!currentPlayerInteractions.Any(interaction => (interaction.Key == testItem) &&
+                                        if (!currentPlayerInteractions.Any(interaction => interaction.Key == testItem &&
                                             interaction.Value.DelegateRecord.Method.Equals(InventoryDelegation.NewPickup(testItem).DelegateRecord.Method)))
                                             continue;
 

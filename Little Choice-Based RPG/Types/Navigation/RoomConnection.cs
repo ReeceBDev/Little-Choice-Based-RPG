@@ -1,6 +1,5 @@
-﻿using Little_Choice_Based_RPG.Resources.Entities;
-using Little_Choice_Based_RPG.Resources.Entities.Conceptual;
-using Little_Choice_Based_RPG.Types.EntityProperties;
+﻿using Little_Choice_Based_RPG.Resources.Entities.Conceptual;
+using Little_Choice_Based_RPG.Types.PropertySystem.Entities;
 using Little_Choice_Based_RPG.Types.TypedEventArgs.PropertyContainerEventArgs;
 
 namespace Little_Choice_Based_RPG.Types.Navigation
@@ -8,10 +7,10 @@ namespace Little_Choice_Based_RPG.Types.Navigation
     internal struct RoomConnection
     {
         /// <summary> The origin point. This is where the connection may be accessed. </summary>
-        public PropertyContainer Source { get; init; }
+        public IPropertyContainer Source { get; init; }
 
         /// <summary> The destination point. This is where the connection leads to. </summary>
-        public PropertyContainer Destination { get; init; }
+        public IPropertyContainer Destination { get; init; }
 
         /// <summary> The direction from the origin point facing the destination, if there is one. </summary>
         public CardinalDirection? Direction { get; init; }
@@ -28,7 +27,7 @@ namespace Little_Choice_Based_RPG.Types.Navigation
             PropertyValidation.CreateValidProperty("Connection.IsAccessible", PropertyType.Boolean);
         }
 
-        public RoomConnection(PropertyContainer setSource, PropertyContainer setDestination, CardinalDirection? setDirection = null,
+        public RoomConnection(IPropertyContainer setSource, IPropertyContainer setDestination, CardinalDirection? setDirection = null,
             GameObject? setAssociatedObject = null)
         {
             //Ensure that the Source has an ItemContainer to be moved from.
@@ -58,7 +57,7 @@ namespace Little_Choice_Based_RPG.Types.Navigation
                 AssociatedObject = setAssociatedObject;
 
                 //Subscribe to its property changed list, to watch for accessibility changes!
-                AssociatedObject.ObjectChanged += OnObjectChanged;
+                AssociatedObject.ContainerChanged += OnObjectChanged;
             }
         }
         public event EventHandler<(string property, object change)> RoomConnectionModified;

@@ -1,13 +1,13 @@
 ﻿using Little_Choice_Based_RPG.Managers.PlayerControl;
-using Little_Choice_Based_RPG.Resources.Entities;
 using Little_Choice_Based_RPG.Resources.Systems.InformationalSystems.Descriptor;
+using Little_Choice_Based_RPG.Types.PropertySystem.Entities;
 
 namespace Little_Choice_Based_RPG.Resources.Systems.DamageSystems.Break
 {
     internal static class BreakLogic
     {
         /// <summary> Sets Damage.Broken to true. </summary>
-        public static void Break(PlayerController mutexHolder, PropertyContainer target)
+        public static void Break(PlayerController mutexHolder, IPropertyContainer target)
         {
             //Guard clauses for the values in use.
             if (target.Properties.HasPropertyAndValue("Damage.Broken", true))
@@ -21,7 +21,7 @@ namespace Little_Choice_Based_RPG.Resources.Systems.DamageSystems.Break
             SetBrokenDescriptors(target);
         }
 
-        public static void SetBrokenDescriptors(PropertyContainer target)
+        public static void SetBrokenDescriptors(IPropertyContainer target)
         {
             //Set generic descriptor.
             target.Properties.UpsertProperty("Descriptor.Generic.Current", DescriptorProcessor.GetDescriptor(target, "Generic.Broken"));

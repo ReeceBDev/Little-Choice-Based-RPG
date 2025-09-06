@@ -1,17 +1,17 @@
 ﻿using Little_Choice_Based_RPG.Managers.PlayerControl;
-using Little_Choice_Based_RPG.Resources.Entities;
 using Little_Choice_Based_RPG.Resources.Entities.Conceptual;
 using Little_Choice_Based_RPG.Resources.Entities.Physical.Living.Players;
 using Little_Choice_Based_RPG.Resources.Entities.Rooms;
 using Little_Choice_Based_RPG.Resources.Systems.ContainerSystems.Inventory.InventoryExtensions;
 using Little_Choice_Based_RPG.Resources.Systems.ContainerSystems.Weightbearing;
-using Little_Choice_Based_RPG.Types.EntityProperties;
+using Little_Choice_Based_RPG.Types.Archive;
+using Little_Choice_Based_RPG.Types.PropertySystem.Entities;
 
 namespace Little_Choice_Based_RPG.Resources.Systems.ContainerSystems.Inventory
 {
     internal static class InventoryProcessor
     {
-        public static void StoreInInventory(PlayerController mutexHolder, PropertyContainer targetContainer, GameObject targetEntity)
+        public static void StoreInInventory(PlayerController mutexHolder, IPropertyContainer targetContainer, GameObject targetEntity)
         {
             if (!targetContainer.Extensions.Contains("ItemContainer"))
                 throw new Exception($"The target itemContainer {targetContainer} does not contain the ItemContainer extension!");
@@ -24,7 +24,7 @@ namespace Little_Choice_Based_RPG.Resources.Systems.ContainerSystems.Inventory
             targetInventory.Add(targetEntity);
         }
 
-        public static void RemoveFromInventory(PlayerController mutexHolder, PropertyContainer targetContainer, GameObject targetEntity)
+        public static void RemoveFromInventory(PlayerController mutexHolder, IPropertyContainer targetContainer, GameObject targetEntity)
         {
             if (!targetContainer.Extensions.Contains("ItemContainer"))
                 throw new Exception($"The target itemContainer {targetContainer} does not contain the ItemContainer extension!");
@@ -35,7 +35,7 @@ namespace Little_Choice_Based_RPG.Resources.Systems.ContainerSystems.Inventory
         }
 
         public static void MoveBetweenInventories(PlayerController mutexHolder, GameObject target,
-                PropertyContainer origin, PropertyContainer destination)
+                IPropertyContainer origin, IPropertyContainer destination)
         {
             if (!origin.Extensions.Contains("ItemContainer"))
                 throw new Exception($"Source container {origin} is missing the ItemContainer extension!");
@@ -65,7 +65,7 @@ namespace Little_Choice_Based_RPG.Resources.Systems.ContainerSystems.Inventory
                 "Remember: it probably needs to be passed the current menu, first!");
         }
 
-        public static List<GameObject> GetInventoryEntities(PropertyContainer targetContainer, List<EntityProperty>? requiredProperties = null)
+        public static List<GameObject> GetInventoryEntities(IPropertyContainer targetContainer, List<EntityProperty>? requiredProperties = null)
         {
             List<GameObject> validObjects = new List<GameObject>();
 
